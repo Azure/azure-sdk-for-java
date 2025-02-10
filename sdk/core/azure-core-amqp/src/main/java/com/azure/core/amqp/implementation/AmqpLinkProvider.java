@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.engine.Receiver;
@@ -17,7 +16,7 @@ import reactor.core.scheduler.Scheduler;
  *
  * Under normal execution, the provider provides the actual links, but when running under unit test scenarios,
  * the provider enables tests to inject mock links.
- * 
+ *
  * @see ReactorProvider
  * @see ReactorHandlerProvider
  * @see AmqpMetricsProvider
@@ -60,32 +59,9 @@ public class AmqpLinkProvider {
      * @return An Amqp Link.
      */
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
-        return new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
-            tokenManager, dispatcher, retryOptions, metricsProvider);
-    }
-
-    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
-    // is removed. At that point "ReceiveLinkHandlerWrapper" and this createReceiveLink method will also be removed.
-
-    /**
-     * Creates an Amqp Link to receive messages.
-     *
-     * @param amqpConnection The connection to host the Amqp Link.
-     * @param entityPath The message broker address for the receiver.
-     * @param receiver The underlying QPID receiver.
-     * @param handler The QPID handler associated with the QPID receiver.
-     * @param tokenManager Token manager for authorising with the CBS node.
-     * @param dispatcher The dispatcher to schedule work to QPID Reactor Executor.
-     * @param retryOptions The Retry options.
-     * @param metricsProvider The metric provider (e.g. to record operations such as sending flow).
-     * @return An Amqp Link.
-     */
-    public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
-        return new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
-            tokenManager, dispatcher, retryOptions, metricsProvider);
+        return new ReactorReceiver(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher,
+            retryOptions, metricsProvider);
     }
 }

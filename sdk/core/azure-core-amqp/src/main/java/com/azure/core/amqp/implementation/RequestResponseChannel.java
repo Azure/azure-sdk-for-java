@@ -68,11 +68,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final SendLinkHandler sendLinkHandler;
-    // ReceiveLinkHandlerWrapper is a temporary type to support either v1 or v2 receiver. This type will be deleted,
-    // when removing support for the v1 receiver; instead, the 'ReceiveLinkHandler' for the new v2 receiver will be
-    // used.
     private final ReceiveLinkHandler2 receiveLinkHandler;
-    private final SenderSettleMode senderSettleMode;
     // The request-response-channel endpoint states derived from the latest state of the send and receive links.
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     // The latest state of the send and receive links.
@@ -147,7 +143,6 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.connectionId = connectionId;
         this.retryOptions = retryOptions;
         this.provider = provider;
-        this.senderSettleMode = senderSettleMode;
         this.activeEndpointTimeoutMessage = String.format(
             "RequestResponseChannel connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
             connectionId, linkName);

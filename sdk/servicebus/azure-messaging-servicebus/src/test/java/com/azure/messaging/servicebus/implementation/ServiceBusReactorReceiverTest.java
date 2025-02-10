@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
@@ -95,8 +94,8 @@ class ServiceBusReactorReceiverTest {
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
-        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver,
-            new ReceiveLinkHandlerWrapper(receiveLinkHandler), tokenManager, reactorDispatcher, retryOptions);
+        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
+            tokenManager, reactorDispatcher, retryOptions);
     }
 
     @AfterEach
