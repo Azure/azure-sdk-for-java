@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Defines values for CurrentConditionDuration.
  */
-public class CurrentConditionDuration implements ExpandableEnum<Integer> {
+public final class CurrentConditionDuration implements ExpandableEnum<Integer> {
     private static final Map<Integer, CurrentConditionDuration> VALUES = new ConcurrentHashMap<>();
 
     /**
