@@ -15,6 +15,7 @@ import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonChannel;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonSessionClosedException;
@@ -282,7 +283,7 @@ public class ReactorSession implements AmqpSession {
         // includeDeliveryTagInMessage).
         // Here we've to pass (DeliverySettleMode.SETTLE_ON_DELIVERY, false) as the values for those two parameters.
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null, SenderSettleMode.UNSETTLED,
-            ReceiverSettleMode.SECOND, new ConsumerFactory())
+            ReceiverSettleMode.SECOND, new ConsumerFactory(DeliverySettleMode.SETTLE_ON_DELIVERY, false))
                 .or(onClosedError("Connection closed while waiting for new receive link.", entityPath, linkName))
                 .cast(AmqpLink.class);
     }
