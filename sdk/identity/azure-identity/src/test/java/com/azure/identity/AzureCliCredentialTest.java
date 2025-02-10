@@ -158,14 +158,13 @@ public class AzureCliCredentialTest {
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock
                  = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(Mono.error(new Exception("other error")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
-            // test
+                     when(identityClient.authenticateWithAzureCli(request))
+                         .thenReturn(Mono.error(new Exception("other error")));
+                     when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+                 })) {
             AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId("tenant")
                 .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS)
-                .subscription("test subscription")
+                .subscription("testsubscription")
                 .build();
 
             StepVerifier.create(credential.getToken(request))
