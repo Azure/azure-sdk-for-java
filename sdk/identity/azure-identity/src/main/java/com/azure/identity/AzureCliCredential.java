@@ -66,6 +66,7 @@ public class AzureCliCredential implements TokenCredential {
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
      * @param tenantId the tenant id of the application
+     * @param tenantId the subscription
      * @param identityClientOptions the options to configure the identity client
      */
     AzureCliCredential(String tenantId, IdentityClientOptions identityClientOptions) {

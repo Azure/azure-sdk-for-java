@@ -43,6 +43,7 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredentialBuilder.class);
 
     private String tenantId;
+    private String subscription;
 
     /**
      * Constructs an instance of AzureCliCredentialBuilder.
@@ -113,6 +114,19 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     public AzureCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         identityClientOptions
             .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        return this;
+    }
+
+    /**
+     * Specifies The name or ID of a subscription. Set this to acquire tokens for an account other than the
+     * Azure CLI's current account.
+     *
+     * @param subscription The subscription name or ID.
+     * @return An updated instance of this builder with the subscription configured.
+     */
+    public AzureCliCredentialBuilder subscription(String subscription) {
+        ValidationUtil.validateSubscriptionCharacterRange(subscription, LOGGER);
+        this.identityClientOptions.subscription(subscription);
         return this;
     }
 }

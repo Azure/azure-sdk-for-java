@@ -148,4 +148,49 @@ public class AzureCliCredentialTest {
             .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
     }
+
+    @Test
+    public void testSubscriptionAccepted() {
+        // setup
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
+
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock
+                 = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureCli(request))
+                .thenReturn(Mono.error(new Exception("other error")));
+            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        })) {
+            // test
+            AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId("tenant")
+                .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS)
+                .subscription("test subscription")
+                .build();
+
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("other error"))
+                .verify();
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testInvalidSubscription() {
+        // setup
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
+
+        try {
+            // test
+            AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId("tenant")
+                .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS)
+                .subscription("test subscription&/")
+                .build();
+        } catch (Exception e) {
+            Assertions.assertTrue(e instanceof  IllegalArgumentException);
+        }
+    }
+
+
 }

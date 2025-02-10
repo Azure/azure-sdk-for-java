@@ -13,11 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AuthenticationRecord;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.BrowserCustomizationOptions;
-import com.azure.identity.ChainedTokenCredential;
-import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.*;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
@@ -81,6 +77,8 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
     private boolean useImdsRetryStrategy;
+
+    private String subscription;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -825,6 +823,22 @@ public final class IdentityClientOptions implements Cloneable {
         return this.useDefaultBrokerAccount;
     }
 
+    /**
+     * Specifies The name or ID of a subscription. Set this to acquire tokens for an account other than the
+     * Azure CLI's current account.
+     *
+     * @param subscription The subscription name or ID.
+     * @return An updated instance of this builder with the subscription configured.
+     */
+    public IdentityClientOptions subscription(String subscription) {
+        this.subscription = subscription;
+        return this;
+    }
+
+    public String getSubscription() {
+        return this.subscription;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone
             = new IdentityClientOptions().setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -854,7 +868,8 @@ public final class IdentityClientOptions implements Cloneable {
                 .setPerCallPolicies(this.perCallPolicies)
                 .setPerRetryPolicies(this.perRetryPolicies)
                 .setBrowserCustomizationOptions(this.browserCustomizationOptions)
-                .setChained(this.isChained);
+                .setChained(this.isChained)
+                .subscription(this.subscription);
 
         if (isBrokerEnabled()) {
             clone.setBrokerWindowHandle(this.brokerWindowHandle);

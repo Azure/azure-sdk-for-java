@@ -389,6 +389,12 @@ public class IdentitySyncClient extends IdentityClientBase {
             azCommand.append(" --tenant ").append(tenant);
         }
 
+        String subscription = options.getSubscription();
+        ValidationUtil.validateSubscriptionCharacterRange(subscription, LOGGER);
+        if (!CoreUtils.isNullOrEmpty(subscription)) {
+            azCommand.append(" --subscription ").append(subscription);
+        }
+
         try {
             return getTokenFromAzureCLIAuthentication(azCommand);
         } catch (RuntimeException e) {
