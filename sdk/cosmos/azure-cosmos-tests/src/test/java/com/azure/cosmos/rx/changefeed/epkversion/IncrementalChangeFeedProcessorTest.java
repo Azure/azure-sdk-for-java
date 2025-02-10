@@ -1094,8 +1094,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, dataProvider = "throughputControlArgProvider", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    @Ignore
+    // TODO reenable when investigating/fixing https://github.com/Azure/azure-sdk-for-java/issues/44115
+    @Test(groups = { "cfp-split" }, dataProvider = "throughputControlArgProvider", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void readFeedDocumentsAfterSplit(boolean throughputControlEnabled) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
