@@ -16,6 +16,7 @@ import com.azure.maps.weather.implementation.models.ErrorResponseException;
 import com.azure.maps.weather.models.ActiveStormResult;
 import com.azure.maps.weather.models.AirQualityResult;
 import com.azure.maps.weather.models.BasinId;
+import com.azure.maps.weather.models.CurrentConditionDuration;
 import com.azure.maps.weather.models.CurrentConditionsResult;
 import com.azure.maps.weather.models.DailyAirQualityForecastResult;
 import com.azure.maps.weather.models.DailyDuration;
@@ -489,7 +490,7 @@ public final class WeatherClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CurrentConditionsResult getCurrentConditions(GeoPosition position, WeatherDataUnit unit,
-        Boolean includeDetails, Integer duration, String language) {
+        Boolean includeDetails, CurrentConditionDuration duration, String language) {
         return this.asyncClient.getCurrentConditions(position, unit, includeDetails, duration, language).block();
     }
 
@@ -566,7 +567,8 @@ public final class WeatherClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CurrentConditionsResult> getCurrentConditionsWithResponse(GeoPosition position,
-        WeatherDataUnit unit, Boolean includeDetails, Integer duration, String language, Context context) {
+        WeatherDataUnit unit, Boolean includeDetails, CurrentConditionDuration duration, String language,
+        Context context) {
         return this.asyncClient
             .getCurrentConditionsWithResponse(position, unit, includeDetails, duration, language, context)
             .block();

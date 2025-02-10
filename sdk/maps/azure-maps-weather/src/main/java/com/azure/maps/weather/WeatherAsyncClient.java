@@ -20,6 +20,7 @@ import com.azure.maps.weather.implementation.models.JsonFormat;
 import com.azure.maps.weather.models.ActiveStormResult;
 import com.azure.maps.weather.models.AirQualityResult;
 import com.azure.maps.weather.models.BasinId;
+import com.azure.maps.weather.models.CurrentConditionDuration;
 import com.azure.maps.weather.models.CurrentConditionsResult;
 import com.azure.maps.weather.models.DailyAirQualityForecastResult;
 import com.azure.maps.weather.models.DailyDuration;
@@ -677,7 +678,7 @@ public final class WeatherAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CurrentConditionsResult> getCurrentConditions(GeoPosition position, WeatherDataUnit unit,
-        Boolean includeDetails, Integer duration, String language) {
+        Boolean includeDetails, CurrentConditionDuration duration, String language) {
         return getCurrentConditionsWithResponse(position, unit, includeDetails, duration, language)
             .flatMap(FluxUtil::toMono);
     }
@@ -754,7 +755,7 @@ public final class WeatherAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CurrentConditionsResult>> getCurrentConditionsWithResponse(GeoPosition position,
-        WeatherDataUnit unit, Boolean includeDetails, Integer duration, String language) {
+        WeatherDataUnit unit, Boolean includeDetails, CurrentConditionDuration duration, String language) {
         return withContext(
             context -> getCurrentConditionsWithResponse(position, unit, includeDetails, duration, language, context));
     }
@@ -831,11 +832,11 @@ public final class WeatherAsyncClient {
      */
     @Generated
     Mono<Response<CurrentConditionsResult>> getCurrentConditionsWithResponse(GeoPosition position, WeatherDataUnit unit,
-        Boolean includeDetails, Integer duration, String language, Context context) {
+        Boolean includeDetails, CurrentConditionDuration duration, String language, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
         return this.serviceClient
             .getCurrentConditionsWithResponseAsync(JsonFormat.JSON, coordinates, unit, String.valueOf(includeDetails),
-                duration, language, context)
+                duration == null ? null : duration.getValue(), language, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
