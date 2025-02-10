@@ -41,6 +41,9 @@ steps:
       $updatedContent = $buildGradleContent -replace 'version\s*=\s*\"([^\"]+)\"', "version = `"$newVersion`""
       Set-Content -Path $buildGradlePath -Value $updatedContent
 
+      Write-Host "gradle --version"
+      gradle --version  
+
       # Build the project and publish to the local Maven repository
       Write-Host "Building the project and publishing to the local Maven repository"
       ./gradlew clean build -x test publishToMavenLocal
