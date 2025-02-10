@@ -3,11 +3,13 @@
 
 package io.clientcore.core.instrumentation.metrics;
 
+import java.util.List;
+
 /**
  * Represents a meter - a component that creates instruments.
  * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
-public interface Meter extends AutoCloseable {
+public interface Meter {
     /**
      * Creates histogram instrument allowing to record distribution of a double value values.
      * Histograms should be used for latency or other measurements where distribution of values is important and values are
@@ -20,9 +22,11 @@ public interface Meter extends AutoCloseable {
      * <!-- src_embed io.clientcore.core.instrumentation.histogram -->
      * <pre>
      *
-     * DoubleHistogram histogram = meter.createDoubleHistogram&#40;&quot;sample.client.operation.duration&quot;,
+     * List&lt;Double&gt; bucketBoundariesAdvice = Collections.unmodifiableList&#40;Arrays.asList&#40;0.005d, 0.01d, 0.025d, 0.05d, 0.075d,
+     *     0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d&#41;&#41;;
+     * DoubleHistogram histogram = meter.createDoubleHistogram&#40;&quot;contoso.sample.client.operation.duration&quot;,
      *     &quot;s&quot;,
-     *     &quot;Sample client library operation duration&quot;&#41;;
+     *     &quot;Contoso sample client operation duration&quot;, bucketBoundariesAdvice&#41;;
      * InstrumentationAttributes successAttributes  = instrumentation.createAttributes&#40;
      *     Collections.singletonMap&#40;&quot;operation.name&quot;, &quot;&#123;operationName&#125;&quot;&#41;&#41;;
      *
@@ -46,13 +50,14 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.histogram -->
      *
-     * @param name short histogram name following <a href="https://opentelemetry.io/docs/specs/semconv/general/naming/">naming conventions</a>
-     * @param description free-form text describing the instrument
-     * @param unit optional unit of measurement following <a href="https://opentelemetry.io/docs/specs/semconv/general/metrics/#units">units conventions</a>
+     * @param name short histogram name following <a href="https://opentelemetry.io/docs/specs/semconv/general/naming/">naming conventions</a>. Required
+     * @param description free-form text describing the instrument. Required
+     * @param unit optional unit of measurement following <a href="https://opentelemetry.io/docs/specs/semconv/general/metrics/#units">units conventions</a>. Required
+     * @param bucketBoundaries list of bucket boundaries for the histogram. Optional
      * @return new instance of {@link DoubleHistogram}
      * @throws NullPointerException if name or description is null.
      */
-    DoubleHistogram createDoubleHistogram(String name, String description, String unit);
+    DoubleHistogram createDoubleHistogram(String name, String description, String unit, List<Double> bucketBoundaries);
 
     /**
      * Creates Counter instrument that is used to record incrementing values, such as number of sent messages or created
@@ -133,10 +138,4 @@ public interface Meter extends AutoCloseable {
      * @return true if Meter is enabled, false otherwise.
      */
     boolean isEnabled();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void close();
 }

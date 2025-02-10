@@ -331,4 +331,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_portal]: https://portal.azure.com
 [azure_powershell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-messages%2FREADME.png)
+

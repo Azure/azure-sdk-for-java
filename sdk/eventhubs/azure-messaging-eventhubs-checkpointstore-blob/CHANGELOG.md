@@ -522,4 +522,4 @@ store checkpoints and balance partition load among all instances of Event Proces
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FCHANGELOG.png)
+

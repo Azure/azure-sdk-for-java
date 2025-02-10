@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.instrumentation.fallback;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
@@ -18,11 +19,14 @@ final class FallbackSpan implements Span {
     private final ClientLogger.LoggingEvent log;
     private final long startTime;
     private final FallbackSpanContext spanContext;
+    private final SpanKind kind;
     private String errorType;
 
-    FallbackSpan(ClientLogger.LoggingEvent log, FallbackSpanContext parentSpanContext, boolean isRecording) {
+    FallbackSpan(ClientLogger.LoggingEvent log, SpanKind spanKind, FallbackSpanContext parentSpanContext,
+        boolean isRecording) {
         this.log = log;
         this.startTime = isRecording ? System.nanoTime() : 0;
+        this.kind = spanKind;
         this.spanContext = FallbackSpanContext.fromParent(parentSpanContext, isRecording, this);
         if (log != null && log.isEnabled()) {
             this.log.addKeyValue(TRACE_ID_KEY, spanContext.getTraceId())
@@ -75,6 +79,10 @@ final class FallbackSpan implements Span {
 
         log.setEventName(SPAN_ENDED_EVENT_NAME);
         log.log(null);
+    }
+
+    public SpanKind getSpanKind() {
+        return kind;
     }
 
     /**
