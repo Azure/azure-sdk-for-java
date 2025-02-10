@@ -25,6 +25,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,8 +43,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private volatile OpenTextFrame wip;
 
-    private static final AtomicReferenceFieldUpdater<WebSocketClientHandler, OpenTextFrame> UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(WebSocketClientHandler.class, OpenTextFrame.class, "wip");
+    private static final AtomicReferenceFieldUpdater<WebSocketClientHandler, OpenTextFrame> UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(WebSocketClientHandler.class, OpenTextFrame.class, "wip");
 
     WebSocketClientHandler(WebSocketClientHandshaker handshaker, AtomicReference<ClientLogger> loggerReference,
         MessageDecoder messageDecoder, Consumer<WebPubSubMessage> messageHandler) {
@@ -69,8 +70,9 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
-        Channel ch = ctx.channel();
         if (handshakeFuture != null && !handshaker.isHandshakeComplete()) {
+            Channel ch = ctx.channel();
+
             try {
                 handshaker.finishHandshake(ch, (FullHttpResponse) msg);
                 handshakeFuture.setSuccess();
@@ -147,13 +149,19 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
         if (collectedFrame != null) {
             final String collected = collectedFrame.toString();
-            final WebPubSubMessage deserialized = messageDecoder.decode(collected);
 
-            messageHandler.accept(deserialized);
+            try {
+                final WebPubSubMessage deserialized = messageDecoder.decode(collected);
+                messageHandler.accept(deserialized);
+            } finally {
+                existing.dispose();
+            }
         }
     }
 
     private void updateOpenTextFrame(ByteBuf content) {
+        content.retain();
+
         final OpenTextFrame frame = new OpenTextFrame();
         frame.add(content);
 
@@ -167,7 +175,6 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
         if (handshakeFuture != null && !handshakeFuture.isDone()) {
             handshakeFuture.setFailure(cause);
         }
@@ -192,18 +199,30 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private static final class OpenTextFrame {
-        private final ArrayList<ByteBuffer> collected = new ArrayList<>();
+        private final ArrayList<ByteBuf> collected = new ArrayList<>();
         private final AtomicBoolean isClosed = new AtomicBoolean(false);
 
         private volatile BinaryData collectedData;
 
         private void add(ByteBuf buffer) {
-            collected.add(buffer.nioBuffer());
+            if (isClosed.get()) {
+                throw new IllegalStateException("Cannot add more buffers when closed.");
+            }
+
+            buffer.retain();
+            collected.add(buffer);
         }
 
         private void close() {
             if (isClosed.getAndSet(true)) {
-                collectedData = BinaryData.fromListByteBuffer(collected);
+                getCollectedData();
+            }
+        }
+
+        private void dispose() {
+            if (isClosed.get()) {
+                collected.forEach(b -> b.release());
+                collected.clear();
             }
         }
 
@@ -211,14 +230,20 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             if (!isClosed.get()) {
                 throw new IllegalStateException("Cannot get data when frame not closed.");
             }
+
             final BinaryData e = collectedData;
 
-            if (e == null) {
-                collectedData = BinaryData.fromListByteBuffer(collected);
+            if (e != null) {
                 return collectedData;
-            } else {
-                return e;
             }
+
+            final List<ByteBuffer> list = collected.stream()
+                .map(b -> b.nioBuffer())
+                .toList();
+
+            collectedData = BinaryData.fromListByteBuffer(list);
+
+            return collectedData;
         }
     }
 }
