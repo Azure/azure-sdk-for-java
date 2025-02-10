@@ -14,7 +14,7 @@ dependencyResolutionManagement {
 }
 
 include(":azure-json", ":azure-xml")
-project(":azure-json").projectDir = file("../sdk/serialization/azure-json/android-validation")
-project(":azure-xml").projectDir = file("../sdk/serialization/azure-xml/android-validation")
+project(":azure-json").projectDir = file("../azure-json/android-validation")
+project(":azure-xml").projectDir = file("../azure-xml/android-validation")
 
 rootProject.name = "AndroidCompat"

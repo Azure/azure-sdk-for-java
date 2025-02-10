@@ -26,13 +26,13 @@ android {
         checkAllWarnings = true
         warningsAsErrors = true
         targetSdk = 35
-        lintConfig = file("../../../../android-validation/lint.xml")
+        lintConfig = file("../../android-validation/lint.xml")
     }
 
     sourceSets.getByName("main") {
         java.srcDir(file("../src/main/java"))
         java.exclude("module-info.java")
-        manifest.srcFile("../../../../android-validation/AndroidManifest.xml")
+        manifest.srcFile("../../android-validation/AndroidManifest.xml")
     }
     sourceSets.getByName("test") {
         setRoot("../src/test")
