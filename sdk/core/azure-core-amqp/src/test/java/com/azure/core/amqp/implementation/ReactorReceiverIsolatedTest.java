@@ -9,7 +9,8 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -76,7 +77,7 @@ public class ReactorReceiverIsolatedTest {
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
     private final TestPublisher<AmqpResponseCode> authorizationResults = TestPublisher.createCold();
 
-    private ReceiveLinkHandler receiverHandler;
+    private ReceiveLinkHandler2 receiverHandler;
     private ReactorReceiver reactorReceiver;
     private AutoCloseable mocksCloseable;
 
@@ -93,8 +94,8 @@ public class ReactorReceiverIsolatedTest {
         when(reactor.attachments()).thenReturn(record);
 
         final String entityPath = "test-entity-path";
-        receiverHandler
-            = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name", entityPath, null);
+        receiverHandler = new ReceiveLinkHandler2("test-connection-id", "test-host", "test-receiver-name", entityPath,
+            DeliverySettleMode.SETTLE_ON_DELIVERY, reactorDispatcher, retryOptions, false, AmqpMetricsProvider.noop());
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 

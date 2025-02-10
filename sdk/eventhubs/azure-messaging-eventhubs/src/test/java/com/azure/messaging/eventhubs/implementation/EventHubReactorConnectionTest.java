@@ -17,7 +17,8 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -175,9 +176,12 @@ public class EventHubReactorConnectionTest {
         when(sender.attachments()).thenReturn(linkRecord);
         when(receiver.attachments()).thenReturn(linkRecord);
 
-        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path",
-                AmqpMetricsProvider.noop()));
+        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString(),
+            eq(DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY), eq(false), any(ReactorDispatcher.class),
+            any(AmqpRetryOptions.class)))
+                .thenReturn(new ReceiveLinkHandler2(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path",
+                    DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, null, connectionOptions.getRetry(), false,
+                    AmqpMetricsProvider.noop()));
 
         when(handlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
             .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path",

@@ -12,7 +12,8 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -72,6 +73,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -96,6 +98,7 @@ class ReactorConnectionTest {
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions();
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
         .setHeaders(Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(FULLY_QUALIFIED_NAMESPACE, 3128);
@@ -853,14 +856,17 @@ class ReactorConnectionTest {
             argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
                 .thenReturn(linkHandler);
 
-        final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE,
-            linkName, entityPath, AmqpMetricsProvider.noop());
+        final ReceiveLinkHandler2 receiverHandler2 = new ReceiveLinkHandler2("test-connection-id", "test-host",
+            "test-receiver-name", entityPath, DeliverySettleMode.SETTLE_ON_DELIVERY, mock(ReactorDispatcher.class),
+            RETRY_OPTIONS, false, AmqpMetricsProvider.noop());
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("mgmt") && path.contains(entityPath)),
-            argThat(path -> path.contains("management")))).thenReturn(receiveLinkHandler);
+            argThat(path -> path.contains("management")), any(DeliverySettleMode.class), anyBoolean(),
+            any(ReactorDispatcher.class), any(AmqpRetryOptions.class))).thenReturn(receiverHandler2);
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
-            argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
-                .thenReturn(receiveLinkHandler);
+            argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs")),
+            any(DeliverySettleMode.class), anyBoolean(), any(ReactorDispatcher.class), any(AmqpRetryOptions.class)))
+                .thenReturn(receiverHandler2);
 
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))
