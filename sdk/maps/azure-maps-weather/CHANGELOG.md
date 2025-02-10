@@ -5,6 +5,13 @@
 ### Breaking Changes
 
 - Update to latest API spec. `temperatureSummary` returns `past3Hours`, `past6Hours`, `past9Hours`, `past12Hours`, `past18Hours`, and `past24Hours`.
+- Rename methods:
+  - `getAirQualityDailyForecasts` to `getDailyAirQualityForecasts`
+  - `getAirQualityHourlyForecasts` to `getHourlyAirQualityForecasts`
+  - `getGovId` to `getGovernmentId` in `ActiveStorm` class
+- Update `getCurrentConditions` function signature
+- Remove `getNextLink` in all classes
+- Remove `isActive` method from `ActiveStorm` class
 
 ## 1.0.0-beta.2 (2024-12-27)
 
