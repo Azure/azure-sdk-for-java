@@ -9,6 +9,7 @@ import com.azure.core.util.ExpandableEnum;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -87,5 +88,20 @@ public final class DailyDuration implements ExpandableEnum<Integer> {
     @Override
     public Integer getValue() {
         return this.value;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }
