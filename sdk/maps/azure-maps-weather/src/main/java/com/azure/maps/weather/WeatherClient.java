@@ -423,7 +423,7 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
      * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *     null, null, null, null&#41;;
+     *     null, true, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_conditions -->
      *
@@ -450,9 +450,9 @@ public final class WeatherClient {
      * imperial units. Default value is metric.
      * @param includeDetails Return full details for the current conditions.
      * Available
-     * values are * `True` - Returns full
+     * values are * `true` - Returns full
      * details. By default, all details are returned. *
-     * `False` -
+     * `false` -
      * Returns a truncated version of the current
      * condition data, which includes observation date time,
      * weather
@@ -499,7 +499,7 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
      * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *     null, null, null, null&#41;;
+     *     null, true, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_conditions -->
      *
@@ -526,9 +526,9 @@ public final class WeatherClient {
      * imperial units. Default value is metric.
      * @param includeDetails Return full details for the current conditions.
      * Available
-     * values are * `True` - Returns full
+     * values are * `true` - Returns full
      * details. By default, all details are returned. *
-     * `False` -
+     * `false` -
      * Returns a truncated version of the current
      * condition data, which includes observation date time,
      * weather

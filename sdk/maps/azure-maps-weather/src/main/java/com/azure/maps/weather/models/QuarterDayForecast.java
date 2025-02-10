@@ -366,7 +366,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
             this.dateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTime));
         jsonWriter.writeStringField("effectiveDate",
             this.effectiveDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.effectiveDate));
-        jsonWriter.writeNumberField("quarter", this.quarter == null ? null : this.quarter.toInt());
+        jsonWriter.writeNumberField("quarter", this.quarter == null ? null : this.quarter.getValue());
         jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
         jsonWriter.writeStringField("iconPhrase", this.iconPhrase);
         jsonWriter.writeStringField("phrase", this.phrase);
@@ -412,7 +412,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
                     deserializedQuarterDayForecast.effectiveDate
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("quarter".equals(fieldName)) {
-                    deserializedQuarterDayForecast.quarter = DayQuarter.fromInt(reader.getInt());
+                    deserializedQuarterDayForecast.quarter = DayQuarter.fromValue(reader.getInt());
                 } else if ("iconCode".equals(fieldName)) {
                     deserializedQuarterDayForecast.iconCode = IconCode.fromInt(reader.getInt());
                 } else if ("iconPhrase".equals(fieldName)) {

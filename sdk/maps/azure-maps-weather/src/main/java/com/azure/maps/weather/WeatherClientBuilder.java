@@ -189,6 +189,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @param httpLogOptions the httpLogOptions value.
      * @return the WeatherClientBuilder.
      */
+    @Override
     public WeatherClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = Objects.requireNonNull(httpLogOptions, "'logOptions' cannot be null.");
         return this;
@@ -213,6 +214,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @param clientOptions the clientOptions value.
      * @return the WeatherClientBuilder.
      */
+    @Override
     public WeatherClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
@@ -224,6 +226,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the WeatherClientBuilder.
      */
+    @Override
     public WeatherClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -237,6 +240,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public WeatherClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -250,6 +254,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public WeatherClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
@@ -263,6 +268,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code sasCredential} is null.
      */
+    @Override
     public WeatherClientBuilder credential(AzureSasCredential sasCredential) {
         this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
         return this;
@@ -270,7 +276,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
 
     /**
      * Sets retry options
-     * 
+     *
      * @param retryOptions the retry options for the client
      * @return a reference to this {@code WeatherClientBuilder}
      */
