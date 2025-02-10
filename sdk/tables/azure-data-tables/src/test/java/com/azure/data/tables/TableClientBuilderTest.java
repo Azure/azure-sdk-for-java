@@ -272,7 +272,7 @@ public class TableClientBuilderTest {
     }
 
     @Test
-    void NonRuntimeExceptionsDontGetCasted() {
+    void nonRuntimeExceptionsDontGetCasted() {
         assertThrows(Error.class, () -> {
             TableUtils.callWithOptionalTimeout(() -> {
                 throw new NoClassDefFoundError("This is an error");

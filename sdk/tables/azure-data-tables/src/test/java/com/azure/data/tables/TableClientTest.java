@@ -14,8 +14,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
