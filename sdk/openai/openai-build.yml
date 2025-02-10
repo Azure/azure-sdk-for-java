@@ -5,12 +5,6 @@ steps:
         
       Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure"
       ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure
-      
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure/azure-ai-openai"
-      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure/azure-ai-openai
-      
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/github"
-      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/github
         
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
@@ -53,6 +47,9 @@ steps:
         
       Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java"
       ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java
+        
+      Write-Host "cat ./../../_temp/openai-java/build/reports/problems/problems-report.html"
+      cat ./../../_temp/openai-java/build/reports/problems/problems-report.html
         
       # Define the path to the external_dependencies.txt file
       $dependenciesFilePath = './../../1/s/eng/versioning/external_dependencies.txt'
