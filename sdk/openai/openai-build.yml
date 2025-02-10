@@ -3,6 +3,15 @@ steps:
       Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/"
       ls $env:PIPELINE_WORKSPACE/.m2/repository/com
         
+      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure"
+      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure
+      
+      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure/azure-ai-openai"
+      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure/azure-ai-openai
+      
+      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/github"
+      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/github
+        
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
       $branchName = "release-please--branches--main--changes--next"
@@ -41,7 +50,10 @@ steps:
       # Build the project and publish to the local Maven repository
       Write-Host "Building the project and publishing to the local Maven repository"
       ./gradlew clean build -x test publishToMavenLocal
-
+        
+      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java"
+      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java
+        
       # Define the path to the external_dependencies.txt file
       $dependenciesFilePath = './../../1/s/eng/versioning/external_dependencies.txt'
 
@@ -51,11 +63,7 @@ steps:
       $updatedDependenciesContent = $dependenciesContent -replace 'com.openai:openai-java;[0-9.]+', $newVersionInExternalDependenciesFile
       Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"        
       Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
-        
-        
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java"
-      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java
-        
+
       Write-Host "Running the version update script"
       cd ../../1/s/
       python eng/versioning/update_versions.py --bt client --ut external_dependency --sr
