@@ -4,68 +4,99 @@
 
 package com.azure.maps.weather.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.util.ExpandableEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Defines values for HourlyDuration.
  */
-public final class HourlyDuration extends ExpandableStringEnum<HourlyDuration> {
+public final class HourlyDuration implements ExpandableEnum<Integer> {
+    private static final Map<Integer, HourlyDuration> VALUES = new ConcurrentHashMap<>();
+
     /**
      * 1 Hours.
      */
-    public static final HourlyDuration ONE_HOUR = fromInt(1);
+    public static final HourlyDuration ONE_HOUR = fromValue(1);
 
     /**
      * 12 Hours.
      */
-    public static final HourlyDuration TWELVE_HOURS = fromInt(12);
+    public static final HourlyDuration TWELVE_HOURS = fromValue(12);
 
     /**
      * 24 Hours.
      */
-    public static final HourlyDuration TWENTY_FOUR_HOURS = fromInt(24);
+    public static final HourlyDuration TWENTY_FOUR_HOURS = fromValue(24);
 
     /**
      * 48 Hours.
      */
-    public static final HourlyDuration FORTY_EIGHT_HOURS = fromInt(48);
+    public static final HourlyDuration FORTY_EIGHT_HOURS = fromValue(48);
 
     /**
      * 72 Hours.
      */
-    public static final HourlyDuration SEVENTY_TWO_HOURS = fromInt(72);
+    public static final HourlyDuration SEVENTY_TWO_HOURS = fromValue(72);
 
     /**
      * 96 Hours.
      */
-    public static final HourlyDuration NINETY_SIX_HOURS = fromInt(96);
+    public static final HourlyDuration NINETY_SIX_HOURS = fromValue(96);
 
-    /**
-     * Creates a new instance of HourlyDuration value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public HourlyDuration() {
+    private final Integer value;
+
+    private HourlyDuration(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a HourlyDuration from its string representation.
-     * 
-     * @param name a name to look for.
+     * Creates or finds a HourlyDuration.
+     *
+     * @param value a value to look for.
      * @return the corresponding HourlyDuration.
      */
-    public static HourlyDuration fromInt(int name) {
-        return fromString(String.valueOf(name), HourlyDuration.class);
+    public static HourlyDuration fromValue(Integer value) {
+        return VALUES.computeIfAbsent(value, HourlyDuration::new);
     }
 
     /**
      * Gets known HourlyDuration values.
-     * 
+     *
      * @return known HourlyDuration values.
      */
     public static Collection<HourlyDuration> values() {
-        return values(HourlyDuration.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the HourlyDuration instance.
+     *
+     * @return the value of the HourlyDuration instance.
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

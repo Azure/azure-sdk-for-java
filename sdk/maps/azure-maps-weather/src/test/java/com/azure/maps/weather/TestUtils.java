@@ -101,11 +101,11 @@ public class TestUtils {
         return deserialize("getcurrentairquality.json", AirQualityResult::fromJson);
     }
 
-    static DailyAirQualityForecastResult getExpectedAirQualityDailyForecasts() {
+    static DailyAirQualityForecastResult getExpectedDailyAirQualityForecast() {
         return deserialize("getdailyairqualityforecast.json", DailyAirQualityForecastResult::fromJson);
     }
 
-    static AirQualityResult getExpectedAirQualityHourlyForecasts() {
+    static AirQualityResult getExpectedHourlyAirQualityForecast() {
         return deserialize("gethourlyairqualityforecast.json", AirQualityResult::fromJson);
     }
 

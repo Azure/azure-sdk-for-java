@@ -622,7 +622,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             .create(client.getDailyAirQualityForecast(new GeoPosition(-122.138874, 47.632346), "en",
                 DailyDuration.TWO_DAYS))
             .assertNext(actualResults -> validateGetDailyAirQualityForecast(
-                TestUtils.getExpectedAirQualityDailyForecasts(), actualResults))
+                TestUtils.getExpectedDailyAirQualityForecast(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -638,7 +638,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             .create(client.getDailyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
                 DailyDuration.TWO_DAYS, null))
             .assertNext(response -> validateGetDailyAirQualityForecastWithResponse(
-                TestUtils.getExpectedAirQualityDailyForecasts(), response))
+                TestUtils.getExpectedDailyAirQualityForecast(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -665,7 +665,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             .create(client.getHourlyAirQualityForecast(new GeoPosition(-122.138874, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false))
             .assertNext(actualResults -> validateGetHourlyAirQualityForecast(
-                TestUtils.getExpectedAirQualityHourlyForecasts(), actualResults))
+                TestUtils.getExpectedHourlyAirQualityForecast(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -681,7 +681,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             .create(client.getHourlyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false, null))
             .assertNext(response -> validateGetHourlyAirQualityForecastWithResponse(
-                TestUtils.getExpectedAirQualityHourlyForecasts(), response))
+                TestUtils.getExpectedHourlyAirQualityForecast(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }

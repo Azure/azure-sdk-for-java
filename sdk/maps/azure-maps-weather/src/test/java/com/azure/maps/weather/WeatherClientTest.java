@@ -514,7 +514,7 @@ public class WeatherClientTest extends WeatherTestBase {
         client = getWeatherClient(httpClient, serviceVersion);
         DailyAirQualityForecastResult actualResult
             = client.getDailyAirQualityForecast(new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
-        DailyAirQualityForecastResult expectedResult = TestUtils.getExpectedAirQualityDailyForecasts();
+        DailyAirQualityForecastResult expectedResult = TestUtils.getExpectedDailyAirQualityForecast();
         validateGetDailyAirQualityForecast(expectedResult, actualResult);
     }
 
@@ -525,7 +525,7 @@ public class WeatherClientTest extends WeatherTestBase {
     public void testGetDailyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetDailyAirQualityForecastWithResponse(TestUtils.getExpectedAirQualityDailyForecasts(),
+        validateGetDailyAirQualityForecastWithResponse(TestUtils.getExpectedDailyAirQualityForecast(),
             client.getDailyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
                 DailyDuration.TWO_DAYS, null));
     }
@@ -549,7 +549,7 @@ public class WeatherClientTest extends WeatherTestBase {
         client = getWeatherClient(httpClient, serviceVersion);
         AirQualityResult actualResult = client.getHourlyAirQualityForecast(new GeoPosition(-122.138874, 47.632346),
             "fr", HourlyDuration.ONE_HOUR, false);
-        AirQualityResult expectedResult = TestUtils.getExpectedAirQualityHourlyForecasts();
+        AirQualityResult expectedResult = TestUtils.getExpectedHourlyAirQualityForecast();
         validateGetHourlyAirQualityForecast(expectedResult, actualResult);
     }
 
@@ -560,7 +560,7 @@ public class WeatherClientTest extends WeatherTestBase {
     public void testGetHourlyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetHourlyAirQualityForecastWithResponse(TestUtils.getExpectedAirQualityHourlyForecasts(),
+        validateGetHourlyAirQualityForecastWithResponse(TestUtils.getExpectedHourlyAirQualityForecast(),
             client.getHourlyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false, null));
     }
