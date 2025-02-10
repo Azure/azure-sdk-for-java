@@ -53,9 +53,9 @@ import java.util.List;
  *
  * &#47;&#47; Creates a client
  * WeatherClient client = new WeatherClientBuilder&#40;&#41; 
- *     .credential&#40;keyCredential&#41;
- *     .weatherClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
- *     .buildClient&#40;&#41;;
+ * .credential&#40;keyCredential&#41;
+ * .weatherClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
+ * .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.weather.sync.builder.ad.instantiation -->
  */
@@ -99,35 +99,35 @@ public final class WeatherClient {
      * days).
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param duration Time frame of the returned weather forecast. By default, the
-     *                 forecast data for next hour will be
-     *                 returned. Available values are * `1` - Return forecast data
-     *                 for the next hour. Default value. * `12` - Return
-     *                 hourly forecast for next 12 hours. * `24` - Return hourly
-     *                 forecast for next 24 hours. * `72` - Return hourly
-     *                 forecast for next 72 hours (3 days). * `120` - Return hourly
-     *                 forecast for next 120 hours (5 days). Only
-     *                 available in S1 SKU. * `240` - Return hourly forecast for
-     *                 next 240 hours (10 days). Only available in S1 SKU.
+     * forecast data for next hour will be
+     * returned. Available values are * `1` - Return forecast data
+     * for the next hour. Default value. * `12` - Return
+     * hourly forecast for next 12 hours. * `24` - Return hourly
+     * forecast for next 24 hours. * `72` - Return hourly
+     * forecast for next 72 hours (3 days). * `120` - Return hourly
+     * forecast for next 120 hours (5 days). Only
+     * available in S1 SKU. * `240` - Return hourly forecast for
+     * next 240 hours (10 days). Only available in S1 SKU.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -162,36 +162,36 @@ public final class WeatherClient {
      * days).
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param duration Time frame of the returned weather forecast. By default, the
-     *                 forecast data for next hour will be
-     *                 returned. Available values are * `1` - Return forecast data
-     *                 for the next hour. Default value. * `12` - Return
-     *                 hourly forecast for next 12 hours. * `24` - Return hourly
-     *                 forecast for next 24 hours. * `72` - Return hourly
-     *                 forecast for next 72 hours (3 days). * `120` - Return hourly
-     *                 forecast for next 120 hours (5 days). Only
-     *                 available in S1 SKU. * `240` - Return hourly forecast for
-     *                 next 240 hours (10 days). Only available in S1 SKU.
+     * forecast data for next hour will be
+     * returned. Available values are * `1` - Return forecast data
+     * for the next hour. Default value. * `12` - Return
+     * hourly forecast for next 12 hours. * `24` - Return hourly
+     * forecast for next 24 hours. * `72` - Return hourly
+     * forecast for next 72 hours (3 days). * `120` - Return hourly
+     * forecast for next 120 hours (5 days). Only
+     * available in S1 SKU. * `240` - Return hourly forecast for
+     * next 240 hours (10 days). Only available in S1 SKU.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -222,29 +222,29 @@ public final class WeatherClient {
      * intensity value (dBZ).
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param interval Specifies time interval in minutes for the returned weather
-     *                 forecast. Supported values are * `1`
-     *                 - Retrieve forecast for 1-minute intervals. Returned by
-     *                 default. * `5` - Retrieve forecasts for 5-minute
-     *                 intervals. * `15` - Retrieve forecasts for 15-minute
-     *                 intervals.
+     * forecast. Supported values are * `1`
+     * - Retrieve forecast for 1-minute intervals. Returned by
+     * default. * `5` - Retrieve forecasts for 5-minute
+     * intervals. * `15` - Retrieve forecasts for 15-minute
+     * intervals.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -274,30 +274,30 @@ public final class WeatherClient {
      * intensity value (dBZ).
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param interval Specifies time interval in minutes for the returned weather
-     *                 forecast. Supported values are * `1`
-     *                 - Retrieve forecast for 1-minute intervals. Returned by
-     *                 default. * `5` - Retrieve forecasts for 5-minute
-     *                 intervals. * `15` - Retrieve forecasts for 15-minute
-     *                 intervals.
+     * forecast. Supported values are * `1`
+     * - Retrieve forecast for 1-minute intervals. Returned by
+     * default. * `5` - Retrieve forecasts for 5-minute
+     * intervals. * `15` - Retrieve forecasts for 15-minute
+     * intervals.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -327,32 +327,32 @@ public final class WeatherClient {
      * returned.
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param duration Specifies for how many days the quester-day forecast
-     *                 responses are returned. Supported values
-     *                 are: * `1` - Return forecast data for the next day. Returned
-     *                 by default. * `5` - Return forecast data for the
-     *                 next 5 days. * `10` - Return forecast data for next 10 days.
-     *                 * `15` - Return forecast data for the next 15
-     *                 days.
+     * responses are returned. Supported values
+     * are: * `1` - Return forecast data for the next day. Returned
+     * by default. * `5` - Return forecast data for the
+     * next 5 days. * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15
+     * days.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -382,33 +382,33 @@ public final class WeatherClient {
      * returned.
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param duration Specifies for how many days the quester-day forecast
-     *                 responses are returned. Supported values
-     *                 are: * `1` - Return forecast data for the next day. Returned
-     *                 by default. * `5` - Return forecast data for the
-     *                 next 5 days. * `10` - Return forecast data for next 10 days.
-     *                 * `15` - Return forecast data for the next 15
-     *                 days.
+     * responses are returned. Supported values
+     * are: * `1` - Return forecast data for the next day. Returned
+     * by default. * `5` - Return forecast data for the
+     * next 5 days. * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15
+     * days.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -423,7 +423,7 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
      * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *     null, null, null, null&#41;;
+     * null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_conditions -->
      *
@@ -442,49 +442,49 @@ public final class WeatherClient {
      * temperature. Additional details such as RealFeel™ Temperature and UV index
      * are also returned.
      *
-     * @param position       The applicable query specified as a comma separated
-     *                       string
-     *                       composed by longitude followed by
-     *                       latitude e.g. "-122.125679,47.641268".
-     * @param unit           Specifies to return the data in either metric units or
-     *                       imperial units. Default value is metric.
+     * @param position The applicable query specified as a comma separated
+     * string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param includeDetails Return full details for the current conditions.
-     *                       Available
-     *                       values are * `True` - Returns full
-     *                       details. By default, all details are returned. *
-     *                       `False` -
-     *                       Returns a truncated version of the current
-     *                       condition data, which includes observation date time,
-     *                       weather
-     *                       phrase, icon code, precipitation indicator
-     *                       flag, and temperature.
-     * @param duration       Time frame of the returned weather conditions. By
-     *                       default,
-     *                       the most current weather conditions
-     *                       will be returned. Default value is 0. Supported values
-     *                       are: *
-     *                       `0` - Return the most current weather
-     *                       conditions. * `6` - Return weather conditions from past
-     *                       6
-     *                       hours. * `24` - Return weather conditions from past
-     *                       24 hours.
-     * @param language       Language in which search results should be returned.
-     *                       Should
-     *                       be one of supported IETF language
-     *                       tags, case-insensitive. When data in specified language
-     *                       is
-     *                       not available for a specific field, default
-     *                       language is used.
-     *                       <p>
-     *                       Please refer to [Supported
-     *                       Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                       for
-     *                       details.
+     * Available
+     * values are * `True` - Returns full
+     * details. By default, all details are returned. *
+     * `False` -
+     * Returns a truncated version of the current
+     * condition data, which includes observation date time,
+     * weather
+     * phrase, icon code, precipitation indicator
+     * flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By
+     * default,
+     * the most current weather conditions
+     * will be returned. Default value is 0. Supported values
+     * are: *
+     * `0` - Return the most current weather
+     * conditions. * `6` - Return weather conditions from past
+     * 6
+     * hours. * `24` - Return weather conditions from past
+     * 24 hours.
+     * @param language Language in which search results should be returned.
+     * Should
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language
+     * is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -499,7 +499,7 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
      * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *     null, null, null, null&#41;;
+     * null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_conditions -->
      *
@@ -518,50 +518,50 @@ public final class WeatherClient {
      * temperature. Additional details such as RealFeel™ Temperature and UV index
      * are also returned.
      *
-     * @param position       The applicable query specified as a comma separated
-     *                       string
-     *                       composed by longitude followed by
-     *                       latitude e.g. "-122.125679,47.641268".
-     * @param unit           Specifies to return the data in either metric units or
-     *                       imperial units. Default value is metric.
+     * @param position The applicable query specified as a comma separated
+     * string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param includeDetails Return full details for the current conditions.
-     *                       Available
-     *                       values are * `True` - Returns full
-     *                       details. By default, all details are returned. *
-     *                       `False` -
-     *                       Returns a truncated version of the current
-     *                       condition data, which includes observation date time,
-     *                       weather
-     *                       phrase, icon code, precipitation indicator
-     *                       flag, and temperature.
-     * @param duration       Time frame of the returned weather conditions. By
-     *                       default,
-     *                       the most current weather conditions
-     *                       will be returned. Default value is 0. Supported values
-     *                       are: *
-     *                       `0` - Return the most current weather
-     *                       conditions. * `6` - Return weather conditions from past
-     *                       6
-     *                       hours. * `24` - Return weather conditions from past
-     *                       24 hours.
-     * @param language       Language in which search results should be returned.
-     *                       Should
-     *                       be one of supported IETF language
-     *                       tags, case-insensitive. When data in specified language
-     *                       is
-     *                       not available for a specific field, default
-     *                       language is used.
-     *                       <p>
-     *                       Please refer to [Supported
-     *                       Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                       for
-     *                       details.
-     * @param context        The context to associate with this operation.
+     * Available
+     * values are * `True` - Returns full
+     * details. By default, all details are returned. *
+     * `False` -
+     * Returns a truncated version of the current
+     * condition data, which includes observation date time,
+     * weather
+     * phrase, icon code, precipitation indicator
+     * flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By
+     * default,
+     * the most current weather conditions
+     * will be returned. Default value is 0. Supported values
+     * are: *
+     * `0` - Return the most current weather
+     * conditions. * `6` - Return weather conditions from past
+     * 6
+     * hours. * `24` - Return weather conditions from past
+     * 24 hours.
+     * @param language Language in which search results should be returned.
+     * Should
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language
+     * is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -597,33 +597,33 @@ public final class WeatherClient {
      * forecast for the next 25 days, and 45 days.
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param duration Specifies for how many days the daily forecast responses are
-     *                 returned. Available values are * `1`
-     *                 - Return forecast data for the next day. Returned by default.
-     *                 * `5` - Return forecast data for the next 5
-     *                 days. * `10` - Return forecast data for the next 10 days. *
-     *                 `25` - Return forecast data for the next 25 days.
-     *                 Only available in S1 SKU. * `45` - Return forecast data for
-     *                 the next 45 days. Only available in S1 SKU.
+     * returned. Available values are * `1`
+     * - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5
+     * days. * `10` - Return forecast data for the next 10 days. *
+     * `25` - Return forecast data for the next 25 days.
+     * Only available in S1 SKU. * `45` - Return forecast data for
+     * the next 45 days. Only available in S1 SKU.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -657,34 +657,34 @@ public final class WeatherClient {
      * forecast for the next 25 days, and 45 days.
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @param duration Specifies for how many days the daily forecast responses are
-     *                 returned. Available values are * `1`
-     *                 - Return forecast data for the next day. Returned by default.
-     *                 * `5` - Return forecast data for the next 5
-     *                 days. * `10` - Return forecast data for the next 10 days. *
-     *                 `25` - Return forecast data for the next 25 days.
-     *                 Only available in S1 SKU. * `45` - Return forecast data for
-     *                 the next 45 days. Only available in S1 SKU.
+     * returned. Available values are * `1`
+     * - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5
+     * days. * `10` - Return forecast data for the next 10 days. *
+     * `25` - Return forecast data for the next 25 days.
+     * Only available in S1 SKU. * `45` - Return forecast data for
+     * the next 45 days. Only available in S1 SKU.
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -699,13 +699,13 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_weather_along_route -->
      * <pre>
      * List&lt;Waypoint&gt; waypoints = Arrays.asList&#40;
-     *     new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
+     * new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
      * &#41;;
      * client.getWeatherAlongRoute&#40;waypoints, &quot;en&quot;&#41;;
      * </pre>
@@ -754,50 +754,50 @@ public final class WeatherClient {
      * Antarctica.
      *
      * @param waypoints Coordinates through which the route is calculated, separated
-     *                  by colon (:) and entered in
-     *                  chronological order. A minimum of two waypoints is required.
-     *                  A single API call may contain up to 60
-     *                  waypoints. A waypoint indicates location, ETA, and optional
-     *                  heading: latitude,longitude,ETA,heading, where *
-     *                  `Latitude` - Latitude coordinate in decimal degrees. *
-     *                  `Longitude` - Longitude coordinate in decimal degrees.
-     *                  * `ETA (estimated time of arrival)` - The number of minutes
-     *                  from the present time that it will take for the
-     *                  vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                  120.0 minutes. * `Heading` - An optional value
-     *                  indicating the vehicle heading as it passes the waypoint.
-     *                  Expressed in clockwise degrees relative to true
-     *                  north. This is issued to calculate sun glare as a driving
-     *                  hazard. Allowed range is from 0.0 to 360.0 degrees.
-     *                  If not provided, a heading will automatically be derived
-     *                  based on the position of neighboring waypoints.
-     *                  <p>
-     *                  It is recommended to stay within, or close to, the distance
-     *                  that can be traveled within 120-mins or
-     *                  shortly after. This way a more accurate assessment can be
-     *                  provided for the trip and prevent isolated events
-     *                  not being captured between waypoints. Information can and
-     *                  should be updated along the route (especially for
-     *                  trips greater than 2 hours) to continuously pull new
-     *                  waypoints moving forward, but also to ensure that
-     *                  forecast information for content such as precipitation type
-     *                  and intensity is accurate as storms develop and
-     *                  dissipate over time.
-     * @param language  Language in which search results should be returned. Should
-     *                  be one of supported IETF language
-     *                  tags, case-insensitive. When data in specified language is
-     *                  not available for a specific field, default
-     *                  language is used.
-     *                  <p>
-     *                  Please refer to [Supported
-     *                  Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                  for
-     *                  details.
+     * by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required.
+     * A single API call may contain up to 60
+     * waypoints. A waypoint indicates location, ETA, and optional
+     * heading: latitude,longitude,ETA,heading, where *
+     * `Latitude` - Latitude coordinate in decimal degrees. *
+     * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes
+     * from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to
+     * 120.0 minutes. * `Heading` - An optional value
+     * indicating the vehicle heading as it passes the waypoint.
+     * Expressed in clockwise degrees relative to true
+     * north. This is issued to calculate sun glare as a driving
+     * hazard. Allowed range is from 0.0 to 360.0 degrees.
+     * If not provided, a heading will automatically be derived
+     * based on the position of neighboring waypoints.
+     * <p>
+     * It is recommended to stay within, or close to, the distance
+     * that can be traveled within 120-mins or
+     * shortly after. This way a more accurate assessment can be
+     * provided for the trip and prevent isolated events
+     * not being captured between waypoints. Information can and
+     * should be updated along the route (especially for
+     * trips greater than 2 hours) to continuously pull new
+     * waypoints moving forward, but also to ensure that
+     * forecast information for content such as precipitation type
+     * and intensity is accurate as storms develop and
+     * dissipate over time.
+     * @param language Language in which search results should be returned. Should
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @return this object is returned from a successful Weather Along Route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -811,13 +811,13 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_weather_along_route -->
      * <pre>
      * List&lt;Waypoint&gt; waypoints = Arrays.asList&#40;
-     *     new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
-     *     new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
+     * new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
+     * new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
      * &#41;;
      * client.getWeatherAlongRoute&#40;waypoints, &quot;en&quot;&#41;;
      * </pre>
@@ -866,51 +866,51 @@ public final class WeatherClient {
      * Antarctica.
      *
      * @param waypoints Coordinates through which the route is calculated, separated
-     *                  by colon (:) and entered in
-     *                  chronological order. A minimum of two waypoints is required.
-     *                  A single API call may contain up to 60
-     *                  waypoints. A waypoint indicates location, ETA, and optional
-     *                  heading: latitude,longitude,ETA,heading, where *
-     *                  `Latitude` - Latitude coordinate in decimal degrees. *
-     *                  `Longitude` - Longitude coordinate in decimal degrees.
-     *                  * `ETA (estimated time of arrival)` - The number of minutes
-     *                  from the present time that it will take for the
-     *                  vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                  120.0 minutes. * `Heading` - An optional value
-     *                  indicating the vehicle heading as it passes the waypoint.
-     *                  Expressed in clockwise degrees relative to true
-     *                  north. This is issued to calculate sun glare as a driving
-     *                  hazard. Allowed range is from 0.0 to 360.0 degrees.
-     *                  If not provided, a heading will automatically be derived
-     *                  based on the position of neighboring waypoints.
-     *                  <p>
-     *                  It is recommended to stay within, or close to, the distance
-     *                  that can be traveled within 120-mins or
-     *                  shortly after. This way a more accurate assessment can be
-     *                  provided for the trip and prevent isolated events
-     *                  not being captured between waypoints. Information can and
-     *                  should be updated along the route (especially for
-     *                  trips greater than 2 hours) to continuously pull new
-     *                  waypoints moving forward, but also to ensure that
-     *                  forecast information for content such as precipitation type
-     *                  and intensity is accurate as storms develop and
-     *                  dissipate over time.
-     * @param language  Language in which search results should be returned. Should
-     *                  be one of supported IETF language
-     *                  tags, case-insensitive. When data in specified language is
-     *                  not available for a specific field, default
-     *                  language is used.
-     *                  <p>
-     *                  Please refer to [Supported
-     *                  Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                  for
-     *                  details.
-     * @param context   The context to associate with this operation.
+     * by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required.
+     * A single API call may contain up to 60
+     * waypoints. A waypoint indicates location, ETA, and optional
+     * heading: latitude,longitude,ETA,heading, where *
+     * `Latitude` - Latitude coordinate in decimal degrees. *
+     * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes
+     * from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to
+     * 120.0 minutes. * `Heading` - An optional value
+     * indicating the vehicle heading as it passes the waypoint.
+     * Expressed in clockwise degrees relative to true
+     * north. This is issued to calculate sun glare as a driving
+     * hazard. Allowed range is from 0.0 to 360.0 degrees.
+     * If not provided, a heading will automatically be derived
+     * based on the position of neighboring waypoints.
+     * <p>
+     * It is recommended to stay within, or close to, the distance
+     * that can be traveled within 120-mins or
+     * shortly after. This way a more accurate assessment can be
+     * provided for the trip and prevent isolated events
+     * not being captured between waypoints. Information can and
+     * should be updated along the route (especially for
+     * trips greater than 2 hours) to continuously pull new
+     * waypoints moving forward, but also to ensure that
+     * forecast information for content such as precipitation type
+     * and intensity is accurate as storms develop and
+     * dissipate over time.
+     * @param language Language in which search results should be returned. Should
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param context The context to associate with this operation.
      * @return this object is returned from a successful Weather Along Route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -948,32 +948,32 @@ public final class WeatherClient {
      * hurricanes, thunderstorms, lightning,
      * heat waves or forest fires.
      *
-     * @param position       The applicable query specified as a comma separated
-     *                       string composed by longitude followed by
-     *                       latitude e.g. "-122.125679,47.641268".
-     * @param language       Language in which search results should be returned.
-     *                       Should be one of supported IETF language
-     *                       tags, case-insensitive. When data in specified language
-     *                       is not available for a specific field, default
-     *                       language is used.
-     *                       <p>
-     *                       Please refer to [Supported
-     *                       Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                       for
-     *                       details.
+     * @param position The applicable query specified as a comma separated
+     * string composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be returned.
+     * Should be one of supported IETF language
+     * tags, case-insensitive. When data in specified language
+     * is not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @param includeDetails Return full details for the severe weather alerts.
-     *                       Available values are * `true` - Returns full
-     *                       details. By default, all details are returned. *
-     *                       `false` - Returns a truncated version of the alerts
-     *                       data,
-     *                       which excludes the area-specific full description of
-     *                       alert details (`alertDetails`).
+     * Available values are * `true` - Returns full
+     * details. By default, all details are returned. *
+     * `false` - Returns a truncated version of the alerts
+     * data,
+     * which excludes the area-specific full description of
+     * alert details (`alertDetails`).
      * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call.
+     * call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1011,33 +1011,33 @@ public final class WeatherClient {
      * hurricanes, thunderstorms, lightning,
      * heat waves or forest fires.
      *
-     * @param position       The applicable query specified as a comma separated
-     *                       string composed by longitude followed by
-     *                       latitude e.g. "-122.125679,47.641268".
-     * @param language       Language in which search results should be returned.
-     *                       Should be one of supported IETF language
-     *                       tags, case-insensitive. When data in specified language
-     *                       is not available for a specific field, default
-     *                       language is used.
-     *                       <p>
-     *                       Please refer to [Supported
-     *                       Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                       for
-     *                       details.
+     * @param position The applicable query specified as a comma separated
+     * string composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be returned.
+     * Should be one of supported IETF language
+     * tags, case-insensitive. When data in specified language
+     * is not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @param includeDetails Return full details for the severe weather alerts.
-     *                       Available values are * `true` - Returns full
-     *                       details. By default, all details are returned. *
-     *                       `false` - Returns a truncated version of the alerts
-     *                       data,
-     *                       which excludes the area-specific full description of
-     *                       alert details (`alertDetails`).
-     * @param context        The context to associate with this operation.
+     * Available values are * `true` - Returns full
+     * details. By default, all details are returned. *
+     * `false` - Returns a truncated version of the alerts
+     * data,
+     * which excludes the area-specific full description of
+     * alert details (`alertDetails`).
+     * @param context The context to associate with this operation.
      * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call.
+     * call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1073,48 +1073,48 @@ public final class WeatherClient {
      * current and next 5, 10 and 15 days
      * starting from current day.
      *
-     * @param position     The applicable query specified as a comma separated
-     *                     string composed by longitude followed by
-     *                     latitude e.g. "-122.125679,47.641268".
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case-insensitive. When data in specified language
-     *                     is not available for a specific field, default
-     *                     language is used.
-     *                     <p>
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the
-     *                     response as day 1. Available values are * `1` - Return
-     *                     daily index data for the current day. Default value. *
-     *                     `5` - Return 5 days of daily index data starting from the
-     *                     current day. * `10` - Return 10 days of daily index
-     *                     data starting from the current day. * `15` - Return 15
-     *                     days of daily index data starting from the current
-     *                     day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather Service
-     *                     Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
-     *                     details and to see the supported indices.
+     * @param position The applicable query specified as a comma separated
+     * string composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be returned.
+     * Should be one of supported IETF language
+     * tags, case-insensitive. When data in specified language
+     * is not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param duration Specifies for how many days the daily indices are
+     * returned. By default, the indices data for the
+     * current day will be returned. When requesting future
+     * indices data, the current day is included in the
+     * response as day 1. Available values are * `1` - Return
+     * daily index data for the current day. Default value. *
+     * `5` - Return 5 days of daily index data starting from the
+     * current day. * `10` - Return 10 days of daily index
+     * data starting from the current day. * `15` - Return 15
+     * days of daily index data starting from the current
+     * day.
+     * @param indexId Numeric index identifier that can be used for restricting
+     * returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please
+     * refer to [Weather Service
+     * Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
+     * details and to see the supported indices.
      * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather
-     *                     Service
-     *                     Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
-     *                     details and to see the supported index groups.
+     * restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be
+     * paired with `indexId`. Please refer to [Weather
+     * Service
+     * Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
+     * details and to see the supported index groups.
      * @return this object is returned from a successful Get Daily Indices call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1150,49 +1150,49 @@ public final class WeatherClient {
      * current and next 5, 10 and 15 days
      * starting from current day.
      *
-     * @param position     The applicable query specified as a comma separated
-     *                     string composed by longitude followed by
-     *                     latitude e.g. "-122.125679,47.641268".
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case-insensitive. When data in specified language
-     *                     is not available for a specific field, default
-     *                     language is used.
-     *                     <p>
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the
-     *                     response as day 1. Available values are * `1` - Return
-     *                     daily index data for the current day. Default value. *
-     *                     `5` - Return 5 days of daily index data starting from the
-     *                     current day. * `10` - Return 10 days of daily index
-     *                     data starting from the current day. * `15` - Return 15
-     *                     days of daily index data starting from the current
-     *                     day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather Service
-     *                     Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
-     *                     details and to see the supported indices.
+     * @param position The applicable query specified as a comma separated
+     * string composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be returned.
+     * Should be one of supported IETF language
+     * tags, case-insensitive. When data in specified language
+     * is not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param duration Specifies for how many days the daily indices are
+     * returned. By default, the indices data for the
+     * current day will be returned. When requesting future
+     * indices data, the current day is included in the
+     * response as day 1. Available values are * `1` - Return
+     * daily index data for the current day. Default value. *
+     * `5` - Return 5 days of daily index data starting from the
+     * current day. * `10` - Return 10 days of daily index
+     * data starting from the current day. * `15` - Return 15
+     * days of daily index data starting from the current
+     * day.
+     * @param indexId Numeric index identifier that can be used for restricting
+     * returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please
+     * refer to [Weather Service
+     * Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
+     * details and to see the supported indices.
      * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather
-     *                     Service
-     *                     Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
-     *                     details and to see the supported index groups.
-     * @param context      The context to associate with this operation.
+     * restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be
+     * paired with `indexId`. Please refer to [Weather
+     * Service
+     * Concepts](https://aka.ms/AzureMapsWeatherConcepts) for
+     * details and to see the supported index groups.
+     * @param context The context to associate with this operation.
      * @return this object is returned from a successful Get Daily Indices call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1222,9 +1222,9 @@ public final class WeatherClient {
      *
      * @return all government-issued active storms.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1252,9 +1252,9 @@ public final class WeatherClient {
      * @param context The context to associate with this operation.
      * @return all government-issued active storms.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1269,8 +1269,8 @@ public final class WeatherClient {
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
      * if &#40;result.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
-     *     ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
-     *     client.searchTropicalStorm&#40;storm.getYear&#40;&#41;, storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
+     * ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
+     * client.searchTropicalStorm&#40;storm.getYear&#40;&#41;, storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_search -->
@@ -1284,14 +1284,14 @@ public final class WeatherClient {
      * storms includes, government ID, basin ID, status, year, name and if it is
      * subtropical.
      *
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
      * @return search government-issued storms.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1306,8 +1306,8 @@ public final class WeatherClient {
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
      * if &#40;result.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
-     *     ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
-     *     client.searchTropicalStorm&#40;storm.getYear&#40;&#41;, storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
+     * ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
+     * client.searchTropicalStorm&#40;storm.getYear&#40;&#41;, storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_search -->
@@ -1321,15 +1321,15 @@ public final class WeatherClient {
      * storms includes, government ID, basin ID, status, year, name and if it is
      * subtropical.
      *
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
-     * @param context           The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return search government-issued storms.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1345,11 +1345,11 @@ public final class WeatherClient {
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
      * if &#40;result.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
-     *     ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
-     *     TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions&#40;storm.getYear&#40;&#41;,
-     *             storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;
-     *             .setIncludeWindowGeometry&#40;true&#41;;
-     *     client.getTropicalStormForecast&#40;forecastOptions&#41;;
+     * ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
+     * TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions&#40;storm.getYear&#40;&#41;,
+     * storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;
+     * .setIncludeWindowGeometry&#40;true&#41;;
+     * client.getTropicalStormForecast&#40;forecastOptions&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_forecast -->
@@ -1366,9 +1366,9 @@ public final class WeatherClient {
      * @param options TropicalStormForecastOptions
      * @return the list of Government-issued forecasts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1383,11 +1383,11 @@ public final class WeatherClient {
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
      * if &#40;result.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
-     *     ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
-     *     TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions&#40;storm.getYear&#40;&#41;,
-     *             storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;
-     *             .setIncludeWindowGeometry&#40;true&#41;;
-     *     client.getTropicalStormForecast&#40;forecastOptions&#41;;
+     * ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
+     * TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions&#40;storm.getYear&#40;&#41;,
+     * storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;
+     * .setIncludeWindowGeometry&#40;true&#41;;
+     * client.getTropicalStormForecast&#40;forecastOptions&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_forecast -->
@@ -1405,9 +1405,9 @@ public final class WeatherClient {
      * @param context The context to associate with this operation.
      * @return the list of Government-issued forecasts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1423,10 +1423,10 @@ public final class WeatherClient {
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
      * if &#40;result.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
-     *     ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
-     *     TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions&#40;storm.getYear&#40;&#41;,
-     *             storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
-     *     client.getTropicalStormLocations&#40;locationOptions&#41;;
+     * ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
+     * TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions&#40;storm.getYear&#40;&#41;,
+     * storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
+     * client.getTropicalStormLocations&#40;locationOptions&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_locations -->
@@ -1442,9 +1442,9 @@ public final class WeatherClient {
      * @param options TropicalStormLocationOptions
      * @return locations for an individual government-issued storm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1459,10 +1459,10 @@ public final class WeatherClient {
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
      * if &#40;result.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
-     *     ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
-     *     TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions&#40;storm.getYear&#40;&#41;,
-     *             storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
-     *     client.getTropicalStormLocations&#40;locationOptions&#41;;
+     * ActiveStorm storm = result.getActiveStorms&#40;&#41;.get&#40;0&#41;;
+     * TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions&#40;storm.getYear&#40;&#41;,
+     * storm.getBasinId&#40;&#41;, storm.getGovernmentId&#40;&#41;&#41;;
+     * client.getTropicalStormLocations&#40;locationOptions&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_locations -->
@@ -1479,9 +1479,9 @@ public final class WeatherClient {
      * @param context The context to associate with this operation.
      * @return locations for an individual government-issued storm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1496,7 +1496,7 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_current_air_quality -->
      * <pre>
      * client.getCurrentAirQuality&#40;
-     *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
+     * new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_air_quality -->
      *
@@ -1510,30 +1510,30 @@ public final class WeatherClient {
      * dominant pollutant, and a brief statement
      * summarizing risk level and suggested precautions.
      *
-     * @param position                The applicable query specified as a comma
-     *                                separated string composed by longitude
-     *                                followed by
-     *                                latitude e.g. "-122.125679,47.641268".
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case-insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default
-     *                                language is used.
-     *                                <p>
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
+     * @param position The applicable query specified as a comma
+     * separated string composed by longitude
+     * followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be
+     * returned. Should be one of supported IETF
+     * language
+     * tags, case-insensitive. When data in specified
+     * language is not available for a specific
+     * field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * information about each pollutant. By default
+     * is True.
      * @return this object is returned from a successful Get Air Quality call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1548,7 +1548,7 @@ public final class WeatherClient {
      * <!-- src_embed com.azure.maps.weather.sync.get_current_air_quality -->
      * <pre>
      * client.getCurrentAirQuality&#40;
-     *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
+     * new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_air_quality -->
      *
@@ -1562,31 +1562,31 @@ public final class WeatherClient {
      * dominant pollutant, and a brief statement
      * summarizing risk level and suggested precautions.
      *
-     * @param position                The applicable query specified as a comma
-     *                                separated string composed by longitude
-     *                                followed by
-     *                                latitude e.g. "-122.125679,47.641268".
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case-insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default
-     *                                language is used.
-     *                                <p>
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
+     * @param position The applicable query specified as a comma
+     * separated string composed by longitude
+     * followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be
+     * returned. Should be one of supported IETF
+     * language
+     * tags, case-insensitive. When data in specified
+     * language is not available for a specific
+     * field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @return this object is returned from a successful Get Air Quality call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1604,7 +1604,7 @@ public final class WeatherClient {
      *
      * <pre>
      * client.getDailyAirQualityForecast&#40;
-     *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;en&quot;, DailyDuration.TWO_DAYS&#41;;
+     * new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;en&quot;, DailyDuration.TWO_DAYS&#41;;
      * </pre>
      *
      * <!-- end com.azure.maps.weather.sync.get_air_quality_daily_forecasts -->
@@ -1622,27 +1622,27 @@ public final class WeatherClient {
      * summarizing risk level and suggested precautions.
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @param duration Specifies for how many days from now we would like to know
-     *                 about the air quality. Available
-     *                 values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
      * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call.
+     * Forecast call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1659,7 +1659,7 @@ public final class WeatherClient {
      *
      * <pre>
      * client.getDailyAirQualityForecast&#40;
-     *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;en&quot;, DailyDuration.TWO_DAYS&#41;;
+     * new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;en&quot;, DailyDuration.TWO_DAYS&#41;;
      * </pre>
      *
      * <!-- end com.azure.maps.weather.sync.get_air_quality_daily_forecasts -->
@@ -1677,28 +1677,28 @@ public final class WeatherClient {
      * summarizing risk level and suggested precautions.
      *
      * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * be one of supported IETF language
+     * tags, case-insensitive. When data in specified language is
+     * not available for a specific field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
      * @param duration Specifies for how many days from now we would like to know
-     *                 about the air quality. Available
-     *                 values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
-     * @param context  The context to associate with this operation.
+     * about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * @param context The context to associate with this operation.
      * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call.
+     * Forecast call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1715,7 +1715,7 @@ public final class WeatherClient {
      *
      * <pre>
      * client.getHourlyAirQualityForecast&#40;
-     *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;fr&quot;, HourlyDuration.ONE_HOUR, false&#41;;
+     * new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;fr&quot;, HourlyDuration.ONE_HOUR, false&#41;;
      * </pre>
      *
      * <!-- end com.azure.maps.weather.sync.get_air_quality_hourly_forecasts -->
@@ -1733,34 +1733,34 @@ public final class WeatherClient {
      * dominant pollutant, and a brief statement summarizing risk level and
      * suggested precautions.
      *
-     * @param position                The applicable query specified as a comma
-     *                                separated string composed by longitude
-     *                                followed by
-     *                                latitude e.g. "-122.125679,47.641268".
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case-insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default
-     *                                language is used.
-     *                                <p>
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
+     * @param position The applicable query specified as a comma
+     * separated string composed by longitude
+     * followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be
+     * returned. Should be one of supported IETF
+     * language
+     * tags, case-insensitive. When data in specified
+     * language is not available for a specific
+     * field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param duration Specifies for how many hours from now we would
+     * like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default
+     * value is 1 hour.
      * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * information about each pollutant. By default
+     * is True.
      * @return this object is returned from a successful Get Air Quality call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1778,7 +1778,7 @@ public final class WeatherClient {
      *
      * <pre>
      * client.getHourlyAirQualityForecast&#40;
-     *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;fr&quot;, HourlyDuration.ONE_HOUR, false&#41;;
+     * new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;fr&quot;, HourlyDuration.ONE_HOUR, false&#41;;
      * </pre>
      *
      * <!-- end com.azure.maps.weather.sync.get_air_quality_hourly_forecasts -->
@@ -1796,35 +1796,35 @@ public final class WeatherClient {
      * dominant pollutant, and a brief statement summarizing risk level and
      * suggested precautions.
      *
-     * @param position                The applicable query specified as a comma
-     *                                separated string composed by longitude
-     *                                followed by
-     *                                latitude e.g. "-122.125679,47.641268".
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case-insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default
-     *                                language is used.
-     *                                <p>
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
+     * @param position The applicable query specified as a comma
+     * separated string composed by longitude
+     * followed by
+     * latitude e.g. "-122.125679,47.641268".
+     * @param language Language in which search results should be
+     * returned. Should be one of supported IETF
+     * language
+     * tags, case-insensitive. When data in specified
+     * language is not available for a specific
+     * field, default
+     * language is used.
+     * <p>
+     * Please refer to [Supported
+     * Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     * for
+     * details.
+     * @param duration Specifies for how many hours from now we would
+     * like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default
+     * value is 1 hour.
      * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @return this object is returned from a successful Get Air Quality call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1859,26 +1859,26 @@ public final class WeatherClient {
      * historical data may be available as far back as the last 5 to 40+ years,
      * depending on the location.
      *
-     * @param position  The applicable query specified as a comma separated string
-     *                  composed by longitude followed by
-     *                  latitude e.g. "-122.125679,47.641268".
+     * @param position The applicable query specified as a comma separated string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The
-     *                  date range supported is 1 to 31
-     *                  calendar days, so be sure to specify a startDate and endDate
-     *                  that does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate   End date in ISO 8601 format, for example, 2019-10-28. The
-     *                  date range supported is 1 to 31 calendar
-     *                  days, so be sure to specify a startDate and endDate that
-     *                  does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit      Specifies to return the data in either metric units or
-     *                  imperial units. Default value is metric.
+     * date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate
+     * that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The
+     * date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that
+     * does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1911,27 +1911,27 @@ public final class WeatherClient {
      * historical data may be available as far back as the last 5 to 40+ years,
      * depending on the location.
      *
-     * @param position  The applicable query specified as a comma separated string
-     *                  composed by longitude followed by
-     *                  latitude e.g. "-122.125679,47.641268".
+     * @param position The applicable query specified as a comma separated string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The
-     *                  date range supported is 1 to 31
-     *                  calendar days, so be sure to specify a startDate and endDate
-     *                  that does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate   End date in ISO 8601 format, for example, 2019-10-28. The
-     *                  date range supported is 1 to 31 calendar
-     *                  days, so be sure to specify a startDate and endDate that
-     *                  does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit      Specifies to return the data in either metric units or
-     *                  imperial units. Default value is metric.
-     * @param context   The context to associate with this operation.
+     * date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate
+     * that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The
+     * date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that
+     * does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1963,26 +1963,26 @@ public final class WeatherClient {
      * Generally, historical data may be available as far back as the last 5 to 40+
      * years, depending on the location.
      *
-     * @param position  The applicable query specified as a comma separated string
-     *                  composed by longitude followed by
-     *                  latitude e.g. "-122.125679,47.641268".
+     * @param position The applicable query specified as a comma separated string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The
-     *                  date range supported is 1 to 31
-     *                  calendar days, so be sure to specify a startDate and endDate
-     *                  that does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate   End date in ISO 8601 format, for example, 2019-10-28. The
-     *                  date range supported is 1 to 31 calendar
-     *                  days, so be sure to specify a startDate and endDate that
-     *                  does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit      Specifies to return the data in either metric units or
-     *                  imperial units. Default value is metric.
+     * date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate
+     * that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The
+     * date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that
+     * does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2013,27 +2013,27 @@ public final class WeatherClient {
      * Generally, historical data may be available as far back as the last 5 to 40+
      * years, depending on the location.
      *
-     * @param position  The applicable query specified as a comma separated string
-     *                  composed by longitude followed by
-     *                  latitude e.g. "-122.125679,47.641268".
+     * @param position The applicable query specified as a comma separated string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The
-     *                  date range supported is 1 to 31
-     *                  calendar days, so be sure to specify a startDate and endDate
-     *                  that does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate   End date in ISO 8601 format, for example, 2019-10-28. The
-     *                  date range supported is 1 to 31 calendar
-     *                  days, so be sure to specify a startDate and endDate that
-     *                  does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit      Specifies to return the data in either metric units or
-     *                  imperial units. Default value is metric.
-     * @param context   The context to associate with this operation.
+     * date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate
+     * that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The
+     * date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that
+     * does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2070,26 +2070,26 @@ public final class WeatherClient {
      * back as the last 5 to 40+ years,
      * depending on the location.
      *
-     * @param position  The applicable query specified as a comma separated string
-     *                  composed by longitude followed by
-     *                  latitude e.g. "-122.125679,47.641268".
+     * @param position The applicable query specified as a comma separated string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The
-     *                  date range supported is 1 to 31
-     *                  calendar days, so be sure to specify a startDate and endDate
-     *                  that does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate   End date in ISO 8601 format, for example, 2019-10-28. The
-     *                  date range supported is 1 to 31 calendar
-     *                  days, so be sure to specify a startDate and endDate that
-     *                  does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit      Specifies to return the data in either metric units or
-     *                  imperial units. Default value is metric.
+     * date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate
+     * that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The
+     * date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that
+     * does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2125,27 +2125,27 @@ public final class WeatherClient {
      * back as the last 5 to 40+ years,
      * depending on the location.
      *
-     * @param position  The applicable query specified as a comma separated string
-     *                  composed by longitude followed by
-     *                  latitude e.g. "-122.125679,47.641268".
+     * @param position The applicable query specified as a comma separated string
+     * composed by longitude followed by
+     * latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The
-     *                  date range supported is 1 to 31
-     *                  calendar days, so be sure to specify a startDate and endDate
-     *                  that does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate   End date in ISO 8601 format, for example, 2019-10-28. The
-     *                  date range supported is 1 to 31 calendar
-     *                  days, so be sure to specify a startDate and endDate that
-     *                  does not exceed a maximum of 31 days (i.e.:
-     *                  startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit      Specifies to return the data in either metric units or
-     *                  imperial units. Default value is metric.
-     * @param context   The context to associate with this operation.
+     * date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate
+     * that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The
+     * date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that
+     * does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or
+     * imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     * request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
