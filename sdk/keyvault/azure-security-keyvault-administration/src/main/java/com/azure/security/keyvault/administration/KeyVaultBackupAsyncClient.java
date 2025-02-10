@@ -29,7 +29,6 @@ import com.azure.security.keyvault.administration.implementation.models.Selectiv
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
@@ -46,7 +45,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
-import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.toKeyVaultAdministrationError;
 
 /**
  * The {@link KeyVaultBackupAsyncClient} provides asynchronous methods to perform full a backup and restore of a key
