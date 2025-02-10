@@ -610,7 +610,8 @@ public class HttpInstrumentationPolicyTests {
             .hasHistogramSatisfying(h -> h.isCumulative().hasPointsSatisfying(point -> {
                 point.hasAttributes(attributesBuilder.build())
                     .hasCount(1)
-                    .hasBucketBoundaries(0, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1_000, 2_500, 5_000, 7_500, 10_000);
+                    .hasBucketBoundaries(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d,
+                        7.5d, 10d);
 
                 if (spanContext.isSampled()) {
                     point.hasExemplarsSatisfying(

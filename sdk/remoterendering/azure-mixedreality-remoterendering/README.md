@@ -403,4 +403,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [troubleshoot]: https://learn.microsoft.com/azure/remote-rendering/resources/troubleshoot
 [api_reference_doc]: https://learn.microsoft.com/rest/api/mixedreality/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmixedreality%2Fazure-mixedreality-remoterendering%2FREADME.png)
+
