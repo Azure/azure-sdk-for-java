@@ -119,9 +119,8 @@ class ReactorReceiverTest {
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
-        reactorReceiver
-            = new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(receiverHandler),
-                tokenManager, reactorDispatcher, retryOptions, AmqpMetricsProvider.noop());
+        reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, receiverHandler, tokenManager,
+            reactorDispatcher, retryOptions, AmqpMetricsProvider.noop());
     }
 
     @AfterEach
@@ -955,8 +954,7 @@ class ReactorReceiverTest {
         final TestMeter meter = new TestMeter();
         final AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, "namespace", "name/and/partition");
         final ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition",
-            receiver, new ReceiveLinkHandlerWrapper(receiverHandler), tokenManager, reactorDispatcher, retryOptions,
-            metricsProvider);
+            receiver, receiverHandler, tokenManager, reactorDispatcher, retryOptions, metricsProvider);
 
         TestGauge sequenceNumberMetric = meter.getGauges().get("messaging.az.amqp.prefetch.sequence_number");
         TestGauge.Subscription subscription = sequenceNumberMetric.getSubscriptions().get(0);
@@ -991,8 +989,7 @@ class ReactorReceiverTest {
         final TestMeter meter = new TestMeter();
         final AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, "namespace", "name/and/partition");
         final ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition",
-            receiver, new ReceiveLinkHandlerWrapper(receiverHandler), tokenManager, reactorDispatcher, retryOptions,
-            metricsProvider);
+            receiver, receiverHandler, tokenManager, reactorDispatcher, retryOptions, metricsProvider);
         final int credits = 15;
         final Supplier<Long> creditSupplier = () -> (long) credits;
         doAnswer(invocation -> {

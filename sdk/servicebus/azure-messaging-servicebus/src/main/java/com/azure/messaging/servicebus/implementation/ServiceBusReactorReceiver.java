@@ -10,15 +10,14 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorReceiver;
-import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.ReceiversPumpingScheduler;
 import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
@@ -45,11 +44,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<OffsetDateTime> sessionLockedUntil;
     private final Mono<SessionProperties> sessionProperties;
 
-    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
-    // is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
-    // "ReceiveLinkHandler".
     public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
-        ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions) {
         super(connection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
             new AmqpMetricsProvider(null, connection.getFullyQualifiedNamespace(), entityPath));
@@ -58,7 +54,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         loggingContext.put(LINK_NAME_KEY, handler.getLinkName());
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
         this.logger = new ClientLogger(ServiceBusReactorReceiver.class, loggingContext);
-        handler.setLogger(this.logger);
 
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE).next().flatMap(state -> {
             @SuppressWarnings("unchecked")
@@ -152,15 +147,5 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
         return super.closeAsync(message, errorCondition);
-    }
-
-    @Override
-    protected Message decodeDelivery(Delivery delivery) {
-        throw logger.logExceptionAsError(new IllegalStateException("decodeDelivery should not be called in V2 route."));
-    }
-
-    @Override
-    protected void onHandlerClose() {
-        throw logger.logExceptionAsError(new IllegalStateException("onHandlerClose should not be called in V2 route."));
     }
 }
