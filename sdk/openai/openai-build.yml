@@ -1,5 +1,10 @@
 steps:
   - pwsh: |
+      Write-Host "env:PIPELINE_WORKSPACE/.m2"  
+      $env:PIPELINE_WORKSPACE/.m2  
+      Write-Host $env:PIPELINE_WORKSPACE/.m2
+        
+        
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
       $branchName = "release-please--branches--main--changes--next"
