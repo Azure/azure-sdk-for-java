@@ -1,7 +1,7 @@
 steps:
   - pwsh: |
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2 -Recurse"
-      ls $env:PIPELINE_WORKSPACE/.m2 -Recurse
+      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/"
+      ls $env:PIPELINE_WORKSPACE/.m2/repository/com
         
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
@@ -53,8 +53,8 @@ steps:
       Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
         
         
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2 -Recurse"
-      ls $env:PIPELINE_WORKSPACE/.m2/ -Recurse
+      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java"
+      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java
         
       Write-Host "Running the version update script"
       cd ../../1/s/
