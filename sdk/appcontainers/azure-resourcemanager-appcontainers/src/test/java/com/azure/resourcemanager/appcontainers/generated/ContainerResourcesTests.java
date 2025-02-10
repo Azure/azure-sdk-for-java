@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerResources model =
-            BinaryData
-                .fromString(
-                    "{\"cpu\":4.886296094520515,\"memory\":\"muwlauwzizxbm\",\"ephemeralStorage\":\"cjefuzmu\"}")
+        ContainerResources model
+            = BinaryData.fromString("{\"cpu\":20.95195509760658,\"memory\":\"wep\",\"ephemeralStorage\":\"pc\"}")
                 .toObject(ContainerResources.class);
-        Assertions.assertEquals(4.886296094520515D, model.cpu());
-        Assertions.assertEquals("muwlauwzizxbm", model.memory());
+        Assertions.assertEquals(20.95195509760658D, model.cpu());
+        Assertions.assertEquals("wep", model.memory());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerResources model = new ContainerResources().withCpu(4.886296094520515D).withMemory("muwlauwzizxbm");
+        ContainerResources model = new ContainerResources().withCpu(20.95195509760658D).withMemory("wep");
         model = BinaryData.fromObject(model).toObject(ContainerResources.class);
-        Assertions.assertEquals(4.886296094520515D, model.cpu());
-        Assertions.assertEquals("muwlauwzizxbm", model.memory());
+        Assertions.assertEquals(20.95195509760658D, model.cpu());
+        Assertions.assertEquals("wep", model.memory());
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
+import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import org.reactivestreams.Subscriber;
@@ -14,6 +15,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.nio.ByteBuffer;
 
@@ -25,8 +27,9 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private static final ClientLogger LOGGER = new ClientLogger(VertxRequestWriteSubscriber.class);
 
     private final HttpClientRequest request;
-    private final MonoSink<HttpResponse> emitter;
+    private final Promise<HttpResponse> promise;
     private final ProgressReporter progressReporter;
+    private final ContextView contextView;
 
     // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
     private volatile Subscription subscription;
@@ -39,15 +42,16 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      * {@link HttpClientRequest Vert.x request}.
      *
      * @param request The {@link HttpClientRequest Vert.x request} to write to.
-     * @param emitter The {@link MonoSink} to emit the {@link HttpResponse response} to.
+     * @param promise The {@link MonoSink} to emit the {@link HttpResponse response} to.
      * @param progressReporter The {@link ProgressReporter} to report progress to.
+     * @param contextView The {@link ContextView} to use when dropping errors.
      */
-    public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
-        ProgressReporter progressReporter) {
-        this.request = request.exceptionHandler(this::onError)
-            .drainHandler(ignored -> requestNext());
-        this.emitter = emitter;
+    public VertxRequestWriteSubscriber(HttpClientRequest request, Promise<HttpResponse> promise,
+        ProgressReporter progressReporter, ContextView contextView) {
+        this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
+        this.promise = promise;
         this.progressReporter = progressReporter;
+        this.contextView = contextView;
     }
 
     @Override
@@ -101,6 +105,10 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
                 }
             } else {
                 this.state = State.ERROR;
+                if (error != null) {
+                    // Don't lose any reactive error that may have occurred while writing.
+                    result.cause().addSuppressed(error);
+                }
                 resetRequest(result.cause());
             }
         });
@@ -121,20 +129,54 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         State state = this.state;
         // code 2 and greater are completion states which means the error should be dropped as we already completed.
         if (state.code >= 2) {
-            Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
+            Operators.onErrorDropped(throwable, Context.of(contextView));
+
+            // Also, even though Reactor may have an operator for the dropped error or will be logged by Operators
+            // itself, we should log as well as at least this will help associate the error with this class.
+            LOGGER.atInfo()
+                .log(() -> "VertxRequestWriteSubscriber dropped an exception as it already reached a "
+                    + "completion state.", throwable);
         }
 
         this.state = State.ERROR;
         if (state != State.WRITING) {
             resetRequest(throwable);
         } else {
-            error = throwable;
+            if (error != null) {
+                // Already saw another error while writing, add this as a suppressed exception.
+                error.addSuppressed(throwable);
+            } else {
+                // First error seen while writing, maintain it for future use.
+                error = throwable;
+            }
         }
     }
 
     private void resetRequest(Throwable throwable) {
         subscription.cancel();
-        emitter.error(LOGGER.logThrowableAsError(throwable));
+        if (!promise.tryFail(throwable)) {
+            // Seems the promise has already completed in some form.
+            // Attempt to associate this error with the existing failure.
+            Throwable cause = promise.future().cause();
+            if (cause != null) {
+                cause.addSuppressed(throwable);
+
+                // Also, even though the exception was added as a suppressed exception to the failed Promise, we should
+                // log as well as at least this will help associate the error with this class.
+                LOGGER.atInfo()
+                    .log(() -> "VertxRequestWriteSubscriber added an exception as a suppressed exception "
+                        + "as the Promise already failed.", throwable);
+            } else {
+                // Turns out the future was completed as successfully externally, drop the error.
+                Operators.onErrorDropped(LOGGER.logThrowableAsError(throwable), Context.of(contextView));
+
+                // Also, even though Reactor may have an operator for the dropped error or will be logged by Operators
+                // itself, we should log as well as at least this will help associate the error with this class.
+                LOGGER.atInfo()
+                    .log(() -> "VertxRequestWriteSubscriber dropped an exception as the Promise already "
+                        + "completed successfully.", throwable);
+            }
+        }
         request.reset(0, throwable);
     }
 
@@ -155,18 +197,11 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     private void endRequest() {
-        request.end(result -> {
-            if (result.failed()) {
-                emitter.error(result.cause());
-            }
-        });
+        request.end().onFailure(promise::fail);
     }
 
     private enum State {
-        UNINITIALIZED(0),
-        WRITING(1),
-        COMPLETE(2),
-        ERROR(3);
+        UNINITIALIZED(0), WRITING(1), COMPLETE(2), ERROR(3);
 
         private final int code;
 

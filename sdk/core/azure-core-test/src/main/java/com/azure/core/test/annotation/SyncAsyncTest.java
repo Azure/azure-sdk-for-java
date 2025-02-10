@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
  * The {@link com.azure.core.test.SyncAsyncExtension#execute(Callable, Callable)} should be used in the test
  * to branch out.
  */
-@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @TestTemplate
 @ExtendWith(SyncAsyncExtension.class)

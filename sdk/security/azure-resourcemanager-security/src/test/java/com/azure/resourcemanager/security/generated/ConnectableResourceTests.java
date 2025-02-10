@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.ConnectableResource;
 public final class ConnectableResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectableResource model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"lsismjqfrd\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"quhiosrsjuivf\",\"tcpPorts\":\"is\",\"udpPorts\":\"rnxzh\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"rxzbujr\",\"tcpPorts\":\"hqvwrevkhgnlnzon\",\"udpPorts\":\"rpiqywncv\"},{\"connectedResourceId\":\"szcofizeht\",\"tcpPorts\":\"gbjkvreljeamur\",\"udpPorts\":\"mlovuanashcxl\"},{\"connectedResourceId\":\"jerbdkelvidizozs\",\"tcpPorts\":\"ccxjm\",\"udpPorts\":\"fdgnwncypuuwwlt\"},{\"connectedResourceId\":\"qjctzenkeif\",\"tcpPorts\":\"hmkdasvfl\",\"udpPorts\":\"bxcudchx\"}]}")
-                .toObject(ConnectableResource.class);
+        ConnectableResource model = BinaryData.fromString(
+            "{\"id\":\"vdmovsmzlxwabm\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"kif\",\"tcpPorts\":\"tpuqujmq\",\"udpPorts\":\"kfbtndoaongbjc\"},{\"connectedResourceId\":\"ujitcjedftww\",\"tcpPorts\":\"zkoj\",\"udpPorts\":\"c\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"qouicybxarzgsz\",\"tcpPorts\":\"oxciqopidoamcio\",\"udpPorts\":\"khazxkhnzbonlwn\"},{\"connectedResourceId\":\"egokdwbwhkszzcmr\",\"tcpPorts\":\"xztvbtqgsfraoyzk\",\"udpPorts\":\"wtl\"},{\"connectedResourceId\":\"guxawqaldsyuuxi\",\"tcpPorts\":\"rqf\",\"udpPorts\":\"wyznkbyku\"}]}")
+            .toObject(ConnectableResource.class);
     }
 
     @org.junit.jupiter.api.Test

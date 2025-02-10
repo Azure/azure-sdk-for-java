@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
 public final class TopicsRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * Topics_RegenerateKey.json
      */
     /**
@@ -21,7 +21,8 @@ public final class TopicsRegenerateKeySamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicsRegenerateKey(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topics().regenerateKey("examplerg", "exampletopic2",
-            new TopicRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
+        manager.topics()
+            .regenerateKey("examplerg", "exampletopic2",
+                new TopicRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 }

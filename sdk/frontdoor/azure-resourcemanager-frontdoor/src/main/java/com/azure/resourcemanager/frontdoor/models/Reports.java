@@ -8,36 +8,33 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.time.OffsetDateTime;
 
-/** Resource collection API of Reports. */
+/**
+ * Resource collection API of Reports.
+ */
 public interface Reports {
     /**
      * Gets a Latency Scorecard for a given Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
      * @param aggregationInterval The aggregation interval of the Latency Scorecard.
      * @param endDateTimeUtc The end DateTime of the Latency Scorecard in UTC.
      * @param country The country associated with the Latency Scorecard. Values are country ISO codes as specified here-
-     *     https://www.iso.org/iso-3166-country-codes.html.
+     * https://www.iso.org/iso-3166-country-codes.html.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Latency Scorecard for a given Experiment along with {@link Response}.
      */
-    Response<LatencyScorecard> getLatencyScorecardsWithResponse(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        LatencyScorecardAggregationInterval aggregationInterval,
-        String endDateTimeUtc,
-        String country,
-        Context context);
+    Response<LatencyScorecard> getLatencyScorecardsWithResponse(String resourceGroupName, String profileName,
+        String experimentName, LatencyScorecardAggregationInterval aggregationInterval, String endDateTimeUtc,
+        String country, Context context);
 
     /**
      * Gets a Latency Scorecard for a given Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -47,15 +44,12 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Latency Scorecard for a given Experiment.
      */
-    LatencyScorecard getLatencyScorecards(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
+    LatencyScorecard getLatencyScorecards(String resourceGroupName, String profileName, String experimentName,
         LatencyScorecardAggregationInterval aggregationInterval);
 
     /**
      * Gets a Timeseries for a given Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -65,28 +59,21 @@ public interface Reports {
      * @param timeseriesType The type of Timeseries.
      * @param endpointParam The specific endpoint.
      * @param country The country associated with the Timeseries. Values are country ISO codes as specified here-
-     *     https://www.iso.org/iso-3166-country-codes.html.
+     * https://www.iso.org/iso-3166-country-codes.html.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Timeseries for a given Experiment along with {@link Response}.
      */
-    Response<Timeseries> getTimeseriesWithResponse(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        OffsetDateTime startDateTimeUtc,
-        OffsetDateTime endDateTimeUtc,
-        TimeseriesAggregationInterval aggregationInterval,
-        TimeseriesType timeseriesType,
-        String endpointParam,
-        String country,
-        Context context);
+    Response<Timeseries> getTimeseriesWithResponse(String resourceGroupName, String profileName, String experimentName,
+        OffsetDateTime startDateTimeUtc, OffsetDateTime endDateTimeUtc,
+        TimeseriesAggregationInterval aggregationInterval, TimeseriesType timeseriesType, String endpointParam,
+        String country, Context context);
 
     /**
      * Gets a Timeseries for a given Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -99,12 +86,7 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Timeseries for a given Experiment.
      */
-    Timeseries getTimeseries(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        OffsetDateTime startDateTimeUtc,
-        OffsetDateTime endDateTimeUtc,
-        TimeseriesAggregationInterval aggregationInterval,
-        TimeseriesType timeseriesType);
+    Timeseries getTimeseries(String resourceGroupName, String profileName, String experimentName,
+        OffsetDateTime startDateTimeUtc, OffsetDateTime endDateTimeUtc,
+        TimeseriesAggregationInterval aggregationInterval, TimeseriesType timeseriesType);
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -40,7 +39,6 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
      * @param name a name to look for.
      * @return the corresponding LinuxPatchAssessmentMode.
      */
-    @JsonCreator
     public static LinuxPatchAssessmentMode fromString(String name) {
         return fromString(name, LinuxPatchAssessmentMode.class);
     }

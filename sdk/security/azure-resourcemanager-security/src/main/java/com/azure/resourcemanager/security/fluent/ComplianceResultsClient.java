@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.ComplianceResultInner;
 
-/** An instance of this class provides access to all the operations defined in ComplianceResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ComplianceResultsClient.
+ */
 public interface ComplianceResultsClient {
     /**
      * Security compliance results in the subscription.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,9 +30,9 @@ public interface ComplianceResultsClient {
 
     /**
      * Security compliance results in the subscription.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface ComplianceResultsClient {
 
     /**
      * Security Compliance Result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param complianceResultName name of the desired assessment compliance result.
      * @param context The context to associate with this operation.
@@ -56,7 +58,7 @@ public interface ComplianceResultsClient {
 
     /**
      * Security Compliance Result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param complianceResultName name of the desired assessment compliance result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

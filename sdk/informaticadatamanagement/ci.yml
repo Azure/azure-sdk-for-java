@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/informaticadatamanagement/ci.yml
+      - sdk/informaticadatamanagement/azure-resourcemanager-informaticadatamanagement/
+    exclude:
+      - sdk/informaticadatamanagement/pom.xml
+      - sdk/informaticadatamanagement/azure-resourcemanager-informaticadatamanagement/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/informaticadatamanagement/ci.yml
+      - sdk/informaticadatamanagement/azure-resourcemanager-informaticadatamanagement/
+    exclude:
+      - sdk/informaticadatamanagement/pom.xml
+      - sdk/informaticadatamanagement/azure-resourcemanager-informaticadatamanagement/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerinformaticadatamanagement
+    displayName: azure-resourcemanager-informaticadatamanagement
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: informaticadatamanagement
+    Artifacts:
+      - name: azure-resourcemanager-informaticadatamanagement
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerinformaticadatamanagement
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerinformaticadatamanagement }}

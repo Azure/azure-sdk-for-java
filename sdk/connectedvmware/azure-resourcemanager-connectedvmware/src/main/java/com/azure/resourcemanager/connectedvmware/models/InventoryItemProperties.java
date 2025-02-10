@@ -5,60 +5,60 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of an Inventory Item. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "inventoryType",
-    defaultImpl = InventoryItemProperties.class)
-@JsonTypeName("InventoryItemProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ResourcePool", value = ResourcePoolInventoryItem.class),
-    @JsonSubTypes.Type(name = "VirtualMachine", value = VirtualMachineInventoryItem.class),
-    @JsonSubTypes.Type(name = "VirtualMachineTemplate", value = VirtualMachineTemplateInventoryItem.class),
-    @JsonSubTypes.Type(name = "VirtualNetwork", value = VirtualNetworkInventoryItem.class),
-    @JsonSubTypes.Type(name = "Cluster", value = ClusterInventoryItem.class),
-    @JsonSubTypes.Type(name = "Datastore", value = DatastoreInventoryItem.class),
-    @JsonSubTypes.Type(name = "Host", value = HostInventoryItem.class)
-})
+/**
+ * Describes the properties of an Inventory Item.
+ */
 @Fluent
-public class InventoryItemProperties {
+public class InventoryItemProperties implements JsonSerializable<InventoryItemProperties> {
+    /*
+     * They inventory type.
+     */
+    private InventoryType inventoryType = InventoryType.fromString("InventoryItemProperties");
+
     /*
      * Gets or sets the tracked resource id corresponding to the inventory resource.
      */
-    @JsonProperty(value = "managedResourceId")
     private String managedResourceId;
 
     /*
      * Gets or sets the MoRef (Managed Object Reference) ID for the inventory item.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the inventory item.
      */
-    @JsonProperty(value = "moName")
     private String moName;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of InventoryItemProperties class. */
+    /**
+     * Creates an instance of InventoryItemProperties class.
+     */
     public InventoryItemProperties() {
     }
 
     /**
+     * Get the inventoryType property: They inventory type.
+     * 
+     * @return the inventoryType value.
+     */
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
      * Get the managedResourceId property: Gets or sets the tracked resource id corresponding to the inventory resource.
-     *
+     * 
      * @return the managedResourceId value.
      */
     public String managedResourceId() {
@@ -67,7 +67,7 @@ public class InventoryItemProperties {
 
     /**
      * Set the managedResourceId property: Gets or sets the tracked resource id corresponding to the inventory resource.
-     *
+     * 
      * @param managedResourceId the managedResourceId value to set.
      * @return the InventoryItemProperties object itself.
      */
@@ -78,7 +78,7 @@ public class InventoryItemProperties {
 
     /**
      * Get the moRefId property: Gets or sets the MoRef (Managed Object Reference) ID for the inventory item.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -87,7 +87,7 @@ public class InventoryItemProperties {
 
     /**
      * Set the moRefId property: Gets or sets the MoRef (Managed Object Reference) ID for the inventory item.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the InventoryItemProperties object itself.
      */
@@ -98,7 +98,7 @@ public class InventoryItemProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the inventory item.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -107,7 +107,7 @@ public class InventoryItemProperties {
 
     /**
      * Set the moName property: Gets or sets the vCenter Managed Object name for the inventory item.
-     *
+     * 
      * @param moName the moName value to set.
      * @return the InventoryItemProperties object itself.
      */
@@ -118,7 +118,7 @@ public class InventoryItemProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -126,10 +126,106 @@ public class InventoryItemProperties {
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the InventoryItemProperties object itself.
+     */
+    InventoryItemProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        jsonWriter.writeStringField("managedResourceId", this.managedResourceId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("moName", this.moName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InventoryItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InventoryItemProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InventoryItemProperties.
+     */
+    public static InventoryItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("inventoryType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ResourcePool".equals(discriminatorValue)) {
+                    return ResourcePoolInventoryItem.fromJson(readerToUse.reset());
+                } else if ("VirtualMachine".equals(discriminatorValue)) {
+                    return VirtualMachineInventoryItem.fromJson(readerToUse.reset());
+                } else if ("VirtualMachineTemplate".equals(discriminatorValue)) {
+                    return VirtualMachineTemplateInventoryItem.fromJson(readerToUse.reset());
+                } else if ("VirtualNetwork".equals(discriminatorValue)) {
+                    return VirtualNetworkInventoryItem.fromJson(readerToUse.reset());
+                } else if ("Cluster".equals(discriminatorValue)) {
+                    return ClusterInventoryItem.fromJson(readerToUse.reset());
+                } else if ("Datastore".equals(discriminatorValue)) {
+                    return DatastoreInventoryItem.fromJson(readerToUse.reset());
+                } else if ("Host".equals(discriminatorValue)) {
+                    return HostInventoryItem.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static InventoryItemProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InventoryItemProperties deserializedInventoryItemProperties = new InventoryItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inventoryType".equals(fieldName)) {
+                    deserializedInventoryItemProperties.inventoryType = InventoryType.fromString(reader.getString());
+                } else if ("managedResourceId".equals(fieldName)) {
+                    deserializedInventoryItemProperties.managedResourceId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedInventoryItemProperties.moRefId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedInventoryItemProperties.moName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInventoryItemProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInventoryItemProperties;
+        });
     }
 }

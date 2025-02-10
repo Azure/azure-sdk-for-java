@@ -6,18 +6,20 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunResourceIdInner;
 
-/** An immutable client-side representation of JobRunResourceId. */
+/**
+ * An immutable client-side representation of JobRunResourceId.
+ */
 public interface JobRunResourceId {
     /**
      * Gets the jobRunResourceId property: Fully qualified resource id of the Job Run.
-     *
+     * 
      * @return the jobRunResourceId value.
      */
     String jobRunResourceId();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagemover.fluent.models.JobRunResourceIdInner object.
-     *
+     * 
      * @return the inner object.
      */
     JobRunResourceIdInner innerModel();

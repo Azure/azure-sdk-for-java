@@ -6,55 +6,61 @@ package com.azure.analytics.synapse.managedprivateendpoints;
 
 import com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl;
 import com.azure.analytics.synapse.managedprivateendpoints.models.ManagedPrivateEndpoint;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ManagedPrivateEndpointsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ManagedPrivateEndpointsClient type.
+ */
 @ServiceClient(builder = ManagedPrivateEndpointsClientBuilder.class, isAsync = true)
 public final class ManagedPrivateEndpointsAsyncClient {
+    @Generated
     private final ManagedPrivateEndpointsImpl serviceClient;
 
     /**
-     * Initializes an instance of ManagedPrivateEndpoints client.
-     *
+     * Initializes an instance of ManagedPrivateEndpointsAsyncClient class.
+     * 
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ManagedPrivateEndpointsAsyncClient(ManagedPrivateEndpointsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Get Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Private Endpoints.
+     * @return managed Private Endpoints along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedPrivateEndpoint>> getWithResponse(
-            String managedVirtualNetworkName, String managedPrivateEndpointName) {
+    public Mono<Response<ManagedPrivateEndpoint>> getWithResponse(String managedVirtualNetworkName,
+        String managedPrivateEndpointName) {
         return this.serviceClient.getWithResponseAsync(managedVirtualNetworkName, managedPrivateEndpointName);
     }
 
     /**
      * Get Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Private Endpoints.
+     * @return managed Private Endpoints on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedPrivateEndpoint> get(String managedVirtualNetworkName, String managedPrivateEndpointName) {
         return this.serviceClient.getAsync(managedVirtualNetworkName, managedPrivateEndpointName);
@@ -62,70 +68,70 @@ public final class ManagedPrivateEndpointsAsyncClient {
 
     /**
      * Create Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @param managedPrivateEndpoint Managed private endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed private endpoint.
+     * @return managed private endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedPrivateEndpoint>> createWithResponse(
-            String managedVirtualNetworkName,
-            String managedPrivateEndpointName,
-            ManagedPrivateEndpoint managedPrivateEndpoint) {
-        return this.serviceClient.createWithResponseAsync(
-                managedVirtualNetworkName, managedPrivateEndpointName, managedPrivateEndpoint);
+    public Mono<Response<ManagedPrivateEndpoint>> createWithResponse(String managedVirtualNetworkName,
+        String managedPrivateEndpointName, ManagedPrivateEndpoint managedPrivateEndpoint) {
+        return this.serviceClient.createWithResponseAsync(managedVirtualNetworkName, managedPrivateEndpointName,
+            managedPrivateEndpoint);
     }
 
     /**
      * Create Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @param managedPrivateEndpoint Managed private endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed private endpoint.
+     * @return managed private endpoint on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedPrivateEndpoint> create(
-            String managedVirtualNetworkName,
-            String managedPrivateEndpointName,
-            ManagedPrivateEndpoint managedPrivateEndpoint) {
-        return this.serviceClient.createAsync(
-                managedVirtualNetworkName, managedPrivateEndpointName, managedPrivateEndpoint);
+    public Mono<ManagedPrivateEndpoint> create(String managedVirtualNetworkName, String managedPrivateEndpointName,
+        ManagedPrivateEndpoint managedPrivateEndpoint) {
+        return this.serviceClient.createAsync(managedVirtualNetworkName, managedPrivateEndpointName,
+            managedPrivateEndpoint);
     }
 
     /**
      * Delete Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String managedVirtualNetworkName, String managedPrivateEndpointName) {
+    public Mono<Response<Void>> deleteWithResponse(String managedVirtualNetworkName,
+        String managedPrivateEndpointName) {
         return this.serviceClient.deleteWithResponseAsync(managedVirtualNetworkName, managedPrivateEndpointName);
     }
 
     /**
      * Delete Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete(String managedVirtualNetworkName, String managedPrivateEndpointName) {
         return this.serviceClient.deleteAsync(managedVirtualNetworkName, managedPrivateEndpointName);
@@ -133,43 +139,16 @@ public final class ManagedPrivateEndpointsAsyncClient {
 
     /**
      * List Managed Private Endpoints.
-     *
+     * 
      * @param managedVirtualNetworkName Managed virtual network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoints.
+     * @return a list of managed private endpoints as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ManagedPrivateEndpoint>> listSinglePage(String managedVirtualNetworkName) {
-        return this.serviceClient.listSinglePageAsync(managedVirtualNetworkName);
-    }
-
-    /**
-     * List Managed Private Endpoints.
-     *
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoints.
-     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedPrivateEndpoint> list(String managedVirtualNetworkName) {
         return this.serviceClient.listAsync(managedVirtualNetworkName);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ManagedPrivateEndpoint>> listNextSinglePage(String nextLink) {
-        return this.serviceClient.listNextSinglePageAsync(nextLink);
     }
 }

@@ -14,30 +14,32 @@ public final class FhirServiceAcrConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FhirServiceAcrConfiguration model = BinaryData.fromString(
-            "{\"loginServers\":[\"slpmutwuo\",\"grpkhjwniyqs\",\"uicpd\"],\"ociArtifacts\":[{\"loginServer\":\"zl\",\"imageName\":\"bmpaxmodfvu\",\"digest\":\"yw\"},{\"loginServer\":\"pfvmwyhrfou\",\"imageName\":\"taakc\",\"digest\":\"iyzvqtmnub\"},{\"loginServer\":\"kpzksmondjmq\",\"imageName\":\"vypomgkopkwho\",\"digest\":\"pajqgxysm\"},{\"loginServer\":\"mbqfqvmk\",\"imageName\":\"oz\",\"digest\":\"vhelxprglyatdd\"}]}")
+            "{\"loginServers\":[\"tiiswacffg\",\"k\",\"zewk\"],\"ociArtifacts\":[{\"loginServer\":\"crailvpn\",\"imageName\":\"fuflrwdmhdlx\",\"digest\":\"rxsagafcnihgwqa\"},{\"loginServer\":\"edgfbcvkcvq\",\"imageName\":\"keqdcvdrhvoods\",\"digest\":\"bobzdopcjwvnhd\"},{\"loginServer\":\"wmgxcxrsl\",\"imageName\":\"utwu\",\"digest\":\"grpkhjwniyqs\"}]}")
             .toObject(FhirServiceAcrConfiguration.class);
-        Assertions.assertEquals("slpmutwuo", model.loginServers().get(0));
-        Assertions.assertEquals("zl", model.ociArtifacts().get(0).loginServer());
-        Assertions.assertEquals("bmpaxmodfvu", model.ociArtifacts().get(0).imageName());
-        Assertions.assertEquals("yw", model.ociArtifacts().get(0).digest());
+        Assertions.assertEquals("tiiswacffg", model.loginServers().get(0));
+        Assertions.assertEquals("crailvpn", model.ociArtifacts().get(0).loginServer());
+        Assertions.assertEquals("fuflrwdmhdlx", model.ociArtifacts().get(0).imageName());
+        Assertions.assertEquals("rxsagafcnihgwqa", model.ociArtifacts().get(0).digest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FhirServiceAcrConfiguration model
-            = new FhirServiceAcrConfiguration().withLoginServers(Arrays.asList("slpmutwuo", "grpkhjwniyqs", "uicpd"))
+            = new FhirServiceAcrConfiguration().withLoginServers(Arrays.asList("tiiswacffg", "k", "zewk"))
                 .withOciArtifacts(Arrays.asList(
-                    new ServiceOciArtifactEntry().withLoginServer("zl").withImageName("bmpaxmodfvu").withDigest("yw"),
-                    new ServiceOciArtifactEntry().withLoginServer("pfvmwyhrfou").withImageName("taakc")
-                        .withDigest("iyzvqtmnub"),
-                    new ServiceOciArtifactEntry().withLoginServer("kpzksmondjmq").withImageName("vypomgkopkwho")
-                        .withDigest("pajqgxysm"),
-                    new ServiceOciArtifactEntry().withLoginServer("mbqfqvmk").withImageName("oz")
-                        .withDigest("vhelxprglyatdd")));
+                    new ServiceOciArtifactEntry().withLoginServer("crailvpn")
+                        .withImageName("fuflrwdmhdlx")
+                        .withDigest("rxsagafcnihgwqa"),
+                    new ServiceOciArtifactEntry().withLoginServer("edgfbcvkcvq")
+                        .withImageName("keqdcvdrhvoods")
+                        .withDigest("bobzdopcjwvnhd"),
+                    new ServiceOciArtifactEntry().withLoginServer("wmgxcxrsl")
+                        .withImageName("utwu")
+                        .withDigest("grpkhjwniyqs")));
         model = BinaryData.fromObject(model).toObject(FhirServiceAcrConfiguration.class);
-        Assertions.assertEquals("slpmutwuo", model.loginServers().get(0));
-        Assertions.assertEquals("zl", model.ociArtifacts().get(0).loginServer());
-        Assertions.assertEquals("bmpaxmodfvu", model.ociArtifacts().get(0).imageName());
-        Assertions.assertEquals("yw", model.ociArtifacts().get(0).digest());
+        Assertions.assertEquals("tiiswacffg", model.loginServers().get(0));
+        Assertions.assertEquals("crailvpn", model.ociArtifacts().get(0).loginServer());
+        Assertions.assertEquals("fuflrwdmhdlx", model.ociArtifacts().get(0).imageName());
+        Assertions.assertEquals("rxsagafcnihgwqa", model.ociArtifacts().get(0).digest());
     }
 }

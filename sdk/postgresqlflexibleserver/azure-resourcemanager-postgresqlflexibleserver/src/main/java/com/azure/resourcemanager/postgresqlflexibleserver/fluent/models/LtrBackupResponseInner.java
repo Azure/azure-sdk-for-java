@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ExecutionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Response for the LTR backup API call. */
+/**
+ * Response for the LTR backup API call.
+ */
 @Fluent
-public final class LtrBackupResponseInner {
+public final class LtrBackupResponseInner implements JsonSerializable<LtrBackupResponseInner> {
     /*
      * Long Term Retention Backup Operation Resource Properties
      */
-    @JsonProperty(value = "properties")
     private LtrBackupOperationResponseProperties innerProperties;
 
-    /** Creates an instance of LtrBackupResponseInner class. */
+    /**
+     * Creates an instance of LtrBackupResponseInner class.
+     */
     public LtrBackupResponseInner() {
     }
 
     /**
      * Get the innerProperties property: Long Term Retention Backup Operation Resource Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LtrBackupOperationResponseProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @return the datasourceSizeInBytes value.
      */
     public Long datasourceSizeInBytes() {
@@ -42,7 +49,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @param datasourceSizeInBytes the datasourceSizeInBytes value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -56,7 +63,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @return the dataTransferredInBytes value.
      */
     public Long dataTransferredInBytes() {
@@ -65,7 +72,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @param dataTransferredInBytes the dataTransferredInBytes value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -79,7 +86,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the backupName property: Name of Backup operation.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -88,7 +95,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the backupName property: Name of Backup operation.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -103,7 +110,7 @@ public final class LtrBackupResponseInner {
     /**
      * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @return the backupMetadata value.
      */
     public String backupMetadata() {
@@ -113,7 +120,7 @@ public final class LtrBackupResponseInner {
     /**
      * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -127,7 +134,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @return the status value.
      */
     public ExecutionStatus status() {
@@ -136,7 +143,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -150,7 +157,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -159,7 +166,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the startTime property: Start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -173,7 +180,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -182,7 +189,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the endTime property: End time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -196,7 +203,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -205,7 +212,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Set the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the LtrBackupResponseInner object itself.
      */
@@ -219,7 +226,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the errorCode property: The error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -228,7 +235,7 @@ public final class LtrBackupResponseInner {
 
     /**
      * Get the errorMessage property: The error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -237,12 +244,49 @@ public final class LtrBackupResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LtrBackupResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LtrBackupResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LtrBackupResponseInner.
+     */
+    public static LtrBackupResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LtrBackupResponseInner deserializedLtrBackupResponseInner = new LtrBackupResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedLtrBackupResponseInner.innerProperties
+                        = LtrBackupOperationResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLtrBackupResponseInner;
+        });
     }
 }

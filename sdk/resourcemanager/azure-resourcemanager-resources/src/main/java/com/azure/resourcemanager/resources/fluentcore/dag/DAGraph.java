@@ -52,6 +52,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
+     * Check whether the DAG has any parents.
+     *
      * @return true if this DAG is merged with one or more DAG and hence has parents
      */
     public boolean hasParents() {
@@ -59,6 +61,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
+     * Gets the root node of the DAG.
+     *
      * @return the root node of the DAG.
      */
     protected NodeT root() {
@@ -76,6 +80,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
+     * Check whether this DAG is the preparer responsible for preparing the DAG for traversal.
+     *
      * @return true if this dag is the preparer responsible for
      * preparing the DAG for traversal.
      */
@@ -217,8 +223,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
 
                 String dependentKey = node.key();
                 for (String dependencyKey : dagNode.dependencyKeys()) {
-                    nodeTable.get(dependencyKey)
-                            .addDependent(dependentKey);
+                    nodeTable.get(dependencyKey).addDependent(dependentKey);
                 }
             }
 

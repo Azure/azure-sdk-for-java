@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details about a user assigned identity.
  */
 @Fluent
-public class UserAssignedIdentity {
+public class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
      * The resource ID of the user assigned identity.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The client ID of the user assigned identity.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The object ID of the user assigned identity.
      */
-    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
@@ -38,7 +39,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the resourceId property: The resource ID of the user assigned identity.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -47,7 +48,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the resourceId property: The resource ID of the user assigned identity.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -58,7 +59,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the clientId property: The client ID of the user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -67,7 +68,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the clientId property: The client ID of the user assigned identity.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -78,7 +79,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the objectId property: The object ID of the user assigned identity.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -87,7 +88,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the objectId property: The object ID of the user assigned identity.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -98,9 +99,51 @@ public class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("objectId", this.objectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAssignedIdentity.
+     */
+    public static UserAssignedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedIdentity deserializedUserAssignedIdentity = new UserAssignedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.resourceId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.clientId = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.objectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedIdentity;
+        });
     }
 }

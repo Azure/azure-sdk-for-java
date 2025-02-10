@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for use
  * by another pinhole. All hold times must be minimum 1 second.
  */
 @Fluent
-public final class PortReuseHoldTimes {
+public final class PortReuseHoldTimes implements JsonSerializable<PortReuseHoldTimes> {
     /*
-     * Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused.
-     * Default for TCP is 2 minutes.
+     * Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused. Default
+     * for TCP is 2 minutes.
      */
-    @JsonProperty(value = "tcp")
     private Integer tcp;
 
     /*
-     * Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused.
-     * Default for UDP is 1 minute.
+     * Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused. Default
+     * for UDP is 1 minute.
      */
-    @JsonProperty(value = "udp")
     private Integer udp;
 
-    /** Creates an instance of PortReuseHoldTimes class. */
+    /**
+     * Creates an instance of PortReuseHoldTimes class.
+     */
     public PortReuseHoldTimes() {
     }
 
     /**
      * Get the tcp property: Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole
      * can be reused. Default for TCP is 2 minutes.
-     *
+     * 
      * @return the tcp value.
      */
     public Integer tcp() {
@@ -44,7 +48,7 @@ public final class PortReuseHoldTimes {
     /**
      * Set the tcp property: Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole
      * can be reused. Default for TCP is 2 minutes.
-     *
+     * 
      * @param tcp the tcp value to set.
      * @return the PortReuseHoldTimes object itself.
      */
@@ -56,7 +60,7 @@ public final class PortReuseHoldTimes {
     /**
      * Get the udp property: Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole
      * can be reused. Default for UDP is 1 minute.
-     *
+     * 
      * @return the udp value.
      */
     public Integer udp() {
@@ -66,7 +70,7 @@ public final class PortReuseHoldTimes {
     /**
      * Set the udp property: Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole
      * can be reused. Default for UDP is 1 minute.
-     *
+     * 
      * @param udp the udp value to set.
      * @return the PortReuseHoldTimes object itself.
      */
@@ -77,9 +81,48 @@ public final class PortReuseHoldTimes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("tcp", this.tcp);
+        jsonWriter.writeNumberField("udp", this.udp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortReuseHoldTimes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortReuseHoldTimes if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortReuseHoldTimes.
+     */
+    public static PortReuseHoldTimes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortReuseHoldTimes deserializedPortReuseHoldTimes = new PortReuseHoldTimes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tcp".equals(fieldName)) {
+                    deserializedPortReuseHoldTimes.tcp = reader.getNullable(JsonReader::getInt);
+                } else if ("udp".equals(fieldName)) {
+                    deserializedPortReuseHoldTimes.udp = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortReuseHoldTimes;
+        });
     }
 }

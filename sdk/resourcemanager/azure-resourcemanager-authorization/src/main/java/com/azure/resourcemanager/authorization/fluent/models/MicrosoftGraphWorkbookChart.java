@@ -5,102 +5,94 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** workbookChart. */
+/**
+ * workbookChart.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
     /*
      * Represents the height, in points, of the chart object.
      */
-    @JsonProperty(value = "height")
     private Double height;
 
     /*
      * The distance, in points, from the left side of the chart to the worksheet origin.
      */
-    @JsonProperty(value = "left")
     private Double left;
 
     /*
      * Represents the name of a chart object.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the
      * top of the chart area (on a chart).
      */
-    @JsonProperty(value = "top")
     private Double top;
 
     /*
      * Represents the width, in points, of the chart object.
      */
-    @JsonProperty(value = "width")
     private Double width;
 
     /*
      * workbookChartAxes
      */
-    @JsonProperty(value = "axes")
     private MicrosoftGraphWorkbookChartAxes axes;
 
     /*
      * workbookChartDataLabels
      */
-    @JsonProperty(value = "dataLabels")
     private MicrosoftGraphWorkbookChartDataLabels dataLabels;
 
     /*
      * workbookChartAreaFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartAreaFormat format;
 
     /*
      * workbookChartLegend
      */
-    @JsonProperty(value = "legend")
     private MicrosoftGraphWorkbookChartLegend legend;
 
     /*
      * Represents either a single series or collection of series in the chart. Read-only.
      */
-    @JsonProperty(value = "series")
     private List<MicrosoftGraphWorkbookChartSeries> series;
 
     /*
      * workbookChartTitle
      */
-    @JsonProperty(value = "title")
     private MicrosoftGraphWorkbookChartTitle title;
 
     /*
      * workbookWorksheet
      */
-    @JsonProperty(value = "worksheet")
     private MicrosoftGraphWorkbookWorksheet worksheet;
 
     /*
      * workbookChart
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChart class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChart class.
+     */
     public MicrosoftGraphWorkbookChart() {
     }
 
     /**
      * Get the height property: Represents the height, in points, of the chart object.
-     *
+     * 
      * @return the height value.
      */
     public Double height() {
@@ -109,7 +101,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the height property: Represents the height, in points, of the chart object.
-     *
+     * 
      * @param height the height value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -120,7 +112,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the left property: The distance, in points, from the left side of the chart to the worksheet origin.
-     *
+     * 
      * @return the left value.
      */
     public Double left() {
@@ -129,7 +121,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the left property: The distance, in points, from the left side of the chart to the worksheet origin.
-     *
+     * 
      * @param left the left value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -140,7 +132,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: Represents the name of a chart object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -149,7 +141,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: Represents the name of a chart object.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -161,7 +153,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
     /**
      * Get the top property: Represents the distance, in points, from the top edge of the object to the top of row 1 (on
      * a worksheet) or the top of the chart area (on a chart).
-     *
+     * 
      * @return the top value.
      */
     public Double top() {
@@ -171,7 +163,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
     /**
      * Set the top property: Represents the distance, in points, from the top edge of the object to the top of row 1 (on
      * a worksheet) or the top of the chart area (on a chart).
-     *
+     * 
      * @param top the top value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -182,7 +174,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the width property: Represents the width, in points, of the chart object.
-     *
+     * 
      * @return the width value.
      */
     public Double width() {
@@ -191,7 +183,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the width property: Represents the width, in points, of the chart object.
-     *
+     * 
      * @param width the width value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -202,7 +194,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the axes property: workbookChartAxes.
-     *
+     * 
      * @return the axes value.
      */
     public MicrosoftGraphWorkbookChartAxes axes() {
@@ -211,7 +203,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the axes property: workbookChartAxes.
-     *
+     * 
      * @param axes the axes value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -222,7 +214,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the dataLabels property: workbookChartDataLabels.
-     *
+     * 
      * @return the dataLabels value.
      */
     public MicrosoftGraphWorkbookChartDataLabels dataLabels() {
@@ -231,7 +223,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the dataLabels property: workbookChartDataLabels.
-     *
+     * 
      * @param dataLabels the dataLabels value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -242,7 +234,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the format property: workbookChartAreaFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartAreaFormat format() {
@@ -251,7 +243,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the format property: workbookChartAreaFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -262,7 +254,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the legend property: workbookChartLegend.
-     *
+     * 
      * @return the legend value.
      */
     public MicrosoftGraphWorkbookChartLegend legend() {
@@ -271,7 +263,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the legend property: workbookChartLegend.
-     *
+     * 
      * @param legend the legend value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -282,7 +274,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the series property: Represents either a single series or collection of series in the chart. Read-only.
-     *
+     * 
      * @return the series value.
      */
     public List<MicrosoftGraphWorkbookChartSeries> series() {
@@ -291,7 +283,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the series property: Represents either a single series or collection of series in the chart. Read-only.
-     *
+     * 
      * @param series the series value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -302,7 +294,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the title property: workbookChartTitle.
-     *
+     * 
      * @return the title value.
      */
     public MicrosoftGraphWorkbookChartTitle title() {
@@ -311,7 +303,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the title property: workbookChartTitle.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -322,7 +314,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the worksheet property: workbookWorksheet.
-     *
+     * 
      * @return the worksheet value.
      */
     public MicrosoftGraphWorkbookWorksheet worksheet() {
@@ -331,7 +323,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Set the worksheet property: workbookWorksheet.
-     *
+     * 
      * @param worksheet the worksheet value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -342,17 +334,16 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: workbookChart.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChart.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChart object itself.
      */
@@ -361,15 +352,9 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChart withId(String id) {
         super.withId(id);
@@ -378,7 +363,7 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -405,5 +390,93 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
         if (worksheet() != null) {
             worksheet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeNumberField("left", this.left);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("top", this.top);
+        jsonWriter.writeNumberField("width", this.width);
+        jsonWriter.writeJsonField("axes", this.axes);
+        jsonWriter.writeJsonField("dataLabels", this.dataLabels);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("legend", this.legend);
+        jsonWriter.writeArrayField("series", this.series, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("title", this.title);
+        jsonWriter.writeJsonField("worksheet", this.worksheet);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChart from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChart if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChart.
+     */
+    public static MicrosoftGraphWorkbookChart fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChart deserializedMicrosoftGraphWorkbookChart = new MicrosoftGraphWorkbookChart();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.withId(reader.getString());
+                } else if ("height".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.height = reader.getNullable(JsonReader::getDouble);
+                } else if ("left".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.left = reader.getNullable(JsonReader::getDouble);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.name = reader.getString();
+                } else if ("top".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.top = reader.getNullable(JsonReader::getDouble);
+                } else if ("width".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.width = reader.getNullable(JsonReader::getDouble);
+                } else if ("axes".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.axes = MicrosoftGraphWorkbookChartAxes.fromJson(reader);
+                } else if ("dataLabels".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.dataLabels
+                        = MicrosoftGraphWorkbookChartDataLabels.fromJson(reader);
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.format
+                        = MicrosoftGraphWorkbookChartAreaFormat.fromJson(reader);
+                } else if ("legend".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.legend = MicrosoftGraphWorkbookChartLegend.fromJson(reader);
+                } else if ("series".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookChartSeries> series
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookChartSeries.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookChart.series = series;
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.title = MicrosoftGraphWorkbookChartTitle.fromJson(reader);
+                } else if ("worksheet".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChart.worksheet
+                        = MicrosoftGraphWorkbookWorksheet.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChart.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChart;
+        });
     }
 }

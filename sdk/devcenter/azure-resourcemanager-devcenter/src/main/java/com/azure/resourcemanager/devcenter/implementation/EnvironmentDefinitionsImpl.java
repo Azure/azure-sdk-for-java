@@ -23,51 +23,43 @@ public final class EnvironmentDefinitionsImpl implements EnvironmentDefinitions 
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public EnvironmentDefinitionsImpl(
-        EnvironmentDefinitionsClient innerClient, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    public EnvironmentDefinitionsImpl(EnvironmentDefinitionsClient innerClient,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<EnvironmentDefinition> listByCatalog(
-        String resourceGroupName, String devCenterName, String catalogName) {
-        PagedIterable<EnvironmentDefinitionInner> inner =
-            this.serviceClient().listByCatalog(resourceGroupName, devCenterName, catalogName);
-        return Utils.mapPage(inner, inner1 -> new EnvironmentDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<EnvironmentDefinition> listByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName) {
+        PagedIterable<EnvironmentDefinitionInner> inner
+            = this.serviceClient().listByProjectCatalog(resourceGroupName, projectName, catalogName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnvironmentDefinitionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EnvironmentDefinition> listByCatalog(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top, Context context) {
-        PagedIterable<EnvironmentDefinitionInner> inner =
-            this.serviceClient().listByCatalog(resourceGroupName, devCenterName, catalogName, top, context);
-        return Utils.mapPage(inner, inner1 -> new EnvironmentDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<EnvironmentDefinition> listByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName, Context context) {
+        PagedIterable<EnvironmentDefinitionInner> inner
+            = this.serviceClient().listByProjectCatalog(resourceGroupName, projectName, catalogName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnvironmentDefinitionImpl(inner1, this.manager()));
     }
 
-    public Response<EnvironmentDefinition> getWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context) {
-        Response<EnvironmentDefinitionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, devCenterName, catalogName, environmentDefinitionName, context);
+    public Response<EnvironmentDefinition> getByProjectCatalogWithResponse(String resourceGroupName, String projectName,
+        String catalogName, String environmentDefinitionName, Context context) {
+        Response<EnvironmentDefinitionInner> inner = this.serviceClient()
+            .getByProjectCatalogWithResponse(resourceGroupName, projectName, catalogName, environmentDefinitionName,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EnvironmentDefinitionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EnvironmentDefinition get(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
-        EnvironmentDefinitionInner inner =
-            this.serviceClient().get(resourceGroupName, devCenterName, catalogName, environmentDefinitionName);
+    public EnvironmentDefinition getByProjectCatalog(String resourceGroupName, String projectName, String catalogName,
+        String environmentDefinitionName) {
+        EnvironmentDefinitionInner inner = this.serviceClient()
+            .getByProjectCatalog(resourceGroupName, projectName, catalogName, environmentDefinitionName);
         if (inner != null) {
             return new EnvironmentDefinitionImpl(inner, this.manager());
         } else {
@@ -75,34 +67,60 @@ public final class EnvironmentDefinitionsImpl implements EnvironmentDefinitions 
         }
     }
 
-    public Response<CatalogResourceValidationErrorDetails> getErrorDetailsWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context) {
-        Response<CatalogResourceValidationErrorDetailsInner> inner =
-            this
-                .serviceClient()
-                .getErrorDetailsWithResponse(
-                    resourceGroupName, devCenterName, catalogName, environmentDefinitionName, context);
+    public PagedIterable<EnvironmentDefinition> listByCatalog(String resourceGroupName, String devCenterName,
+        String catalogName) {
+        PagedIterable<EnvironmentDefinitionInner> inner
+            = this.serviceClient().listByCatalog(resourceGroupName, devCenterName, catalogName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnvironmentDefinitionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<EnvironmentDefinition> listByCatalog(String resourceGroupName, String devCenterName,
+        String catalogName, Integer top, Context context) {
+        PagedIterable<EnvironmentDefinitionInner> inner
+            = this.serviceClient().listByCatalog(resourceGroupName, devCenterName, catalogName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnvironmentDefinitionImpl(inner1, this.manager()));
+    }
+
+    public Response<EnvironmentDefinition> getWithResponse(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName, Context context) {
+        Response<EnvironmentDefinitionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, devCenterName, catalogName, environmentDefinitionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnvironmentDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EnvironmentDefinition get(String resourceGroupName, String devCenterName, String catalogName,
+        String environmentDefinitionName) {
+        EnvironmentDefinitionInner inner
+            = this.serviceClient().get(resourceGroupName, devCenterName, catalogName, environmentDefinitionName);
+        if (inner != null) {
+            return new EnvironmentDefinitionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CatalogResourceValidationErrorDetails> getErrorDetailsWithResponse(String resourceGroupName,
+        String devCenterName, String catalogName, String environmentDefinitionName, Context context) {
+        Response<CatalogResourceValidationErrorDetailsInner> inner = this.serviceClient()
+            .getErrorDetailsWithResponse(resourceGroupName, devCenterName, catalogName, environmentDefinitionName,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CatalogResourceValidationErrorDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CatalogResourceValidationErrorDetails getErrorDetails(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
-        CatalogResourceValidationErrorDetailsInner inner =
-            this
-                .serviceClient()
-                .getErrorDetails(resourceGroupName, devCenterName, catalogName, environmentDefinitionName);
+    public CatalogResourceValidationErrorDetails getErrorDetails(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName) {
+        CatalogResourceValidationErrorDetailsInner inner = this.serviceClient()
+            .getErrorDetails(resourceGroupName, devCenterName, catalogName, environmentDefinitionName);
         if (inner != null) {
             return new CatalogResourceValidationErrorDetailsImpl(inner, this.manager());
         } else {

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of alert simulation. */
+/**
+ * The kind of alert simulation.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value Bundles for Kind. */
+    /**
+     * Static value Bundles for Kind.
+     */
     public static final Kind BUNDLES = fromString("Bundles");
 
     /**
      * Creates a new instance of Kind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
-    @JsonCreator
     public static Kind fromString(String name) {
         return fromString(name, Kind.class);
     }
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

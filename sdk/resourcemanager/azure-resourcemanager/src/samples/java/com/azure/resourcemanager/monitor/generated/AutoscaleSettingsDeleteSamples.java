@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AutoscaleSettings Delete. */
+/**
+ * Samples for AutoscaleSettings Delete.
+ */
 public final class AutoscaleSettingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-10-01/examples/deleteAutoscaleSetting.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-10-01/examples/deleteAutoscaleSetting.json
      */
     /**
      * Sample code: Delete an autoscale setting.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAnAutoscaleSetting(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getAutoscaleSettings()
-            .deleteWithResponse("TestingMetricsScaleSet", "MySetting", Context.NONE);
+            .deleteWithResponse("TestingMetricsScaleSet", "MySetting", com.azure.core.util.Context.NONE);
     }
 }

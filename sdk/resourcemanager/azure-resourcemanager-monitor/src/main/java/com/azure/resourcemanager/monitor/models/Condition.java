@@ -5,76 +5,74 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A condition of the scheduled query rule. */
+/**
+ * A condition of the scheduled query rule.
+ */
 @Fluent
-public final class Condition {
+public final class Condition implements JsonSerializable<Condition> {
     /*
      * Log query alert
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * Aggregation type. Relevant and required only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "timeAggregation")
     private TimeAggregation timeAggregation;
 
     /*
      * The column containing the metric measure number. Relevant only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "metricMeasureColumn")
     private String metricMeasureColumn;
 
     /*
-     * The column containing the resource id. The content of the column must be a uri formatted as resource id.
-     * Relevant only for rules of the kind LogAlert.
+     * The column containing the resource id. The content of the column must be a uri formatted as resource id. Relevant
+     * only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "resourceIdColumn")
     private String resourceIdColumn;
 
     /*
      * List of Dimensions conditions
      */
-    @JsonProperty(value = "dimensions")
     private List<Dimension> dimensions;
 
     /*
      * The criteria operator. Relevant and required only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "operator")
     private ConditionOperator operator;
 
     /*
-     * the criteria threshold value that activates the alert. Relevant and required only for rules of the kind
-     * LogAlert.
+     * the criteria threshold value that activates the alert. Relevant and required only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "threshold")
     private Double threshold;
 
     /*
      * The minimum number of violations required within the selected lookback time window required to raise an alert.
      * Relevant only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "failingPeriods")
     private ConditionFailingPeriods failingPeriods;
 
     /*
      * The name of the metric to be sent. Relevant and required only for rules of the kind LogToMetric.
      */
-    @JsonProperty(value = "metricName")
     private String metricName;
 
-    /** Creates an instance of Condition class. */
+    /**
+     * Creates an instance of Condition class.
+     */
     public Condition() {
     }
 
     /**
      * Get the query property: Log query alert.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -83,7 +81,7 @@ public final class Condition {
 
     /**
      * Set the query property: Log query alert.
-     *
+     * 
      * @param query the query value to set.
      * @return the Condition object itself.
      */
@@ -94,7 +92,7 @@ public final class Condition {
 
     /**
      * Get the timeAggregation property: Aggregation type. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the timeAggregation value.
      */
     public TimeAggregation timeAggregation() {
@@ -103,7 +101,7 @@ public final class Condition {
 
     /**
      * Set the timeAggregation property: Aggregation type. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param timeAggregation the timeAggregation value to set.
      * @return the Condition object itself.
      */
@@ -115,7 +113,7 @@ public final class Condition {
     /**
      * Get the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules of
      * the kind LogAlert.
-     *
+     * 
      * @return the metricMeasureColumn value.
      */
     public String metricMeasureColumn() {
@@ -125,7 +123,7 @@ public final class Condition {
     /**
      * Set the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules of
      * the kind LogAlert.
-     *
+     * 
      * @param metricMeasureColumn the metricMeasureColumn value to set.
      * @return the Condition object itself.
      */
@@ -137,7 +135,7 @@ public final class Condition {
     /**
      * Get the resourceIdColumn property: The column containing the resource id. The content of the column must be a uri
      * formatted as resource id. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the resourceIdColumn value.
      */
     public String resourceIdColumn() {
@@ -147,7 +145,7 @@ public final class Condition {
     /**
      * Set the resourceIdColumn property: The column containing the resource id. The content of the column must be a uri
      * formatted as resource id. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param resourceIdColumn the resourceIdColumn value to set.
      * @return the Condition object itself.
      */
@@ -158,7 +156,7 @@ public final class Condition {
 
     /**
      * Get the dimensions property: List of Dimensions conditions.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -167,7 +165,7 @@ public final class Condition {
 
     /**
      * Set the dimensions property: List of Dimensions conditions.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the Condition object itself.
      */
@@ -178,7 +176,7 @@ public final class Condition {
 
     /**
      * Get the operator property: The criteria operator. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the operator value.
      */
     public ConditionOperator operator() {
@@ -187,7 +185,7 @@ public final class Condition {
 
     /**
      * Set the operator property: The criteria operator. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the Condition object itself.
      */
@@ -199,7 +197,7 @@ public final class Condition {
     /**
      * Get the threshold property: the criteria threshold value that activates the alert. Relevant and required only for
      * rules of the kind LogAlert.
-     *
+     * 
      * @return the threshold value.
      */
     public Double threshold() {
@@ -209,7 +207,7 @@ public final class Condition {
     /**
      * Set the threshold property: the criteria threshold value that activates the alert. Relevant and required only for
      * rules of the kind LogAlert.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the Condition object itself.
      */
@@ -221,7 +219,7 @@ public final class Condition {
     /**
      * Get the failingPeriods property: The minimum number of violations required within the selected lookback time
      * window required to raise an alert. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the failingPeriods value.
      */
     public ConditionFailingPeriods failingPeriods() {
@@ -231,7 +229,7 @@ public final class Condition {
     /**
      * Set the failingPeriods property: The minimum number of violations required within the selected lookback time
      * window required to raise an alert. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param failingPeriods the failingPeriods value to set.
      * @return the Condition object itself.
      */
@@ -243,7 +241,7 @@ public final class Condition {
     /**
      * Get the metricName property: The name of the metric to be sent. Relevant and required only for rules of the kind
      * LogToMetric.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -253,7 +251,7 @@ public final class Condition {
     /**
      * Set the metricName property: The name of the metric to be sent. Relevant and required only for rules of the kind
      * LogToMetric.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the Condition object itself.
      */
@@ -264,7 +262,7 @@ public final class Condition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -274,5 +272,67 @@ public final class Condition {
         if (failingPeriods() != null) {
             failingPeriods().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("timeAggregation",
+            this.timeAggregation == null ? null : this.timeAggregation.toString());
+        jsonWriter.writeStringField("metricMeasureColumn", this.metricMeasureColumn);
+        jsonWriter.writeStringField("resourceIdColumn", this.resourceIdColumn);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeNumberField("threshold", this.threshold);
+        jsonWriter.writeJsonField("failingPeriods", this.failingPeriods);
+        jsonWriter.writeStringField("metricName", this.metricName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Condition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Condition if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Condition.
+     */
+    public static Condition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Condition deserializedCondition = new Condition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedCondition.query = reader.getString();
+                } else if ("timeAggregation".equals(fieldName)) {
+                    deserializedCondition.timeAggregation = TimeAggregation.fromString(reader.getString());
+                } else if ("metricMeasureColumn".equals(fieldName)) {
+                    deserializedCondition.metricMeasureColumn = reader.getString();
+                } else if ("resourceIdColumn".equals(fieldName)) {
+                    deserializedCondition.resourceIdColumn = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<Dimension> dimensions = reader.readArray(reader1 -> Dimension.fromJson(reader1));
+                    deserializedCondition.dimensions = dimensions;
+                } else if ("operator".equals(fieldName)) {
+                    deserializedCondition.operator = ConditionOperator.fromString(reader.getString());
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedCondition.threshold = reader.getNullable(JsonReader::getDouble);
+                } else if ("failingPeriods".equals(fieldName)) {
+                    deserializedCondition.failingPeriods = ConditionFailingPeriods.fromJson(reader);
+                } else if ("metricName".equals(fieldName)) {
+                    deserializedCondition.metricName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCondition;
+        });
     }
 }

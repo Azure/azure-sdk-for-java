@@ -8,22 +8,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.FieldRestriction;
 import com.azure.resourcemanager.policyinsights.models.FieldRestrictions;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class FieldRestrictionsTests {
-    @Test
-    public void testDeserialize() {
-        FieldRestrictions model =
-            BinaryData
-                .fromString(
-                    "{\"field\":\"hyxxrwlycoduhpk\",\"restrictions\":[{\"result\":\"Required\",\"defaultValue\":\"re\",\"values\":[\"jxqugjhky\"],\"policy\":{\"policyDefinitionId\":\"eddgssofw\",\"policySetDefinitionId\":\"zqalkrmnjijpx\",\"policyDefinitionReferenceId\":\"q\",\"policyAssignmentId\":\"dfnbyxbaaabjyv\"}},{\"result\":\"Required\",\"defaultValue\":\"imrzrtuzqog\",\"values\":[\"nevfdnw\",\"wmewzsyy\",\"euzsoi\"],\"policy\":{\"policyDefinitionId\":\"dpfrxtrthzvaytdw\",\"policySetDefinitionId\":\"brqubp\",\"policyDefinitionReferenceId\":\"h\",\"policyAssignmentId\":\"iilivpdtiirqtd\"}}]}")
-                .toObject(FieldRestrictions.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FieldRestrictions model = BinaryData.fromString(
+            "{\"field\":\"iuubwefqsf\",\"restrictions\":[{\"result\":\"Deny\",\"defaultValue\":\"e\",\"values\":[\"wexjkmfxapjwogq\"],\"policy\":{\"policyDefinitionId\":\"bpudcdab\",\"policySetDefinitionId\":\"wpwyawbz\",\"policyDefinitionReferenceId\":\"qbucljgkyexaoguy\",\"policyAssignmentId\":\"p\"}},{\"result\":\"Deny\",\"defaultValue\":\"ault\",\"values\":[\"jumfqwazlnq\"],\"policy\":{\"policyDefinitionId\":\"jng\",\"policySetDefinitionId\":\"dqxtbjwgnyf\",\"policyDefinitionReferenceId\":\"fzsvtuikzh\",\"policyAssignmentId\":\"qglcfhmlrqryxynq\"}}]}")
+            .toObject(FieldRestrictions.class);
     }
 
-    @Test
-    public void testSerialize() {
-        FieldRestrictions model =
-            new FieldRestrictions().withRestrictions(Arrays.asList(new FieldRestriction(), new FieldRestriction()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FieldRestrictions model
+            = new FieldRestrictions().withRestrictions(Arrays.asList(new FieldRestriction(), new FieldRestriction()));
         model = BinaryData.fromObject(model).toObject(FieldRestrictions.class);
     }
 }

@@ -34,24 +34,28 @@ import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurat
 import com.azure.resourcemanager.maintenance.models.ListMaintenanceConfigurationsResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient.
+ */
 public final class MaintenanceConfigurationsClientImpl implements MaintenanceConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MaintenanceConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MaintenanceManagementClientImpl client;
 
     /**
      * Initializes an instance of MaintenanceConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MaintenanceConfigurationsClientImpl(MaintenanceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    MaintenanceConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(MaintenanceConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,79 +66,58 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
     public interface MaintenanceConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MaintenanceConfigurationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MaintenanceConfigurationInner configuration,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationInner>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MaintenanceConfigurationInner>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MaintenanceConfigurationInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MaintenanceConfigurationInner configuration,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListMaintenanceConfigurationsResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListMaintenanceConfigurationsResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,19 +126,15 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return configuration record along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<MaintenanceConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,22 +146,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, resourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
@@ -192,19 +163,15 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return configuration record along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<MaintenanceConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -215,20 +182,13 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +204,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
@@ -254,14 +214,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return configuration record along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,30 +236,26 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Create or Update configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
+    private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, MaintenanceConfigurationInner configuration) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -315,24 +271,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            configuration,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, this.client.getApiVersion(), configuration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -340,23 +286,19 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
+    private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, MaintenanceConfigurationInner configuration, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,21 +314,13 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                configuration,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, this.client.getApiVersion(), configuration, accept, context);
     }
 
     /**
      * Create or Update configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -396,15 +330,15 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
+    private Mono<MaintenanceConfigurationInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        MaintenanceConfigurationInner configuration) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configuration)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or Update configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -415,14 +349,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
+    public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String resourceName, MaintenanceConfigurationInner configuration, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configuration, context).block();
     }
 
     /**
      * Create or Update configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -432,36 +366,32 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceConfigurationInner createOrUpdate(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
+    public MaintenanceConfigurationInner createOrUpdate(String resourceGroupName, String resourceName,
+        MaintenanceConfigurationInner configuration) {
         return createOrUpdateWithResponse(resourceGroupName, resourceName, configuration, Context.NONE).getValue();
     }
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<MaintenanceConfigurationInner>> deleteWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -472,46 +402,33 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<MaintenanceConfigurationInner>> deleteWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -522,20 +439,13 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -551,7 +461,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
@@ -561,14 +471,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> deleteWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<MaintenanceConfigurationInner> deleteWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -583,30 +493,26 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Patch configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
+    private Mono<Response<MaintenanceConfigurationInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, MaintenanceConfigurationInner configuration) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -622,24 +528,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            configuration,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, this.client.getApiVersion(), configuration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -647,23 +543,19 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
+    private Mono<Response<MaintenanceConfigurationInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, MaintenanceConfigurationInner configuration, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -679,21 +571,13 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                configuration,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, this.client.getApiVersion(), configuration, accept, context);
     }
 
     /**
      * Patch configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -703,15 +587,15 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MaintenanceConfigurationInner> updateAsync(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
+    private Mono<MaintenanceConfigurationInner> updateAsync(String resourceGroupName, String resourceName,
+        MaintenanceConfigurationInner configuration) {
         return updateWithResponseAsync(resourceGroupName, resourceName, configuration)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Patch configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -722,14 +606,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> updateWithResponse(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
+    public Response<MaintenanceConfigurationInner> updateWithResponse(String resourceGroupName, String resourceName,
+        MaintenanceConfigurationInner configuration, Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, configuration, context).block();
     }
 
     /**
      * Patch configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
@@ -739,93 +623,70 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return maintenance configuration record type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceConfigurationInner update(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
+    public MaintenanceConfigurationInner update(String resourceGroupName, String resourceName,
+        MaintenanceConfigurationInner configuration) {
         return updateWithResponse(resourceGroupName, resourceName, configuration, Context.NONE).getValue();
     }
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration records within a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<MaintenanceConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<MaintenanceConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration records within a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration records within a subscription as paginated response with {@link PagedFlux}.
@@ -837,7 +698,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -851,7 +712,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
@@ -863,7 +724,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

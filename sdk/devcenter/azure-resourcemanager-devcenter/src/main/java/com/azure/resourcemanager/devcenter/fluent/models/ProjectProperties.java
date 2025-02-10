@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a project. */
+/**
+ * Properties of a project.
+ */
 @Fluent
 public final class ProjectProperties extends ProjectUpdateProperties {
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The URI of the Dev Center resource this project is associated with.
      */
-    @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
     private String devCenterUri;
 
-    /** Creates an instance of ProjectProperties class. */
+    /**
+     * Creates an instance of ProjectProperties class.
+     */
     public ProjectProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,35 +44,43 @@ public final class ProjectProperties extends ProjectUpdateProperties {
 
     /**
      * Get the devCenterUri property: The URI of the Dev Center resource this project is associated with.
-     *
+     * 
      * @return the devCenterUri value.
      */
     public String devCenterUri() {
         return this.devCenterUri;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withDevCenterId(String devCenterId) {
         super.withDevCenterId(devCenterId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser) {
         super.withMaxDevBoxesPerUser(maxDevBoxesPerUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -74,12 +88,75 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProjectProperties withCatalogSettings(ProjectCatalogSettings catalogSettings) {
+        super.withCatalogSettings(catalogSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (catalogSettings() != null) {
+            catalogSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("devCenterId", devCenterId());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeNumberField("maxDevBoxesPerUser", maxDevBoxesPerUser());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeJsonField("catalogSettings", catalogSettings());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectProperties.
+     */
+    public static ProjectProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectProperties deserializedProjectProperties = new ProjectProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("devCenterId".equals(fieldName)) {
+                    deserializedProjectProperties.withDevCenterId(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedProjectProperties.withDescription(reader.getString());
+                } else if ("maxDevBoxesPerUser".equals(fieldName)) {
+                    deserializedProjectProperties.withMaxDevBoxesPerUser(reader.getNullable(JsonReader::getInt));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProjectProperties.withDisplayName(reader.getString());
+                } else if ("catalogSettings".equals(fieldName)) {
+                    deserializedProjectProperties.withCatalogSettings(ProjectCatalogSettings.fromJson(reader));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProjectProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("devCenterUri".equals(fieldName)) {
+                    deserializedProjectProperties.devCenterUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectProperties;
+        });
     }
 }

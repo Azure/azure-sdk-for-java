@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of an application rule.
  */
 @Fluent
-public final class AzureFirewallApplicationRule {
+public final class AzureFirewallApplicationRule implements JsonSerializable<AzureFirewallApplicationRule> {
     /*
      * Name of the application rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of the rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of source IP addresses for this rule.
      */
-    @JsonProperty(value = "sourceAddresses")
     private List<String> sourceAddresses;
 
     /*
      * Array of ApplicationRuleProtocols.
      */
-    @JsonProperty(value = "protocols")
     private List<AzureFirewallApplicationRuleProtocol> protocols;
 
     /*
      * List of FQDNs for this rule.
      */
-    @JsonProperty(value = "targetFqdns")
     private List<String> targetFqdns;
 
     /*
      * List of FQDN Tags for this rule.
      */
-    @JsonProperty(value = "fqdnTags")
     private List<String> fqdnTags;
 
     /*
      * List of source IpGroups for this rule.
      */
-    @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
     /**
@@ -210,5 +207,67 @@ public final class AzureFirewallApplicationRule {
         if (protocols() != null) {
             protocols().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("sourceAddresses", this.sourceAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("protocols", this.protocols, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetFqdns", this.targetFqdns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("fqdnTags", this.fqdnTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallApplicationRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallApplicationRule if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallApplicationRule.
+     */
+    public static AzureFirewallApplicationRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallApplicationRule deserializedAzureFirewallApplicationRule = new AzureFirewallApplicationRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureFirewallApplicationRule.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureFirewallApplicationRule.description = reader.getString();
+                } else if ("sourceAddresses".equals(fieldName)) {
+                    List<String> sourceAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallApplicationRule.sourceAddresses = sourceAddresses;
+                } else if ("protocols".equals(fieldName)) {
+                    List<AzureFirewallApplicationRuleProtocol> protocols
+                        = reader.readArray(reader1 -> AzureFirewallApplicationRuleProtocol.fromJson(reader1));
+                    deserializedAzureFirewallApplicationRule.protocols = protocols;
+                } else if ("targetFqdns".equals(fieldName)) {
+                    List<String> targetFqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallApplicationRule.targetFqdns = targetFqdns;
+                } else if ("fqdnTags".equals(fieldName)) {
+                    List<String> fqdnTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallApplicationRule.fqdnTags = fqdnTags;
+                } else if ("sourceIpGroups".equals(fieldName)) {
+                    List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallApplicationRule.sourceIpGroups = sourceIpGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallApplicationRule;
+        });
     }
 }

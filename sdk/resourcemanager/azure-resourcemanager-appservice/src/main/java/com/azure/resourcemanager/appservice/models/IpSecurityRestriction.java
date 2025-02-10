@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,68 +17,58 @@ import java.util.Map;
  * IP security restriction on an app.
  */
 @Fluent
-public final class IpSecurityRestriction {
+public final class IpSecurityRestriction implements JsonSerializable<IpSecurityRestriction> {
     /*
      * IP address the security restriction is valid for.
      * It can be in form of pure ipv4 address (required SubnetMask property) or
      * CIDR notation such as ipv4/mask (leading bit match). For CIDR,
      * SubnetMask property must not be specified.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * Subnet mask for the range of IP addresses the restriction is valid for.
      */
-    @JsonProperty(value = "subnetMask")
     private String subnetMask;
 
     /*
      * Virtual network resource id
      */
-    @JsonProperty(value = "vnetSubnetResourceId")
     private String vnetSubnetResourceId;
 
     /*
      * (internal) Vnet traffic tag
      */
-    @JsonProperty(value = "vnetTrafficTag")
     private Integer vnetTrafficTag;
 
     /*
      * (internal) Subnet traffic tag
      */
-    @JsonProperty(value = "subnetTrafficTag")
     private Integer subnetTrafficTag;
 
     /*
      * Allow or Deny access for this IP range.
      */
-    @JsonProperty(value = "action")
     private String action;
 
     /*
      * Defines what this IP filter will be used for. This is to support IP filtering on proxies.
      */
-    @JsonProperty(value = "tag")
     private IpFilterTag tag;
 
     /*
      * Priority of IP restriction rule.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * IP restriction rule name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * IP restriction rule description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
@@ -92,14 +85,11 @@ public final class IpSecurityRestriction {
      * X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
      * The matching logic is ..
      * - If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
-     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
-     * property.
+     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the property.
      * 
      * X-Azure-FDID and X-FD-HealthProbe.
      * The matching logic is exact match.
      */
-    @JsonProperty(value = "headers")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> headers;
 
     /**
@@ -328,8 +318,7 @@ public final class IpSecurityRestriction {
      * X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
      * The matching logic is ..
      * - If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
-     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
-     * property.
+     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the property.
      * 
      * X-Azure-FDID and X-FD-HealthProbe.
      * The matching logic is exact match.
@@ -354,8 +343,7 @@ public final class IpSecurityRestriction {
      * X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
      * The matching logic is ..
      * - If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
-     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
-     * property.
+     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the property.
      * 
      * X-Azure-FDID and X-FD-HealthProbe.
      * The matching logic is exact match.
@@ -374,5 +362,74 @@ public final class IpSecurityRestriction {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("subnetMask", this.subnetMask);
+        jsonWriter.writeStringField("vnetSubnetResourceId", this.vnetSubnetResourceId);
+        jsonWriter.writeNumberField("vnetTrafficTag", this.vnetTrafficTag);
+        jsonWriter.writeNumberField("subnetTrafficTag", this.subnetTrafficTag);
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeStringField("tag", this.tag == null ? null : this.tag.toString());
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("headers", this.headers,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpSecurityRestriction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpSecurityRestriction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpSecurityRestriction.
+     */
+    public static IpSecurityRestriction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpSecurityRestriction deserializedIpSecurityRestriction = new IpSecurityRestriction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.ipAddress = reader.getString();
+                } else if ("subnetMask".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.subnetMask = reader.getString();
+                } else if ("vnetSubnetResourceId".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.vnetSubnetResourceId = reader.getString();
+                } else if ("vnetTrafficTag".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.vnetTrafficTag = reader.getNullable(JsonReader::getInt);
+                } else if ("subnetTrafficTag".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.subnetTrafficTag = reader.getNullable(JsonReader::getInt);
+                } else if ("action".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.action = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.tag = IpFilterTag.fromString(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedIpSecurityRestriction.description = reader.getString();
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, List<String>> headers
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedIpSecurityRestriction.headers = headers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpSecurityRestriction;
+        });
     }
 }

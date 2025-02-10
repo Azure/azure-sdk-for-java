@@ -10,7 +10,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -19,14 +18,34 @@ import java.util.UUID;
 @Fluent
 public final class EmailHookInfo extends HookInfo {
     /*
+     * hook type
+     */
+    private HookType hookType = HookType.EMAIL;
+
+    /*
      * The hookParameter property.
      */
     private EmailHookParameter hookParameter;
+
+    /*
+     * Hook unique id
+     */
+    private UUID hookId;
 
     /**
      * Creates an instance of EmailHookInfo class.
      */
     public EmailHookInfo() {
+    }
+
+    /**
+     * Get the hookType property: hook type.
+     * 
+     * @return the hookType value.
+     */
+    @Override
+    public HookType getHookType() {
+        return this.hookType;
     }
 
     /**
@@ -47,6 +66,16 @@ public final class EmailHookInfo extends HookInfo {
     public EmailHookInfo setHookParameter(EmailHookParameter hookParameter) {
         this.hookParameter = hookParameter;
         return this;
+    }
+
+    /**
+     * Get the hookId property: Hook unique id.
+     * 
+     * @return the hookId value.
+     */
+    @Override
+    public UUID getHookId() {
+        return this.hookId;
     }
 
     /**
@@ -85,15 +114,18 @@ public final class EmailHookInfo extends HookInfo {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookType", Objects.toString(HookType.EMAIL, null));
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("hookParameter", this.hookParameter);
+        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -103,8 +135,7 @@ public final class EmailHookInfo extends HookInfo {
      * @param jsonReader The JsonReader being read.
      * @return An instance of EmailHookInfo if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EmailHookInfo.
      */
     public static EmailHookInfo fromJson(JsonReader jsonReader) throws IOException {
@@ -114,18 +145,11 @@ public final class EmailHookInfo extends HookInfo {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("hookType".equals(fieldName)) {
-                    String hookType = reader.getString();
-                    if (!"Email".equals(hookType)) {
-                        throw new IllegalStateException(
-                            "'hookType' was expected to be non-null and equal to 'Email'. The found 'hookType' was '"
-                                + hookType + "'.");
-                    }
-                } else if ("hookName".equals(fieldName)) {
+                if ("hookName".equals(fieldName)) {
                     deserializedEmailHookInfo.setHookName(reader.getString());
                 } else if ("hookId".equals(fieldName)) {
-                    deserializedEmailHookInfo
-                        .setHookId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedEmailHookInfo.hookId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
                     deserializedEmailHookInfo.setDescription(reader.getString());
                 } else if ("externalLink".equals(fieldName)) {
@@ -135,6 +159,8 @@ public final class EmailHookInfo extends HookInfo {
                     deserializedEmailHookInfo.setAdmins(admins);
                 } else if ("hookParameter".equals(fieldName)) {
                     deserializedEmailHookInfo.hookParameter = EmailHookParameter.fromJson(reader);
+                } else if ("hookType".equals(fieldName)) {
+                    deserializedEmailHookInfo.hookType = HookType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

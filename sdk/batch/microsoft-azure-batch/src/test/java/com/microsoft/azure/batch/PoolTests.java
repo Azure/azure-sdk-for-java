@@ -3,60 +3,76 @@
 
 package com.microsoft.azure.batch;
 
+import org.joda.time.Period;
 import org.junit.*;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.microsoft.azure.batch.BatchIntegrationTestBase.AuthMode;
 import com.microsoft.azure.batch.protocol.models.*;
 
 public class PoolTests extends BatchIntegrationTestBase {
-    private static CloudPool livePool;
-    private static String poolId;
     private static NetworkConfiguration networkConfiguration;
 
     @BeforeClass
     public static void setup() throws Exception {
-        poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.AAD);
-            livePool = createIfNotExistIaaSPool(poolId);
-            Assert.assertNotNull(livePool);
         }
         // Need VNet to allow security to inject NSGs
         networkConfiguration = createNetworkConfiguration();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        try {
-            // batchClient.poolOperations().deletePool(livePool.id());
-        } catch (Exception e) {
-            // ignore any clean up exception
-        }
-    }
-
     @Test
     public void testPoolOData() throws Exception {
-        CloudPool pool = batchClient.poolOperations().getPool(poolId,
-                new DetailLevel.Builder().withExpandClause("stats").build());
+        String poolId = getStringIdWithUserNamePrefix("-testPoolOData");
 
-        //Temporarily Disabling the stats check, REST API doesn't provide the stats consistently for newly created pools
-        // Will be enabled back soon.
-        //Assert.assertNotNull(pool.stats());
+        // Create a pool with 3 Small VMs
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
+        int POOL_VM_COUNT = 2;
+        int POOL_LOW_PRI_VM_COUNT = 2;
 
-        List<CloudPool> pools = batchClient.poolOperations()
+        // Create the pool if it doesn't exist
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                    .withSku("18.04-LTS").withVersion("latest");
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+            configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
+
+            NetworkConfiguration netConfig = createNetworkConfiguration();
+            PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
+            List<InboundNATPool> inbounds = new ArrayList<>();
+            inbounds.add(new InboundNATPool().withName("testinbound").withProtocol(InboundEndpointProtocol.TCP)
+                    .withBackendPort(5000).withFrontendPortRangeStart(60000).withFrontendPortRangeEnd(60040));
+            endpointConfig.withInboundNATPools(inbounds);
+            netConfig.withEndpointConfiguration(endpointConfig).withEnableAcceleratedNetworking(true);
+
+            PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT).withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
+                    .withVmSize(POOL_VM_SIZE).withVirtualMachineConfiguration(configuration)
+                    .withNetworkConfiguration(netConfig)
+                    .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
+            batchClient.poolOperations().createPool(addParameter);
+        }
+        Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+
+        try {
+            List<CloudPool> pools = batchClient.poolOperations()
                 .listPools(new DetailLevel.Builder().withSelectClause("id, state").build());
-        Assert.assertTrue(pools.size() > 0);
-        Assert.assertNotNull(pools.get(0).id());
-        Assert.assertNull(pools.get(0).vmSize());
-
-        // When tests are being ran in parallel, there may be a previous pool delete still in progress
-        pools = batchClient.poolOperations()
-                .listPools(new DetailLevel.Builder().withFilterClause("state eq 'deleting'").build());
-        Assert.assertTrue(pools.size() < 2);
-
+            Assert.assertTrue(pools.size() > 0);
+            Assert.assertNotNull(pools.get(0).id());
+            Assert.assertNull(pools.get(0).vmSize());
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
     }
 
     @Test
@@ -114,13 +130,12 @@ public class PoolTests extends BatchIntegrationTestBase {
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
-            Assert.assertEquals(2, inboundEndpoints.size());
+            Assert.assertEquals(1, inboundEndpoints.size());
             InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
             Assert.assertEquals(5000, inboundEndpoint.backendPort());
             Assert.assertTrue(inboundEndpoint.frontendPort() >= 60000);
             Assert.assertTrue(inboundEndpoint.frontendPort() <= 60040);
             Assert.assertTrue(inboundEndpoint.name().startsWith("testinbound."));
-            Assert.assertTrue(inboundEndpoints.get(1).name().startsWith("SSHRule"));
 
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
@@ -564,20 +579,23 @@ public class PoolTests extends BatchIntegrationTestBase {
         String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 1;
         int POOL_LOW_PRI_VM_COUNT = 2;
-        String POOL_OS_FAMILY = "4";
-        String POOL_OS_VERSION = "*";
 
         // 10 minutes
         long POOL_STEADY_TIMEOUT_IN_Milliseconds = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
-            // Use PaaS VM with Windows
-            CloudServiceConfiguration configuration = new CloudServiceConfiguration();
-            configuration.withOsFamily(POOL_OS_FAMILY).withOsVersion(POOL_OS_VERSION);
+            ImageReference imageReference = new ImageReference().withPublisher("Canonical")
+                .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest");
 
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT,
-                    POOL_LOW_PRI_VM_COUNT);
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration()
+                .withImageReference(imageReference).withNodeAgentSKUId("batch.node.ubuntu 18.04");
+
+            batchClient.poolOperations().createPool(new PoolAddParameter().withId(poolId)
+                .withVmSize(POOL_VM_SIZE)
+                .withVirtualMachineConfiguration(vmConfiguration)
+                .withTargetDedicatedNodes(POOL_VM_COUNT)
+                .withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT));
         }
 
         try {
@@ -597,7 +615,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             batchClient.poolOperations().resizePool(poolId, null, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.targetDedicatedNodes());
+            Assert.assertEquals(0, (long) pool.targetDedicatedNodes());
             Assert.assertEquals(1, (long) pool.targetLowPriorityNodes());
 
             // DELETE
@@ -665,24 +683,27 @@ public class PoolTests extends BatchIntegrationTestBase {
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 3;
-        String POOL_OS_FAMILY = "4";
-        String POOL_OS_VERSION = "*";
         // 15 minutes
         long POOL_STEADY_TIMEOUT_IN_Milliseconds = 15 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
-            // Use PaaS VM with Windows
-            CloudServiceConfiguration configuration = new CloudServiceConfiguration();
-            configuration.withOsFamily(POOL_OS_FAMILY).withOsVersion(POOL_OS_VERSION);
+            ImageReference imageReference = new ImageReference().withPublisher("Canonical")
+                .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest");
+
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration()
+                .withImageReference(imageReference).withNodeAgentSKUId("batch.node.ubuntu 18.04");
 
             List<UserAccount> userList = new ArrayList<>();
             userList.add(new UserAccount().withName("test-user-1").withPassword("kt#_gahr!@aGERDXA"));
             userList.add(new UserAccount().withName("test-user-2").withPassword("kt#_gahr!@aGERDXA")
                     .withElevationLevel(ElevationLevel.ADMIN));
+
             PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
-                    .withTargetDedicatedNodes(POOL_VM_COUNT).withVmSize(POOL_VM_SIZE)
-                    .withCloudServiceConfiguration(configuration).withUserAccounts(userList);
+                    .withVmSize(POOL_VM_SIZE)
+                    .withVirtualMachineConfiguration(vmConfiguration)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT)
+                    .withUserAccounts(userList);
             batchClient.poolOperations().createPool(addParameter);
         }
 
@@ -766,6 +787,283 @@ public class PoolTests extends BatchIntegrationTestBase {
             }
             Assert.assertTrue(deleted);
         } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void testPoolWithAutoOSUpgradeAndRollingUpgrade() throws Exception {
+
+        String poolId = getStringIdWithUserNamePrefix("-autoOSUpgradeRollingUpgrade");
+
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+
+            ImageReference imageReference = new ImageReference()
+                .withPublisher("Canonical")
+                .withOffer("UbuntuServer")
+                .withSku("18.04-LTS");
+
+            NodePlacementConfiguration nodePlacementConfiguration = new NodePlacementConfiguration()
+                .withPolicy(NodePlacementPolicyType.ZONAL);
+
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration()
+                .withImageReference(imageReference)
+                .withNodeAgentSKUId("batch.node.ubuntu 18.04")
+                .withNodePlacementConfiguration(nodePlacementConfiguration);
+
+            UpgradePolicy upgradePolicy = new UpgradePolicy()
+                .withMode(UpgradeMode.AUTOMATIC)
+                .withAutomaticOSUpgradePolicy(new AutomaticOSUpgradePolicy()
+                    .withDisableAutomaticRollback(true)
+                    .withEnableAutomaticOSUpgrade(true)
+                    .withUseRollingUpgradePolicy(true)
+                    .withOsRollingUpgradeDeferral(true))
+                .withRollingUpgradePolicy(new RollingUpgradePolicy()
+                    .withEnableCrossZoneUpgrade(true)
+                    .withMaxBatchInstancePercent(20)
+                    .withMaxUnhealthyInstancePercent(20)
+                    .withMaxUnhealthyUpgradedInstancePercent(20)
+                    .withPauseTimeBetweenBatches(Period.parse("PT5S")) // ISO 8601 format for 5 seconds
+                    .withPrioritizeUnhealthyInstances(false)
+                    .withRollbackFailedInstancesOnPolicyBreach(false));
+
+            PoolAddParameter testPoolWithUpgradePolicy = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize("STANDARD_D2S_V3")
+                .withVirtualMachineConfiguration(vmConfiguration)
+                .withUpgradePolicy(upgradePolicy);
+
+            batchClient.poolOperations().createPool(testPoolWithUpgradePolicy);
+        }
+        try {
+            CloudPool pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertNotNull(pool);
+            Assert.assertEquals("automatic", pool.upgradePolicy().mode().toString());
+            Assert.assertTrue(pool.upgradePolicy().automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
+            Assert.assertTrue(pool.upgradePolicy().rollingUpgradePolicy().enableCrossZoneUpgrade());
+            Assert.assertEquals(20, (int) pool.upgradePolicy().rollingUpgradePolicy().maxBatchInstancePercent());
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void testPoolWithSecurityProfileAndOSDisk() throws Exception {
+
+        String poolId = getStringIdWithUserNamePrefix("SecurityProfile");
+
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imageReference = new ImageReference()
+                .withPublisher("Canonical")
+                .withOffer("0001-com-ubuntu-server-jammy")
+                .withSku("22_04-lts");
+
+            SecurityProfile securityProfile = new SecurityProfile()
+                .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)
+                .withEncryptionAtHost(true)
+                .withUefiSettings(new UefiSettings()
+                    .withSecureBootEnabled(true)
+                    .withVTpmEnabled(true));
+
+            ManagedDisk managedDisk = new ManagedDisk()
+                .withStorageAccountType(StorageAccountType.STANDARD_LRS);
+
+            OSDisk osDisk = new OSDisk()
+                .withCaching(CachingType.READ_WRITE)
+                .withManagedDisk(managedDisk)
+                .withDiskSizeGB(50)
+                .withWriteAcceleratorEnabled(true);
+
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration()
+                .withImageReference(imageReference)
+                .withNodeAgentSKUId("batch.node.ubuntu 22.04")
+                .withSecurityProfile(securityProfile)
+                .withOsDisk(osDisk);
+
+            PoolAddParameter poolAddParameter = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize("STANDARD_D2S_V3")
+                .withVirtualMachineConfiguration(vmConfiguration)
+                .withTargetDedicatedNodes(0);
+
+            batchClient.poolOperations().createPool(poolAddParameter);
+        }
+        try {
+            CloudPool pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertNotNull(pool);
+            SecurityProfile sp = pool.virtualMachineConfiguration().securityProfile();
+            Assert.assertEquals(SecurityTypes.TRUSTED_LAUNCH, sp.securityType());
+            Assert.assertTrue(sp.encryptionAtHost());
+            Assert.assertTrue(sp.uefiSettings().secureBootEnabled());
+            Assert.assertTrue(sp.uefiSettings().vTpmEnabled());
+
+            OSDisk disk = pool.virtualMachineConfiguration().osDisk();
+            Assert.assertEquals("readwrite", pool.virtualMachineConfiguration().osDisk().caching().toString().toLowerCase());
+
+            Assert.assertEquals(StorageAccountType.STANDARD_LRS, disk.managedDisk().storageAccountType());
+            Assert.assertEquals(Integer.valueOf(50), disk.diskSizeGB());
+            Assert.assertTrue(disk.writeAcceleratorEnabled());
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void canCreatePoolWithConfidentialVM() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("ConfidentialVMPool");
+
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imageReference = new ImageReference()
+                .withPublisher("Canonical")
+                .withOffer("0001-com-ubuntu-server-jammy")
+                .withSku("22_04-lts");
+
+            SecurityProfile securityProfile = new SecurityProfile()
+                .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)
+                .withEncryptionAtHost(true)
+                .withUefiSettings(new UefiSettings()
+                    .withSecureBootEnabled(true)
+                    .withVTpmEnabled(true));
+
+            VMDiskSecurityProfile diskSecurityProfile = new VMDiskSecurityProfile()
+                .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+
+            ManagedDisk managedDisk = new ManagedDisk()
+                .withSecurityProfile(diskSecurityProfile);
+
+            OSDisk osDisk = new OSDisk()
+                .withManagedDisk(managedDisk);
+
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration()
+                .withImageReference(imageReference)
+                .withNodeAgentSKUId("batch.node.ubuntu 22.04")
+                .withSecurityProfile(securityProfile)
+                .withOsDisk(osDisk);
+
+            PoolAddParameter poolAddParameter = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize("STANDARD_D2S_V3")
+                .withVirtualMachineConfiguration(vmConfiguration)
+                .withTargetDedicatedNodes(0);
+
+            batchClient.poolOperations().createPool(poolAddParameter);
+        }
+
+        try {
+            CloudPool pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertNotNull(pool);
+
+            SecurityProfile sp = pool.virtualMachineConfiguration().securityProfile();
+            Assert.assertEquals(SecurityTypes.CONFIDENTIAL_VM, sp.securityType());
+            Assert.assertTrue(sp.encryptionAtHost());
+            Assert.assertTrue(sp.uefiSettings().secureBootEnabled());
+            Assert.assertTrue(sp.uefiSettings().vTpmEnabled());
+
+            OSDisk disk = pool.virtualMachineConfiguration().osDisk();
+            Assert.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY, disk.managedDisk().securityProfile().securityEncryptionType());
+
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void canDeallocateAndStartComputeNode() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("-deallocateStartNodePool");
+
+        // Create a pool with 1 Small VM
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
+        int POOL_VM_COUNT = 1;
+
+        // Check if the pool exists, if not, create it
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imgRef = new ImageReference()
+                .withPublisher("Canonical")
+                .withOffer("UbuntuServer")
+                .withSku("18.04-LTS")
+                .withVersion("latest");
+
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration()
+                .withNodeAgentSKUId("batch.node.ubuntu 18.04")
+                .withImageReference(imgRef);
+
+            PoolAddParameter addParameter = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize(POOL_VM_SIZE)
+                .withTargetDedicatedNodes(POOL_VM_COUNT)
+                .withVirtualMachineConfiguration(configuration);
+
+            batchClient.poolOperations().createPool(addParameter);
+        }
+
+        try {
+            // Wait for the pool to be steady and nodes to be idle
+            CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000);
+            Assert.assertNotNull(pool);  // Assert that pool is not null
+            Assert.assertEquals(AllocationState.STEADY, pool.allocationState());  // Ensure pool is steady
+
+            List<ComputeNode> nodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
+            Assert.assertFalse(nodes.isEmpty());  // Assert that there is at least one compute node
+
+            String nodeId = nodes.get(0).id();
+            ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
+
+            // Deallocate the node using the compute node operations
+            batchClient.computeNodeOperations().deallocateComputeNode(poolId, nodeId, ComputeNodeDeallocateOption.TERMINATE);
+
+            // Wait until the node is deallocated
+            boolean isDeallocated = false;
+            while (!isDeallocated) {
+                computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
+                if (computeNode.state() == ComputeNodeState.DEALLOCATED) {
+                    isDeallocated = true;
+                } else {
+                    threadSleepInRecordMode(15 * 1000);
+                }
+            }
+            Assert.assertEquals(ComputeNodeState.DEALLOCATED, computeNode.state());  // Assert that node is deallocated
+
+            // Start the node again using compute node operations
+            batchClient.computeNodeOperations().startComputeNode(poolId, nodeId);
+
+            // Wait until the node is idle again
+            boolean isIdle = false;
+            while (!isIdle) {
+                computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
+                if (computeNode.state() == ComputeNodeState.IDLE) {
+                    isIdle = true;
+                } else {
+                    threadSleepInRecordMode(15 * 1000);
+                }
+            }
+            Assert.assertEquals(ComputeNodeState.IDLE, computeNode.state());  // Assert the node is idle again
+
+        } finally {
+            // Clean up
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);

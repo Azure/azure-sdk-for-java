@@ -22,7 +22,8 @@ public class OpenTelemetryTracerProviderTests {
 
     @Test
     public void invalidParams() {
-        assertThrows(NullPointerException.class, () -> TracerProvider.getDefaultProvider().createTracer(null, null, null, null));
+        assertThrows(NullPointerException.class,
+            () -> TracerProvider.getDefaultProvider().createTracer(null, null, null, null));
     }
 
     @Test

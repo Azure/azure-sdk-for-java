@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryDisplay;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryForProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Available operation details. */
+/**
+ * Available operation details.
+ */
 @Fluent
-public final class ClientDiscoveryValueForSingleApiInner {
+public final class ClientDiscoveryValueForSingleApiInner
+    implements JsonSerializable<ClientDiscoveryValueForSingleApiInner> {
     /*
      * Name of the Operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Contains the localized display information for this particular operation
      */
-    @JsonProperty(value = "display")
     private ClientDiscoveryDisplay display;
 
     /*
      * The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * ShoeBox properties for the given operation.
      */
-    @JsonProperty(value = "properties")
     private ClientDiscoveryForProperties properties;
 
-    /** Creates an instance of ClientDiscoveryValueForSingleApiInner class. */
+    /**
+     * Creates an instance of ClientDiscoveryValueForSingleApiInner class.
+     */
     public ClientDiscoveryValueForSingleApiInner() {
     }
 
     /**
      * Get the name property: Name of the Operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +56,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the name property: Name of the Operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -62,7 +67,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Get the display property: Contains the localized display information for this particular operation.
-     *
+     * 
      * @return the display value.
      */
     public ClientDiscoveryDisplay display() {
@@ -71,7 +76,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the display property: Contains the localized display information for this particular operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -83,7 +88,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
     /**
      * Get the origin property: The intended executor of the operation;governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -93,7 +98,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
     /**
      * Set the origin property: The intended executor of the operation;governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -104,7 +109,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Get the properties property: ShoeBox properties for the given operation.
-     *
+     * 
      * @return the properties value.
      */
     public ClientDiscoveryForProperties properties() {
@@ -113,7 +118,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the properties property: ShoeBox properties for the given operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -124,7 +129,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -134,5 +139,52 @@ public final class ClientDiscoveryValueForSingleApiInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientDiscoveryValueForSingleApiInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientDiscoveryValueForSingleApiInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientDiscoveryValueForSingleApiInner.
+     */
+    public static ClientDiscoveryValueForSingleApiInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientDiscoveryValueForSingleApiInner deserializedClientDiscoveryValueForSingleApiInner
+                = new ClientDiscoveryValueForSingleApiInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.display = ClientDiscoveryDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.properties
+                        = ClientDiscoveryForProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientDiscoveryValueForSingleApiInner;
+        });
     }
 }

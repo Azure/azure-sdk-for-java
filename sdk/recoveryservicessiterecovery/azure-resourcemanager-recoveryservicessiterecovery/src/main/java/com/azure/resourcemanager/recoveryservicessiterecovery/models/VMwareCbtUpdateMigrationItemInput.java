@@ -5,130 +5,127 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VMwareCbt specific update migration item input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
+/**
+ * VMwareCbt specific update migration item input.
+ */
 @Fluent
 public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * The target VM name.
      */
-    @JsonProperty(value = "targetVmName")
     private String targetVmName;
 
     /*
      * The target VM size.
      */
-    @JsonProperty(value = "targetVmSize")
     private String targetVmSize;
 
     /*
      * The target resource group ARM Id.
      */
-    @JsonProperty(value = "targetResourceGroupId")
     private String targetResourceGroupId;
 
     /*
      * The target availability set ARM Id.
      */
-    @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target proximity placement group ARM Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * The target boot diagnostics storage account ARM Id.
      */
-    @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
     private String targetBootDiagnosticsStorageAccountId;
 
     /*
      * The target network ARM Id.
      */
-    @JsonProperty(value = "targetNetworkId")
     private String targetNetworkId;
 
     /*
      * The test network ARM Id.
      */
-    @JsonProperty(value = "testNetworkId")
     private String testNetworkId;
 
     /*
      * The list of NIC details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMwareCbtNicInput> vmNics;
 
     /*
      * The list of disk update properties.
      */
-    @JsonProperty(value = "vmDisks")
     private List<VMwareCbtUpdateDiskInput> vmDisks;
 
     /*
      * The license type.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * The SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
      * A value indicating whether auto resync is to be done.
      */
-    @JsonProperty(value = "performAutoResync")
     private String performAutoResync;
 
     /*
      * The target VM tags.
      */
-    @JsonProperty(value = "targetVmTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetVmTags;
 
     /*
      * The tags for the target disks.
      */
-    @JsonProperty(value = "targetDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetDiskTags;
 
     /*
      * The tags for the target NICs.
      */
-    @JsonProperty(value = "targetNicTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
-    /** Creates an instance of VMwareCbtUpdateMigrationItemInput class. */
+    /**
+     * Creates an instance of VMwareCbtUpdateMigrationItemInput class.
+     */
     public VMwareCbtUpdateMigrationItemInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the targetVmName property: The target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -137,7 +134,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetVmName property: The target VM name.
-     *
+     * 
      * @param targetVmName the targetVmName value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -148,7 +145,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -157,7 +154,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -168,7 +165,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetResourceGroupId property: The target resource group ARM Id.
-     *
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -177,7 +174,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetResourceGroupId property: The target resource group ARM Id.
-     *
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -188,7 +185,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set ARM Id.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -197,7 +194,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set ARM Id.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -208,7 +205,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -217,7 +214,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -228,7 +225,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group ARM Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -237,19 +234,19 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group ARM Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
-    public VMwareCbtUpdateMigrationItemInput withTargetProximityPlacementGroupId(
-        String targetProximityPlacementGroupId) {
+    public VMwareCbtUpdateMigrationItemInput
+        withTargetProximityPlacementGroupId(String targetProximityPlacementGroupId) {
         this.targetProximityPlacementGroupId = targetProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @return the targetBootDiagnosticsStorageAccountId value.
      */
     public String targetBootDiagnosticsStorageAccountId() {
@@ -258,19 +255,19 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @param targetBootDiagnosticsStorageAccountId the targetBootDiagnosticsStorageAccountId value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
-    public VMwareCbtUpdateMigrationItemInput withTargetBootDiagnosticsStorageAccountId(
-        String targetBootDiagnosticsStorageAccountId) {
+    public VMwareCbtUpdateMigrationItemInput
+        withTargetBootDiagnosticsStorageAccountId(String targetBootDiagnosticsStorageAccountId) {
         this.targetBootDiagnosticsStorageAccountId = targetBootDiagnosticsStorageAccountId;
         return this;
     }
 
     /**
      * Get the targetNetworkId property: The target network ARM Id.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -279,7 +276,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetNetworkId property: The target network ARM Id.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -290,7 +287,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the testNetworkId property: The test network ARM Id.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -299,7 +296,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the testNetworkId property: The test network ARM Id.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -310,7 +307,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the vmNics property: The list of NIC details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMwareCbtNicInput> vmNics() {
@@ -319,7 +316,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the vmNics property: The list of NIC details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -330,7 +327,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the vmDisks property: The list of disk update properties.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<VMwareCbtUpdateDiskInput> vmDisks() {
@@ -339,7 +336,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the vmDisks property: The list of disk update properties.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -350,7 +347,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the licenseType property: The license type.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -359,7 +356,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the licenseType property: The license type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -370,7 +367,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public SqlServerLicenseType sqlServerLicenseType() {
@@ -379,7 +376,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -390,7 +387,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the performAutoResync property: A value indicating whether auto resync is to be done.
-     *
+     * 
      * @return the performAutoResync value.
      */
     public String performAutoResync() {
@@ -399,7 +396,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the performAutoResync property: A value indicating whether auto resync is to be done.
-     *
+     * 
      * @param performAutoResync the performAutoResync value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -410,7 +407,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -419,7 +416,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -430,7 +427,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetDiskTags property: The tags for the target disks.
-     *
+     * 
      * @return the targetDiskTags value.
      */
     public Map<String, String> targetDiskTags() {
@@ -439,7 +436,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetDiskTags property: The tags for the target disks.
-     *
+     * 
      * @param targetDiskTags the targetDiskTags value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -450,7 +447,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -459,7 +456,7 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the VMwareCbtUpdateMigrationItemInput object itself.
      */
@@ -470,17 +467,116 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
         }
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("targetVmName", this.targetVmName);
+        jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
+        jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
+        jsonWriter.writeStringField("targetAvailabilitySetId", this.targetAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("targetBootDiagnosticsStorageAccountId",
+            this.targetBootDiagnosticsStorageAccountId);
+        jsonWriter.writeStringField("targetNetworkId", this.targetNetworkId);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("performAutoResync", this.performAutoResync);
+        jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetDiskTags", this.targetDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtUpdateMigrationItemInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtUpdateMigrationItemInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareCbtUpdateMigrationItemInput.
+     */
+    public static VMwareCbtUpdateMigrationItemInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtUpdateMigrationItemInput deserializedVMwareCbtUpdateMigrationItemInput
+                = new VMwareCbtUpdateMigrationItemInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.instanceType = reader.getString();
+                } else if ("targetVmName".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetVmName = reader.getString();
+                } else if ("targetVmSize".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetVmSize = reader.getString();
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetResourceGroupId = reader.getString();
+                } else if ("targetAvailabilitySetId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetAvailabilityZone = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetProximityPlacementGroupId = reader.getString();
+                } else if ("targetBootDiagnosticsStorageAccountId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetBootDiagnosticsStorageAccountId
+                        = reader.getString();
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetNetworkId = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.testNetworkId = reader.getString();
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMwareCbtNicInput> vmNics = reader.readArray(reader1 -> VMwareCbtNicInput.fromJson(reader1));
+                    deserializedVMwareCbtUpdateMigrationItemInput.vmNics = vmNics;
+                } else if ("vmDisks".equals(fieldName)) {
+                    List<VMwareCbtUpdateDiskInput> vmDisks
+                        = reader.readArray(reader1 -> VMwareCbtUpdateDiskInput.fromJson(reader1));
+                    deserializedVMwareCbtUpdateMigrationItemInput.vmDisks = vmDisks;
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.licenseType
+                        = LicenseType.fromString(reader.getString());
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("performAutoResync".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.performAutoResync = reader.getString();
+                } else if ("targetVmTags".equals(fieldName)) {
+                    Map<String, String> targetVmTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetVmTags = targetVmTags;
+                } else if ("targetDiskTags".equals(fieldName)) {
+                    Map<String, String> targetDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetDiskTags = targetDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtUpdateMigrationItemInput.targetNicTags = targetNicTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtUpdateMigrationItemInput;
+        });
     }
 }

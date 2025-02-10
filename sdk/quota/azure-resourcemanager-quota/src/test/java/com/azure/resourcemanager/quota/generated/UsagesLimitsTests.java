@@ -18,13 +18,13 @@ public final class UsagesLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesLimits model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"usages\":{\"value\":86980171,\"usagesType\":\"Individual\"},\"unit\":\"mpoyfd\",\"name\":{\"value\":\"gknygjofjddeqs\",\"localizedValue\":\"eupewnwreitjz\"},\"resourceType\":\"lusarh\",\"quotaPeriod\":\"fcqhsmyurkd\",\"isQuotaApplicable\":false,\"properties\":\"datahe\"},\"id\":\"uksjtxukcdmp\",\"name\":\"rcryuanzwuxzdxta\",\"type\":\"rlhm\"},{\"properties\":{\"usages\":{\"value\":1724248822,\"usagesType\":\"Individual\"},\"unit\":\"obmtukk\",\"name\":{\"value\":\"rtihfxtijbpz\",\"localizedValue\":\"nwzsymg\"},\"resourceType\":\"uf\",\"quotaPeriod\":\"zk\",\"isQuotaApplicable\":true,\"properties\":\"dataihanuf\"},\"id\":\"fcbjysagithxqha\",\"name\":\"ifpikxwczby\",\"type\":\"cnpqxuhivyqniwby\"}],\"nextLink\":\"k\"}")
+            "{\"value\":[{\"properties\":{\"usages\":{\"value\":682758161,\"usagesType\":\"Combined\"},\"unit\":\"zjuqkhrsaj\",\"name\":{\"value\":\"uo\",\"localizedValue\":\"skghsauuimj\"},\"resourceType\":\"xieduugidyjrr\",\"quotaPeriod\":\"y\",\"isQuotaApplicable\":true,\"properties\":\"datae\"},\"id\":\"csonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"},{\"properties\":{\"usages\":{\"value\":635098272,\"usagesType\":\"Combined\"},\"unit\":\"faxkffeii\",\"name\":{\"value\":\"vmezy\",\"localizedValue\":\"hxmzsbbzoggig\"},\"resourceType\":\"wburvjxxjnspydpt\",\"quotaPeriod\":\"enkouknvudw\",\"isQuotaApplicable\":true,\"properties\":\"databldngkpoc\"},\"id\":\"pazyxoegukg\",\"name\":\"npiucgygevqznty\",\"type\":\"mrbpizcdrqj\"},{\"properties\":{\"usages\":{\"value\":1305658178,\"usagesType\":\"Individual\"},\"unit\":\"yhxdeoejzicwi\",\"name\":{\"value\":\"ttgzfbis\",\"localizedValue\":\"bkh\"},\"resourceType\":\"deyeamdphagalpbu\",\"quotaPeriod\":\"gipwhonowkg\",\"isQuotaApplicable\":true,\"properties\":\"datankixzbinj\"},\"id\":\"pu\",\"name\":\"tmryw\",\"type\":\"uzoqft\"}],\"nextLink\":\"qzrnkcqvyxlwhz\"}")
             .toObject(UsagesLimits.class);
-        Assertions.assertEquals(86980171, model.value().get(0).properties().usages().value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.value().get(0).properties().usages().usagesType());
-        Assertions.assertEquals("gknygjofjddeqs", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("lusarh", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("k", model.nextLink());
+        Assertions.assertEquals(682758161, model.value().get(0).properties().usages().value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.value().get(0).properties().usages().usagesType());
+        Assertions.assertEquals("uo", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("xieduugidyjrr", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("qzrnkcqvyxlwhz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,22 +34,31 @@ public final class UsagesLimitsTests {
                 .withValue(
                     Arrays
                         .asList(
+                            new CurrentUsagesBaseInner().withProperties(
+                                new UsagesProperties()
+                                    .withUsages(
+                                        new UsagesObject().withValue(682758161).withUsagesType(UsagesTypes.COMBINED))
+                                    .withName(new ResourceName().withValue("uo"))
+                                    .withResourceType("xieduugidyjrr")
+                                    .withProperties("datae")),
                             new CurrentUsagesBaseInner().withProperties(new UsagesProperties()
                                 .withUsages(
-                                    new UsagesObject().withValue(86980171).withUsagesType(UsagesTypes.INDIVIDUAL))
-                                .withName(new ResourceName().withValue("gknygjofjddeqs")).withResourceType("lusarh")
-                                .withProperties("datahe")),
+                                    new UsagesObject().withValue(635098272).withUsagesType(UsagesTypes.COMBINED))
+                                .withName(new ResourceName().withValue("vmezy"))
+                                .withResourceType("wburvjxxjnspydpt")
+                                .withProperties("databldngkpoc")),
                             new CurrentUsagesBaseInner().withProperties(new UsagesProperties()
                                 .withUsages(
-                                    new UsagesObject().withValue(1724248822).withUsagesType(UsagesTypes.INDIVIDUAL))
-                                .withName(new ResourceName().withValue("rtihfxtijbpz")).withResourceType("uf")
-                                .withProperties("dataihanuf"))))
-                .withNextLink("k");
+                                    new UsagesObject().withValue(1305658178).withUsagesType(UsagesTypes.INDIVIDUAL))
+                                .withName(new ResourceName().withValue("ttgzfbis"))
+                                .withResourceType("deyeamdphagalpbu")
+                                .withProperties("datankixzbinj"))))
+                .withNextLink("qzrnkcqvyxlwhz");
         model = BinaryData.fromObject(model).toObject(UsagesLimits.class);
-        Assertions.assertEquals(86980171, model.value().get(0).properties().usages().value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.value().get(0).properties().usages().usagesType());
-        Assertions.assertEquals("gknygjofjddeqs", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("lusarh", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("k", model.nextLink());
+        Assertions.assertEquals(682758161, model.value().get(0).properties().usages().value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.value().get(0).properties().usages().usagesType());
+        Assertions.assertEquals("uo", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("xieduugidyjrr", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("qzrnkcqvyxlwhz", model.nextLink());
     }
 }

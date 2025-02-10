@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Schedule model =
-            BinaryData
-                .fromString(
-                    "{\"startTime\":\"zbaliourqha\",\"endTime\":\"auhashsfwx\",\"count\":10004909,\"days\":[\"Tuesday\",\"Wednesday\"]}")
-                .toObject(Schedule.class);
-        Assertions.assertEquals("zbaliourqha", model.startTime());
-        Assertions.assertEquals("auhashsfwx", model.endTime());
-        Assertions.assertEquals(10004909, model.count());
-        Assertions.assertEquals(ScheduleDay.TUESDAY, model.days().get(0));
+        Schedule model = BinaryData.fromString(
+            "{\"startTime\":\"znfqqnvwpmqtar\",\"endTime\":\"oujmkcjhwqytj\",\"count\":734102755,\"days\":[\"Saturday\"]}")
+            .toObject(Schedule.class);
+        Assertions.assertEquals("znfqqnvwpmqtar", model.startTime());
+        Assertions.assertEquals("oujmkcjhwqytj", model.endTime());
+        Assertions.assertEquals(734102755, model.count());
+        Assertions.assertEquals(ScheduleDay.SATURDAY, model.days().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schedule model =
-            new Schedule()
-                .withStartTime("zbaliourqha")
-                .withEndTime("auhashsfwx")
-                .withCount(10004909)
-                .withDays(Arrays.asList(ScheduleDay.TUESDAY, ScheduleDay.WEDNESDAY));
+        Schedule model = new Schedule().withStartTime("znfqqnvwpmqtar")
+            .withEndTime("oujmkcjhwqytj")
+            .withCount(734102755)
+            .withDays(Arrays.asList(ScheduleDay.SATURDAY));
         model = BinaryData.fromObject(model).toObject(Schedule.class);
-        Assertions.assertEquals("zbaliourqha", model.startTime());
-        Assertions.assertEquals("auhashsfwx", model.endTime());
-        Assertions.assertEquals(10004909, model.count());
-        Assertions.assertEquals(ScheduleDay.TUESDAY, model.days().get(0));
+        Assertions.assertEquals("znfqqnvwpmqtar", model.startTime());
+        Assertions.assertEquals("oujmkcjhwqytj", model.endTime());
+        Assertions.assertEquals(734102755, model.count());
+        Assertions.assertEquals(ScheduleDay.SATURDAY, model.days().get(0));
     }
 }

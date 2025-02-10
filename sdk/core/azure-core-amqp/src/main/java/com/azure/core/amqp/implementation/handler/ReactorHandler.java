@@ -44,8 +44,6 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorFinal(Event e) {
-        logger.atInfo()
-            .addKeyValue("event", e)
-            .log("reactor.onReactorFinal.");
+        logger.atInfo().addKeyValue("event", e).log("reactor.onReactorFinal.");
     }
 }

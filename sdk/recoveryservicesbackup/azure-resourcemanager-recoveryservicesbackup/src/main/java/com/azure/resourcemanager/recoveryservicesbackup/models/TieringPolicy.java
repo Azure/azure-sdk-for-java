@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Tiering Policy for a target tier. If the policy is not specified for a given target tier, service retains the
- * existing configured tiering policy for that tier.
+ * Tiering Policy for a target tier.
+ * If the policy is not specified for a given target tier, service retains the existing configured tiering policy for
+ * that tier.
  */
 @Fluent
-public final class TieringPolicy {
+public final class TieringPolicy implements JsonSerializable<TieringPolicy> {
     /*
      * Tiering Mode to control automatic tiering of recovery points. Supported values are:
      * 1. TierRecommended: Tier all recovery points recommended to be tiered
      * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
      * 3. DoNotTier: Do not tier any recovery points
      */
-    @JsonProperty(value = "tieringMode")
     private TieringMode tieringMode;
 
     /*
      * Number of days/weeks/months/years to retain backups in current tier before tiering.
      * Used only if TieringMode is set to TierAfter
      */
-    @JsonProperty(value = "duration")
     private Integer duration;
 
     /*
      * Retention duration type: days/weeks/months/years
      * Used only if TieringMode is set to TierAfter
      */
-    @JsonProperty(value = "durationType")
     private RetentionDurationType durationType;
 
-    /** Creates an instance of TieringPolicy class. */
+    /**
+     * Creates an instance of TieringPolicy class.
+     */
     public TieringPolicy() {
     }
 
     /**
      * Get the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values are:
-     * 1. TierRecommended: Tier all recovery points recommended to be tiered 2. TierAfter: Tier all recovery points
-     * after a fixed period, as specified in duration + durationType below. 3. DoNotTier: Do not tier any recovery
-     * points.
-     *
+     * 1. TierRecommended: Tier all recovery points recommended to be tiered
+     * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+     * 3. DoNotTier: Do not tier any recovery points.
+     * 
      * @return the tieringMode value.
      */
     public TieringMode tieringMode() {
@@ -54,10 +58,10 @@ public final class TieringPolicy {
 
     /**
      * Set the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values are:
-     * 1. TierRecommended: Tier all recovery points recommended to be tiered 2. TierAfter: Tier all recovery points
-     * after a fixed period, as specified in duration + durationType below. 3. DoNotTier: Do not tier any recovery
-     * points.
-     *
+     * 1. TierRecommended: Tier all recovery points recommended to be tiered
+     * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+     * 3. DoNotTier: Do not tier any recovery points.
+     * 
      * @param tieringMode the tieringMode value to set.
      * @return the TieringPolicy object itself.
      */
@@ -69,7 +73,7 @@ public final class TieringPolicy {
     /**
      * Get the duration property: Number of days/weeks/months/years to retain backups in current tier before tiering.
      * Used only if TieringMode is set to TierAfter.
-     *
+     * 
      * @return the duration value.
      */
     public Integer duration() {
@@ -79,7 +83,7 @@ public final class TieringPolicy {
     /**
      * Set the duration property: Number of days/weeks/months/years to retain backups in current tier before tiering.
      * Used only if TieringMode is set to TierAfter.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the TieringPolicy object itself.
      */
@@ -89,9 +93,9 @@ public final class TieringPolicy {
     }
 
     /**
-     * Get the durationType property: Retention duration type: days/weeks/months/years Used only if TieringMode is set
-     * to TierAfter.
-     *
+     * Get the durationType property: Retention duration type: days/weeks/months/years
+     * Used only if TieringMode is set to TierAfter.
+     * 
      * @return the durationType value.
      */
     public RetentionDurationType durationType() {
@@ -99,9 +103,9 @@ public final class TieringPolicy {
     }
 
     /**
-     * Set the durationType property: Retention duration type: days/weeks/months/years Used only if TieringMode is set
-     * to TierAfter.
-     *
+     * Set the durationType property: Retention duration type: days/weeks/months/years
+     * Used only if TieringMode is set to TierAfter.
+     * 
      * @param durationType the durationType value to set.
      * @return the TieringPolicy object itself.
      */
@@ -112,9 +116,51 @@ public final class TieringPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tieringMode", this.tieringMode == null ? null : this.tieringMode.toString());
+        jsonWriter.writeNumberField("duration", this.duration);
+        jsonWriter.writeStringField("durationType", this.durationType == null ? null : this.durationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TieringPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TieringPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TieringPolicy.
+     */
+    public static TieringPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TieringPolicy deserializedTieringPolicy = new TieringPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tieringMode".equals(fieldName)) {
+                    deserializedTieringPolicy.tieringMode = TieringMode.fromString(reader.getString());
+                } else if ("duration".equals(fieldName)) {
+                    deserializedTieringPolicy.duration = reader.getNullable(JsonReader::getInt);
+                } else if ("durationType".equals(fieldName)) {
+                    deserializedTieringPolicy.durationType = RetentionDurationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTieringPolicy;
+        });
     }
 }

@@ -7,35 +7,55 @@ package com.azure.resourcemanager.storagemover.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
 import com.azure.resourcemanager.storagemover.models.JobRunScanStatus;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The Job Run resource. */
+/**
+ * The Job Run resource.
+ */
 @Immutable
 public final class JobRunInner extends ProxyResource {
     /*
      * Job run properties.
      */
-    @JsonProperty(value = "properties")
     private JobRunProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of JobRunInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JobRunInner class.
+     */
     public JobRunInner() {
     }
 
     /**
      * Get the innerProperties property: Job run properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobRunProperties innerProperties() {
@@ -44,7 +64,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,8 +72,38 @@ public final class JobRunInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the status property: The state of the job execution.
-     *
+     * 
      * @return the status value.
      */
     public JobRunStatus status() {
@@ -62,7 +112,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the scanStatus property: The status of Agent's scanning of source.
-     *
+     * 
      * @return the scanStatus value.
      */
     public JobRunScanStatus scanStatus() {
@@ -71,7 +121,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the agentName property: Name of the Agent assigned to this run.
-     *
+     * 
      * @return the agentName value.
      */
     public String agentName() {
@@ -80,7 +130,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the agentResourceId property: Fully qualified resource id of the Agent assigned to this run.
-     *
+     * 
      * @return the agentResourceId value.
      */
     public String agentResourceId() {
@@ -89,7 +139,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the executionStartTime property: Start time of the run. Null if no Agent reported that the job has started.
-     *
+     * 
      * @return the executionStartTime value.
      */
     public OffsetDateTime executionStartTime() {
@@ -98,7 +148,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the executionEndTime property: End time of the run. Null if Agent has not reported that the job has ended.
-     *
+     * 
      * @return the executionEndTime value.
      */
     public OffsetDateTime executionEndTime() {
@@ -107,7 +157,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the lastStatusUpdate property: The last updated time of the Job Run.
-     *
+     * 
      * @return the lastStatusUpdate value.
      */
     public OffsetDateTime lastStatusUpdate() {
@@ -116,7 +166,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the itemsScanned property: Number of items scanned so far in source.
-     *
+     * 
      * @return the itemsScanned value.
      */
     public Long itemsScanned() {
@@ -126,7 +176,7 @@ public final class JobRunInner extends ProxyResource {
     /**
      * Get the itemsExcluded property: Number of items that will not be transferred, as they are excluded by user
      * configuration.
-     *
+     * 
      * @return the itemsExcluded value.
      */
     public Long itemsExcluded() {
@@ -136,7 +186,7 @@ public final class JobRunInner extends ProxyResource {
     /**
      * Get the itemsUnsupported property: Number of items that will not be transferred, as they are unsupported on
      * target.
-     *
+     * 
      * @return the itemsUnsupported value.
      */
     public Long itemsUnsupported() {
@@ -146,7 +196,7 @@ public final class JobRunInner extends ProxyResource {
     /**
      * Get the itemsNoTransferNeeded property: Number of items that will not be transferred, as they are already found
      * on target (e.g. mirror mode).
-     *
+     * 
      * @return the itemsNoTransferNeeded value.
      */
     public Long itemsNoTransferNeeded() {
@@ -155,7 +205,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the itemsFailed property: Number of items that were attempted to transfer and failed.
-     *
+     * 
      * @return the itemsFailed value.
      */
     public Long itemsFailed() {
@@ -164,7 +214,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the itemsTransferred property: Number of items successfully transferred to target.
-     *
+     * 
      * @return the itemsTransferred value.
      */
     public Long itemsTransferred() {
@@ -173,7 +223,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the bytesScanned property: Bytes of data scanned so far in source.
-     *
+     * 
      * @return the bytesScanned value.
      */
     public Long bytesScanned() {
@@ -183,7 +233,7 @@ public final class JobRunInner extends ProxyResource {
     /**
      * Get the bytesExcluded property: Bytes of data that will not be transferred, as they are excluded by user
      * configuration.
-     *
+     * 
      * @return the bytesExcluded value.
      */
     public Long bytesExcluded() {
@@ -192,7 +242,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the bytesUnsupported property: Bytes of data that will not be transferred, as they are unsupported on target.
-     *
+     * 
      * @return the bytesUnsupported value.
      */
     public Long bytesUnsupported() {
@@ -202,7 +252,7 @@ public final class JobRunInner extends ProxyResource {
     /**
      * Get the bytesNoTransferNeeded property: Bytes of data that will not be transferred, as they are already found on
      * target (e.g. mirror mode).
-     *
+     * 
      * @return the bytesNoTransferNeeded value.
      */
     public Long bytesNoTransferNeeded() {
@@ -211,7 +261,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the bytesFailed property: Bytes of data that were attempted to transfer and failed.
-     *
+     * 
      * @return the bytesFailed value.
      */
     public Long bytesFailed() {
@@ -220,7 +270,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the bytesTransferred property: Bytes of data successfully transferred to target.
-     *
+     * 
      * @return the bytesTransferred value.
      */
     public Long bytesTransferred() {
@@ -229,7 +279,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the sourceName property: Name of source Endpoint resource. This resource may no longer exist.
-     *
+     * 
      * @return the sourceName value.
      */
     public String sourceName() {
@@ -238,7 +288,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the sourceResourceId property: Fully qualified resource id of source Endpoint. This id may no longer exist.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -247,7 +297,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the sourceProperties property: Copy of source Endpoint resource's properties at time of Job Run creation.
-     *
+     * 
      * @return the sourceProperties value.
      */
     public Object sourceProperties() {
@@ -256,7 +306,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the targetName property: Name of target Endpoint resource. This resource may no longer exist.
-     *
+     * 
      * @return the targetName value.
      */
     public String targetName() {
@@ -265,7 +315,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the targetResourceId property: Fully qualified resource id of of Endpoint. This id may no longer exist.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -274,7 +324,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the targetProperties property: Copy of Endpoint resource's properties at time of Job Run creation.
-     *
+     * 
      * @return the targetProperties value.
      */
     public Object targetProperties() {
@@ -283,7 +333,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the jobDefinitionProperties property: Copy of parent Job Definition's properties at time of Job Run creation.
-     *
+     * 
      * @return the jobDefinitionProperties value.
      */
     public Object jobDefinitionProperties() {
@@ -292,7 +342,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the error property: Error details.
-     *
+     * 
      * @return the error value.
      */
     public JobRunError error() {
@@ -301,7 +351,7 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -310,12 +360,57 @@ public final class JobRunInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobRunInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobRunInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobRunInner.
+     */
+    public static JobRunInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobRunInner deserializedJobRunInner = new JobRunInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobRunInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobRunInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobRunInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobRunInner.innerProperties = JobRunProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedJobRunInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobRunInner;
+        });
     }
 }

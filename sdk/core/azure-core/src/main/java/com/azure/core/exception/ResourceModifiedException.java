@@ -6,7 +6,18 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * The exception thrown for invalid resource modification with status code of 4XX, typically 409 Conflict.
+ * <p>The {@code ResourceModifiedException} represents an exception thrown when an HTTP request attempts to modify a
+ * resource in a way that is not allowed.</p>
+ *
+ * <p>This exception is typically thrown when the service responds with a status code of 4XX, typically 409 Conflict.
+ * This can occur when trying to modify a resource that has been updated by another process, resulting in a conflict.</p>
+ *
+ * <p>This class also provides methods to get the {@link HttpResponse} that was received when the exception occurred and
+ * the deserialized HTTP response value.</p>
+ *
+ * @see com.azure.core.exception
+ * @see com.azure.core.exception.HttpResponseException
+ * @see com.azure.core.http.HttpResponse
  */
 public class ResourceModifiedException extends HttpResponseException {
 

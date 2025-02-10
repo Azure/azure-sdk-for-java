@@ -5,34 +5,39 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** storagePlanInformation. */
+/**
+ * storagePlanInformation.
+ */
 @Fluent
-public final class MicrosoftGraphStoragePlanInformation {
+public final class MicrosoftGraphStoragePlanInformation
+    implements JsonSerializable<MicrosoftGraphStoragePlanInformation> {
     /*
      * Indicates whether there are higher storage quota plans available. Read-only.
      */
-    @JsonProperty(value = "upgradeAvailable")
     private Boolean upgradeAvailable;
 
     /*
      * storagePlanInformation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphStoragePlanInformation class. */
+    /**
+     * Creates an instance of MicrosoftGraphStoragePlanInformation class.
+     */
     public MicrosoftGraphStoragePlanInformation() {
     }
 
     /**
      * Get the upgradeAvailable property: Indicates whether there are higher storage quota plans available. Read-only.
-     *
+     * 
      * @return the upgradeAvailable value.
      */
     public Boolean upgradeAvailable() {
@@ -41,7 +46,7 @@ public final class MicrosoftGraphStoragePlanInformation {
 
     /**
      * Set the upgradeAvailable property: Indicates whether there are higher storage quota plans available. Read-only.
-     *
+     * 
      * @param upgradeAvailable the upgradeAvailable value to set.
      * @return the MicrosoftGraphStoragePlanInformation object itself.
      */
@@ -52,17 +57,16 @@ public final class MicrosoftGraphStoragePlanInformation {
 
     /**
      * Get the additionalProperties property: storagePlanInformation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: storagePlanInformation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphStoragePlanInformation object itself.
      */
@@ -71,19 +75,60 @@ public final class MicrosoftGraphStoragePlanInformation {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("upgradeAvailable", this.upgradeAvailable);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphStoragePlanInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphStoragePlanInformation if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphStoragePlanInformation.
+     */
+    public static MicrosoftGraphStoragePlanInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphStoragePlanInformation deserializedMicrosoftGraphStoragePlanInformation
+                = new MicrosoftGraphStoragePlanInformation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeAvailable".equals(fieldName)) {
+                    deserializedMicrosoftGraphStoragePlanInformation.upgradeAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphStoragePlanInformation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphStoragePlanInformation;
+        });
     }
 }

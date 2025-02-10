@@ -6,28 +6,33 @@ package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Export an RDB file into a target database
- *
- * <p>Parameters for a Redis Enterprise export operation.
+ * 
+ * Parameters for a Redis Enterprise export operation.
  */
 @Fluent
-public final class ExportClusterParameters {
+public final class ExportClusterParameters implements JsonSerializable<ExportClusterParameters> {
     /*
      * SAS URI for the target directory to export to
      */
-    @JsonProperty(value = "sasUri", required = true)
     private String sasUri;
 
-    /** Creates an instance of ExportClusterParameters class. */
+    /**
+     * Creates an instance of ExportClusterParameters class.
+     */
     public ExportClusterParameters() {
     }
 
     /**
      * Get the sasUri property: SAS URI for the target directory to export to.
-     *
+     * 
      * @return the sasUri value.
      */
     public String sasUri() {
@@ -36,7 +41,7 @@ public final class ExportClusterParameters {
 
     /**
      * Set the sasUri property: SAS URI for the target directory to export to.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the ExportClusterParameters object itself.
      */
@@ -47,16 +52,52 @@ public final class ExportClusterParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sasUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sasUri in model ExportClusterParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sasUri in model ExportClusterParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExportClusterParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sasUri", this.sasUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportClusterParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportClusterParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportClusterParameters.
+     */
+    public static ExportClusterParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportClusterParameters deserializedExportClusterParameters = new ExportClusterParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasUri".equals(fieldName)) {
+                    deserializedExportClusterParameters.sasUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportClusterParameters;
+        });
+    }
 }

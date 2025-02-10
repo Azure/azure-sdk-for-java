@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
      * @param name a name to look for.
      * @return the corresponding DayOfWeek.
      */
-    @JsonCreator
     public static DayOfWeek fromString(String name) {
         return fromString(name, DayOfWeek.class);
     }

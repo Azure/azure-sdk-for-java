@@ -6,28 +6,45 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recovery plan InMage failover input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMage")
+/**
+ * Recovery plan InMage failover input.
+ */
 @Fluent
 public final class RecoveryPlanInMageFailoverInput extends RecoveryPlanProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMage";
+
+    /*
      * The recovery point type.
      */
-    @JsonProperty(value = "recoveryPointType", required = true)
     private RpInMageRecoveryPointType recoveryPointType;
 
-    /** Creates an instance of RecoveryPlanInMageFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanInMageFailoverInput class.
+     */
     public RecoveryPlanInMageFailoverInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public RpInMageRecoveryPointType recoveryPointType() {
@@ -36,7 +53,7 @@ public final class RecoveryPlanInMageFailoverInput extends RecoveryPlanProviderS
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPlanInMageFailoverInput object itself.
      */
@@ -47,19 +64,60 @@ public final class RecoveryPlanInMageFailoverInput extends RecoveryPlanProviderS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointType in model RecoveryPlanInMageFailoverInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointType in model RecoveryPlanInMageFailoverInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanInMageFailoverInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointType",
+            this.recoveryPointType == null ? null : this.recoveryPointType.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanInMageFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanInMageFailoverInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanInMageFailoverInput.
+     */
+    public static RecoveryPlanInMageFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanInMageFailoverInput deserializedRecoveryPlanInMageFailoverInput
+                = new RecoveryPlanInMageFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointType".equals(fieldName)) {
+                    deserializedRecoveryPlanInMageFailoverInput.recoveryPointType
+                        = RpInMageRecoveryPointType.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanInMageFailoverInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanInMageFailoverInput;
+        });
+    }
 }

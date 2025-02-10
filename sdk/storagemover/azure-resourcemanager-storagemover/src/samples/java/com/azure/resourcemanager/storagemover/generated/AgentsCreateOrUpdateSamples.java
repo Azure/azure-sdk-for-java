@@ -4,25 +4,94 @@
 
 package com.azure.resourcemanager.storagemover.generated;
 
-/** Samples for Agents CreateOrUpdate. */
+import com.azure.resourcemanager.storagemover.models.DayOfWeek;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.Time;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
+import com.azure.resourcemanager.storagemover.models.UploadLimitWeeklyRecurrence;
+import java.util.Arrays;
+
+/**
+ * Samples for Agents CreateOrUpdate.
+ */
 public final class AgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Agents_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/
+     * Agents_CreateOrUpdate_MaximumSet.json
      */
     /**
-     * Sample code: Agents_CreateOrUpdate.
-     *
+     * Sample code: Agents_CreateOrUpdate_MaximumSet.
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
-    public static void agentsCreateOrUpdate(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
-        manager
-            .agents()
+    public static void
+        agentsCreateOrUpdateMaximumSet(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.agents()
             .define("examples-agentName")
             .withExistingStorageMover("examples-rg", "examples-storageMoverName")
             .withArcResourceId(
                 "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.HybridCompute/machines/examples-hybridComputeName")
             .withArcVmUuid("3bb2c024-eba9-4d18-9e7a-1d772fcc5fe9")
             .withDescription("Example Agent Description")
+            .withUploadLimitSchedule(new UploadLimitSchedule().withWeeklyRecurrences(Arrays
+                .asList(new UploadLimitWeeklyRecurrence().withStartTime(new Time().withHour(9).withMinute(Minute.ZERO))
+                    .withEndTime(new Time().withHour(18).withMinute(Minute.THREE_ZERO))
+                    .withDays(Arrays.asList(DayOfWeek.MONDAY))
+                    .withLimitInMbps(2000))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/
+     * Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
+     */
+    /**
+     * Sample code: Agents_CreateOrUpdate_WithOvernightUploadLimitSchedule.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void agentsCreateOrUpdateWithOvernightUploadLimitSchedule(
+        com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.agents()
+            .define("examples-agentName")
+            .withExistingStorageMover("examples-rg", "examples-storageMoverName")
+            .withArcResourceId(
+                "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.HybridCompute/machines/examples-hybridComputeName")
+            .withArcVmUuid("3bb2c024-eba9-4d18-9e7a-1d772fcc5fe9")
+            .withUploadLimitSchedule(new UploadLimitSchedule().withWeeklyRecurrences(Arrays.asList(
+                new UploadLimitWeeklyRecurrence().withStartTime(new Time().withHour(18).withMinute(Minute.ZERO))
+                    .withEndTime(new Time().withHour(24).withMinute(Minute.ZERO))
+                    .withDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY))
+                    .withLimitInMbps(2000),
+                new UploadLimitWeeklyRecurrence().withStartTime(new Time().withHour(0).withMinute(Minute.ZERO))
+                    .withEndTime(new Time().withHour(9).withMinute(Minute.ZERO))
+                    .withDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY))
+                    .withLimitInMbps(2000))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/
+     * Agents_CreateOrUpdate_MinimumSet.json
+     */
+    /**
+     * Sample code: Agents_CreateOrUpdate_MinimumSet.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void
+        agentsCreateOrUpdateMinimumSet(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.agents()
+            .define("examples-agentName")
+            .withExistingStorageMover("examples-rg", "examples-storageMoverName")
+            .withArcResourceId(
+                "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.HybridCompute/machines/examples-hybridComputeName")
+            .withArcVmUuid("3bb2c024-eba9-4d18-9e7a-1d772fcc5fe9")
             .create();
     }
 }

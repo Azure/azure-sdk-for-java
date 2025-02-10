@@ -10,10 +10,8 @@ import com.azure.resourcemanager.sphere.fluent.models.CertificateChainResponseIn
 public final class CertificateChainResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateChainResponseInner model =
-            BinaryData
-                .fromString("{\"certificateChain\":\"uskcqvkocrcj\"}")
-                .toObject(CertificateChainResponseInner.class);
+        CertificateChainResponseInner model
+            = BinaryData.fromString("{\"certificateChain\":\"cph\"}").toObject(CertificateChainResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

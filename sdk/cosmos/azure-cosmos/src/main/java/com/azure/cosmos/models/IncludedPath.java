@@ -61,7 +61,10 @@ public final class IncludedPath {
      * @return the Included Path.
      */
     public IncludedPath setPath(String path) {
-        this.jsonSerializable.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(
+            Constants.Properties.PATH,
+            path
+        );
         return this;
     }
 
@@ -131,7 +134,10 @@ public final class IncludedPath {
                 index.populatePropertyBag();
             }
 
-            this.jsonSerializable.set(Constants.Properties.INDEXES, this.indexes);
+            this.jsonSerializable.set(
+                Constants.Properties.INDEXES,
+                this.indexes
+            );
         }
     }
 

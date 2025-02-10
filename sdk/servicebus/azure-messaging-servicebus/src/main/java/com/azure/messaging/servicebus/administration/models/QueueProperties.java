@@ -36,8 +36,7 @@ public final class QueueProperties {
         EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
             public QueueDescriptionImpl toImplementation(QueueProperties queue, List<AuthorizationRuleImpl> rules) {
-                final QueueDescriptionImpl description = new QueueDescriptionImpl()
-                    .setAccessedAt(queue.getAccessedAt())
+                final QueueDescriptionImpl description = new QueueDescriptionImpl().setAccessedAt(queue.getAccessedAt())
                     .setAutoDeleteOnIdle(queue.getAutoDeleteOnIdle())
                     .setCreatedAt(queue.getCreatedAt())
                     .setDeadLetteringOnMessageExpiration(queue.isDeadLetteringOnMessageExpiration())
@@ -92,7 +91,8 @@ public final class QueueProperties {
      */
     QueueProperties(QueueDescriptionImpl description) {
         this.description = description;
-        this.authorizationRules = description.getAuthorizationRules().stream()
+        this.authorizationRules = description.getAuthorizationRules()
+            .stream()
             .map(SharedAccessAuthorizationRule::new)
             .collect(Collectors.toList());
     }

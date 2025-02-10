@@ -5,31 +5,33 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties for a storage queue destination.
  */
 @Fluent
-public final class StorageQueueEventSubscriptionDestinationProperties {
+public final class StorageQueueEventSubscriptionDestinationProperties
+    implements JsonSerializable<StorageQueueEventSubscriptionDestinationProperties> {
     /*
      * The Azure Resource ID of the storage account that contains the queue that is the destination of an event
      * subscription.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The name of the Storage queue under a storage account that is the destination of an event subscription.
      */
-    @JsonProperty(value = "queueName")
     private String queueName;
 
     /*
      * Storage queue message time to live in seconds. This value cannot be zero or negative with the exception of using
      * -1 to indicate that the Time To Live of the message is Infinite.
      */
-    @JsonProperty(value = "queueMessageTimeToLiveInSeconds")
     private Long queueMessageTimeToLiveInSeconds;
 
     /**
@@ -113,5 +115,50 @@ public final class StorageQueueEventSubscriptionDestinationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("queueName", this.queueName);
+        jsonWriter.writeNumberField("queueMessageTimeToLiveInSeconds", this.queueMessageTimeToLiveInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageQueueEventSubscriptionDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageQueueEventSubscriptionDestinationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageQueueEventSubscriptionDestinationProperties.
+     */
+    public static StorageQueueEventSubscriptionDestinationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageQueueEventSubscriptionDestinationProperties deserializedStorageQueueEventSubscriptionDestinationProperties
+                = new StorageQueueEventSubscriptionDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedStorageQueueEventSubscriptionDestinationProperties.resourceId = reader.getString();
+                } else if ("queueName".equals(fieldName)) {
+                    deserializedStorageQueueEventSubscriptionDestinationProperties.queueName = reader.getString();
+                } else if ("queueMessageTimeToLiveInSeconds".equals(fieldName)) {
+                    deserializedStorageQueueEventSubscriptionDestinationProperties.queueMessageTimeToLiveInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageQueueEventSubscriptionDestinationProperties;
+        });
     }
 }

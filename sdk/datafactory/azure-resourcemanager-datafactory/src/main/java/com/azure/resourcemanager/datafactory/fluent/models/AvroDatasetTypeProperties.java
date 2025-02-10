@@ -6,30 +6,31 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Avro dataset properties.
  */
 @Fluent
-public final class AvroDatasetTypeProperties {
+public final class AvroDatasetTypeProperties implements JsonSerializable<AvroDatasetTypeProperties> {
     /*
      * The location of the avro storage.
      */
-    @JsonProperty(value = "location", required = true)
     private DatasetLocation location;
 
     /*
      * The data avroCompressionCodec. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "avroCompressionCodec")
     private Object avroCompressionCodec;
 
     /*
      * The avroCompressionLevel property.
      */
-    @JsonProperty(value = "avroCompressionLevel")
     private Integer avroCompressionLevel;
 
     /**
@@ -59,8 +60,8 @@ public final class AvroDatasetTypeProperties {
     }
 
     /**
-     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the avroCompressionCodec value.
      */
@@ -69,8 +70,8 @@ public final class AvroDatasetTypeProperties {
     }
 
     /**
-     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
      * 
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDatasetTypeProperties object itself.
@@ -107,12 +108,56 @@ public final class AvroDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model AvroDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model AvroDatasetTypeProperties"));
         } else {
             location().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AvroDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeUntypedField("avroCompressionCodec", this.avroCompressionCodec);
+        jsonWriter.writeNumberField("avroCompressionLevel", this.avroCompressionLevel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvroDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvroDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvroDatasetTypeProperties.
+     */
+    public static AvroDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvroDatasetTypeProperties deserializedAvroDatasetTypeProperties = new AvroDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedAvroDatasetTypeProperties.location = DatasetLocation.fromJson(reader);
+                } else if ("avroCompressionCodec".equals(fieldName)) {
+                    deserializedAvroDatasetTypeProperties.avroCompressionCodec = reader.readUntyped();
+                } else if ("avroCompressionLevel".equals(fieldName)) {
+                    deserializedAvroDatasetTypeProperties.avroCompressionLevel = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvroDatasetTypeProperties;
+        });
+    }
 }

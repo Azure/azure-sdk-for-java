@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventsOutOfOrderPolicy. */
+/**
+ * Indicates the policy to apply to events that arrive out of order in the input event stream.
+ */
 public final class EventsOutOfOrderPolicy extends ExpandableStringEnum<EventsOutOfOrderPolicy> {
-    /** Static value Adjust for EventsOutOfOrderPolicy. */
+    /**
+     * Static value Adjust for EventsOutOfOrderPolicy.
+     */
     public static final EventsOutOfOrderPolicy ADJUST = fromString("Adjust");
 
-    /** Static value Drop for EventsOutOfOrderPolicy. */
+    /**
+     * Static value Drop for EventsOutOfOrderPolicy.
+     */
     public static final EventsOutOfOrderPolicy DROP = fromString("Drop");
 
     /**
+     * Creates a new instance of EventsOutOfOrderPolicy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventsOutOfOrderPolicy() {
+    }
+
+    /**
      * Creates or finds a EventsOutOfOrderPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventsOutOfOrderPolicy.
      */
-    @JsonCreator
     public static EventsOutOfOrderPolicy fromString(String name) {
         return fromString(name, EventsOutOfOrderPolicy.class);
     }
 
-    /** @return known EventsOutOfOrderPolicy values. */
+    /**
+     * Gets known EventsOutOfOrderPolicy values.
+     * 
+     * @return known EventsOutOfOrderPolicy values.
+     */
     public static Collection<EventsOutOfOrderPolicy> values() {
         return values(EventsOutOfOrderPolicy.class);
     }

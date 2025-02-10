@@ -28,8 +28,11 @@ public final class FactoryRepoUpdateTests {
     public void testSerialize() throws Exception {
         FactoryRepoUpdate model = new FactoryRepoUpdate().withFactoryResourceId("qzbqjvsov")
             .withRepoConfiguration(new FactoryRepoConfiguration().withAccountName("okacspk")
-                .withRepositoryName("lhzdobp").withCollaborationBranch("jmflbvvnch").withRootFolder("kcciwwzjuqkhr")
-                .withLastCommitId("jiwkuofoskghsau").withDisablePublish(true));
+                .withRepositoryName("lhzdobp")
+                .withCollaborationBranch("jmflbvvnch")
+                .withRootFolder("kcciwwzjuqkhr")
+                .withLastCommitId("jiwkuofoskghsau")
+                .withDisablePublish(true));
         model = BinaryData.fromObject(model).toObject(FactoryRepoUpdate.class);
         Assertions.assertEquals("qzbqjvsov", model.factoryResourceId());
         Assertions.assertEquals("okacspk", model.repoConfiguration().accountName());

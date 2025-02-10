@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowInner;
 
-/** Resource collection API of Workflows. */
+/**
+ * Resource collection API of Workflows.
+ */
 public interface Workflows {
     /**
      * Gets a list of workflows by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows by subscription as paginated response with {@link PagedIterable}.
@@ -22,10 +24,10 @@ public interface Workflows {
 
     /**
      * Gets a list of workflows by subscription.
-     *
+     * 
      * @param top The number of items to be included in the result.
      * @param filter The filter to apply on the operation. Options for filters include: State, Trigger, and
-     *     ReferencedResourceId.
+     * ReferencedResourceId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +38,7 @@ public interface Workflows {
 
     /**
      * Gets a list of workflows by resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,11 +49,11 @@ public interface Workflows {
 
     /**
      * Gets a list of workflows by resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param top The number of items to be included in the result.
      * @param filter The filter to apply on the operation. Options for filters include: State, Trigger, and
-     *     ReferencedResourceId.
+     * ReferencedResourceId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,7 +64,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param context The context to associate with this operation.
@@ -75,7 +77,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface Workflows {
 
     /**
      * Updates a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param context The context to associate with this operation.
@@ -100,7 +102,7 @@ public interface Workflows {
 
     /**
      * Updates a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +114,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param context The context to associate with this operation.
@@ -125,7 +127,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +138,7 @@ public interface Workflows {
 
     /**
      * Disables a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param context The context to associate with this operation.
@@ -149,7 +151,7 @@ public interface Workflows {
 
     /**
      * Disables a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +162,7 @@ public interface Workflows {
 
     /**
      * Enables a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param context The context to associate with this operation.
@@ -173,7 +175,7 @@ public interface Workflows {
 
     /**
      * Enables a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,7 +186,7 @@ public interface Workflows {
 
     /**
      * Generates the upgraded definition for a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param parameters Parameters for generating an upgraded definition.
@@ -194,15 +196,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object along with {@link Response}.
      */
-    Response<Object> generateUpgradedDefinitionWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        GenerateUpgradedDefinitionParameters parameters,
-        Context context);
+    Response<Object> generateUpgradedDefinitionWithResponse(String resourceGroupName, String workflowName,
+        GenerateUpgradedDefinitionParameters parameters, Context context);
 
     /**
      * Generates the upgraded definition for a workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param parameters Parameters for generating an upgraded definition.
@@ -211,12 +210,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    Object generateUpgradedDefinition(
-        String resourceGroupName, String workflowName, GenerateUpgradedDefinitionParameters parameters);
+    Object generateUpgradedDefinition(String resourceGroupName, String workflowName,
+        GenerateUpgradedDefinitionParameters parameters);
 
     /**
      * Get the workflow callback Url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param listCallbackUrl Which callback url to list.
@@ -226,12 +225,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workflow callback Url along with {@link Response}.
      */
-    Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName, String workflowName, GetCallbackUrlParameters listCallbackUrl, Context context);
+    Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(String resourceGroupName, String workflowName,
+        GetCallbackUrlParameters listCallbackUrl, Context context);
 
     /**
      * Get the workflow callback Url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param listCallbackUrl Which callback url to list.
@@ -240,12 +239,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workflow callback Url.
      */
-    WorkflowTriggerCallbackUrl listCallbackUrl(
-        String resourceGroupName, String workflowName, GetCallbackUrlParameters listCallbackUrl);
+    WorkflowTriggerCallbackUrl listCallbackUrl(String resourceGroupName, String workflowName,
+        GetCallbackUrlParameters listCallbackUrl);
 
     /**
      * Gets an OpenAPI definition for the workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param context The context to associate with this operation.
@@ -258,7 +257,7 @@ public interface Workflows {
 
     /**
      * Gets an OpenAPI definition for the workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,7 +269,7 @@ public interface Workflows {
 
     /**
      * Moves an existing workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param move The workflow to move.
@@ -282,7 +281,7 @@ public interface Workflows {
 
     /**
      * Moves an existing workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param move The workflow to move.
@@ -295,7 +294,7 @@ public interface Workflows {
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -305,12 +304,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regenerateAccessKeyWithResponse(
-        String resourceGroupName, String workflowName, RegenerateActionParameter keyType, Context context);
+    Response<Void> regenerateAccessKeyWithResponse(String resourceGroupName, String workflowName,
+        RegenerateActionParameter keyType, Context context);
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -322,7 +321,7 @@ public interface Workflows {
 
     /**
      * Validates the workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -332,12 +331,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> validateByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, WorkflowInner validate, Context context);
+    Response<Void> validateByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        WorkflowInner validate, Context context);
 
     /**
      * Validates the workflow.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -349,7 +348,7 @@ public interface Workflows {
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param location The workflow location.
      * @param workflowName The workflow name.
@@ -360,12 +359,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> validateByLocationWithResponse(
-        String resourceGroupName, String location, String workflowName, WorkflowInner validate, Context context);
+    Response<Void> validateByLocationWithResponse(String resourceGroupName, String location, String workflowName,
+        WorkflowInner validate, Context context);
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param location The workflow location.
      * @param workflowName The workflow name.
@@ -378,7 +377,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -389,7 +388,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,7 +400,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -411,7 +410,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,7 +422,7 @@ public interface Workflows {
 
     /**
      * Begins definition for a new Workflow resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Workflow definition.
      */

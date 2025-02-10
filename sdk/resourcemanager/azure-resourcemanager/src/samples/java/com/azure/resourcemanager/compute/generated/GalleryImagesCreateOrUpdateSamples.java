@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 public final class GalleryImagesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImage_Create.json
      */
     /**
@@ -25,11 +25,18 @@ public final class GalleryImagesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateASimpleGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImages().createOrUpdate(
-            "myResourceGroup", "myGalleryName", "myGalleryImageName", new GalleryImageInner().withLocation("West US")
-                .withOsType(OperatingSystemTypes.WINDOWS).withOsState(OperatingSystemStateTypes.GENERALIZED)
-                .withHyperVGeneration(HyperVGeneration.V1).withIdentifier(new GalleryImageIdentifier()
-                    .withPublisher("myPublisherName").withOffer("myOfferName").withSku("mySkuName")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImages()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName",
+                new GalleryImageInner().withLocation("West US")
+                    .withOsType(OperatingSystemTypes.WINDOWS)
+                    .withOsState(OperatingSystemStateTypes.GENERALIZED)
+                    .withHyperVGeneration(HyperVGeneration.V1)
+                    .withIdentifier(new GalleryImageIdentifier().withPublisher("myPublisherName")
+                        .withOffer("myOfferName")
+                        .withSku("mySkuName")),
+                com.azure.core.util.Context.NONE);
     }
 }

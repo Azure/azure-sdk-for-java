@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class DatabaseAccountsFailoverPriorityChangeSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBDatabaseAccountFailoverPriorityChange.json
      */
     /**
@@ -23,11 +23,14 @@ public final class DatabaseAccountsFailoverPriorityChangeSamples {
      */
     public static void
         cosmosDBDatabaseAccountFailoverPriorityChange(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().failoverPriorityChange("rg1",
-            "ddb1-failover",
-            new FailoverPolicies().withFailoverPolicies(
-                Arrays.asList(new FailoverPolicy().withLocationName("eastus").withFailoverPriority(0),
-                    new FailoverPolicy().withLocationName("westus").withFailoverPriority(1))),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .failoverPriorityChange("rg1", "ddb1-failover",
+                new FailoverPolicies().withFailoverPolicies(
+                    Arrays.asList(new FailoverPolicy().withLocationName("eastus").withFailoverPriority(0),
+                        new FailoverPolicy().withLocationName("westus").withFailoverPriority(1))),
+                com.azure.core.util.Context.NONE);
     }
 }

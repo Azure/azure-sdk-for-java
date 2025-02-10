@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** How to authenticate users who access local diagnostics APIs. */
+/**
+ * How to authenticate users who access local diagnostics APIs.
+ */
 public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
-    /** Static value AAD for AuthenticationType. */
+    /**
+     * Static value AAD for AuthenticationType.
+     */
     public static final AuthenticationType AAD = fromString("AAD");
 
-    /** Static value Password for AuthenticationType. */
+    /**
+     * Static value Password for AuthenticationType.
+     */
     public static final AuthenticationType PASSWORD = fromString("Password");
 
     /**
      * Creates a new instance of AuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
 
     /**
      * Creates or finds a AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationType.
      */
-    @JsonCreator
     public static AuthenticationType fromString(String name) {
         return fromString(name, AuthenticationType.class);
     }
 
     /**
      * Gets known AuthenticationType values.
-     *
+     * 
      * @return known AuthenticationType values.
      */
     public static Collection<AuthenticationType> values() {

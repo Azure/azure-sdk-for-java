@@ -6,62 +6,52 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
+import com.azure.resourcemanager.frontdoor.models.HeaderActionType;
+import com.azure.resourcemanager.frontdoor.models.MatchProcessingBehavior;
 import com.azure.resourcemanager.frontdoor.models.RulesEngine;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.frontdoor.models.RulesEngineMatchVariable;
+import com.azure.resourcemanager.frontdoor.models.RulesEngineOperator;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RulesEnginesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceState\":\"Deleting\",\"rules\":[{\"name\":\"cnhz\",\"priority\":1513584029,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"jzcfyjzptwr\"},{\"headerActionType\":\"Delete\",\"headerName\":\"h\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"qinfszpyglqd\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"zralcxpjbyyps\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"qcjenkyhf\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"PostArgs\",\"rulesEngineOperator\":\"GreaterThan\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"Equal\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"LessThan\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestPath\",\"rulesEngineOperator\":\"IPMatch\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"pzqjhhhq\",\"priority\":663285814,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"cacoyvivbsiz\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"zlbscmnlziji\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"ehgmvflnwyv\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"QueryString\",\"rulesEngineOperator\":\"EndsWith\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"GreaterThanOrEqual\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"lylyfwxzutgqz\",\"priority\":1687298742,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"mupgxy\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"xabb\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestHeader\",\"rulesEngineOperator\":\"LessThanOrEqual\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"QueryString\",\"rulesEngineOperator\":\"LessThan\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"klqpx\",\"priority\":1851207538,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"e\"},{\"headerActionType\":\"Delete\",\"headerName\":\"wwnlzafwxudgnh\"},{\"headerActionType\":\"Append\",\"headerName\":\"okrtalvnb\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"emeluclv\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"jukyrdn\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestFilename\",\"rulesEngineOperator\":\"IPMatch\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"QueryString\",\"rulesEngineOperator\":\"Contains\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestFilename\",\"rulesEngineOperator\":\"Contains\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"IsMobile\",\"rulesEngineOperator\":\"Any\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Stop\"}]},\"id\":\"vzoqgyipemchgavs\",\"name\":\"zuejd\",\"type\":\"xptlghwzho\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[]},\"id\":\"zjb\",\"name\":\"yzsxjrkambtrne\",\"type\":\"vmnvu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        RulesEngine response = manager.rulesEngines()
+            .getWithResponse("mffjkutycyarn", "oohguabzoghkt", "pyc", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        RulesEngine response =
-            manager
-                .rulesEngines()
-                .getWithResponse("fmo", "uxrkjp", "dwxf", com.azure.core.util.Context.NONE)
-                .getValue();
+        Assertions.assertEquals("cnhz", response.rules().get(0).name());
+        Assertions.assertEquals(1513584029, response.rules().get(0).priority());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE,
+            response.rules().get(0).action().requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("jzcfyjzptwr",
+            response.rules().get(0).action().requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals(HeaderActionType.APPEND,
+            response.rules().get(0).action().responseHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("zralcxpjbyyps",
+            response.rules().get(0).action().responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals(RulesEngineMatchVariable.POST_ARGS,
+            response.rules().get(0).matchConditions().get(0).rulesEngineMatchVariable());
+        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN,
+            response.rules().get(0).matchConditions().get(0).rulesEngineOperator());
+        Assertions.assertEquals(MatchProcessingBehavior.STOP, response.rules().get(0).matchProcessingBehavior());
     }
 }

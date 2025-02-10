@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The WeeklySchedule model. */
+/**
+ * The WeeklySchedule model.
+ */
 @Fluent
-public final class WeeklySchedule {
+public final class WeeklySchedule implements JsonSerializable<WeeklySchedule> {
     /*
      * The scheduleRunDays property.
      */
-    @JsonProperty(value = "scheduleRunDays")
     private List<DayOfWeek> scheduleRunDays;
 
     /*
      * List of times of day this schedule has to be run.
      */
-    @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
 
-    /** Creates an instance of WeeklySchedule class. */
+    /**
+     * Creates an instance of WeeklySchedule class.
+     */
     public WeeklySchedule() {
     }
 
     /**
      * Get the scheduleRunDays property: The scheduleRunDays property.
-     *
+     * 
      * @return the scheduleRunDays value.
      */
     public List<DayOfWeek> scheduleRunDays() {
@@ -39,7 +47,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the scheduleRunDays property: The scheduleRunDays property.
-     *
+     * 
      * @param scheduleRunDays the scheduleRunDays value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -50,7 +58,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @return the scheduleRunTimes value.
      */
     public List<OffsetDateTime> scheduleRunTimes() {
@@ -59,7 +67,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @param scheduleRunTimes the scheduleRunTimes value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -70,9 +78,54 @@ public final class WeeklySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scheduleRunDays", this.scheduleRunDays,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("scheduleRunTimes", this.scheduleRunTimes, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WeeklySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WeeklySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WeeklySchedule.
+     */
+    public static WeeklySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WeeklySchedule deserializedWeeklySchedule = new WeeklySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheduleRunDays".equals(fieldName)) {
+                    List<DayOfWeek> scheduleRunDays
+                        = reader.readArray(reader1 -> DayOfWeek.fromString(reader1.getString()));
+                    deserializedWeeklySchedule.scheduleRunDays = scheduleRunDays;
+                } else if ("scheduleRunTimes".equals(fieldName)) {
+                    List<OffsetDateTime> scheduleRunTimes = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedWeeklySchedule.scheduleRunTimes = scheduleRunTimes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWeeklySchedule;
+        });
     }
 }

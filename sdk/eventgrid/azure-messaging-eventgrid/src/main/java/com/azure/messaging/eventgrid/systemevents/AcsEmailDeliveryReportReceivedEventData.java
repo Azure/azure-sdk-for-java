@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -28,6 +29,11 @@ public final class AcsEmailDeliveryReportReceivedEventData
      * The recipient Email Address
      */
     private String recipient;
+
+    /*
+     * The Internet Message Id of the email been sent
+     */
+    private String internetMessageId;
 
     /*
      * The Id of the email been sent
@@ -92,6 +98,26 @@ public final class AcsEmailDeliveryReportReceivedEventData
      */
     public AcsEmailDeliveryReportReceivedEventData setRecipient(String recipient) {
         this.recipient = recipient;
+        return this;
+    }
+
+    /**
+     * Get the internetMessageId property: The Internet Message Id of the email been sent.
+     * 
+     * @return the internetMessageId value.
+     */
+    public String getInternetMessageId() {
+        return this.internetMessageId;
+    }
+
+    /**
+     * Set the internetMessageId property: The Internet Message Id of the email been sent.
+     * 
+     * @param internetMessageId the internetMessageId value to set.
+     * @return the AcsEmailDeliveryReportReceivedEventData object itself.
+     */
+    public AcsEmailDeliveryReportReceivedEventData setInternetMessageId(String internetMessageId) {
+        this.internetMessageId = internetMessageId;
         return this;
     }
 
@@ -177,16 +203,22 @@ public final class AcsEmailDeliveryReportReceivedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("sender", this.sender);
         jsonWriter.writeStringField("recipient", this.recipient);
+        jsonWriter.writeStringField("internetMessageId", this.internetMessageId);
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
-        jsonWriter.writeStringField("deliveryAttemptTimeStamp", this.deliveryAttemptTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
+        jsonWriter.writeStringField("deliveryAttemptTimestamp",
+            this.deliveryAttemptTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -210,6 +242,8 @@ public final class AcsEmailDeliveryReportReceivedEventData
                     deserializedAcsEmailDeliveryReportReceivedEventData.sender = reader.getString();
                 } else if ("recipient".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.recipient = reader.getString();
+                } else if ("internetMessageId".equals(fieldName)) {
+                    deserializedAcsEmailDeliveryReportReceivedEventData.internetMessageId = reader.getString();
                 } else if ("messageId".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.messageId = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -218,9 +252,9 @@ public final class AcsEmailDeliveryReportReceivedEventData
                 } else if ("deliveryStatusDetails".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.deliveryStatusDetails
                         = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
-                } else if ("deliveryAttemptTimeStamp".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.deliveryAttemptTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("deliveryAttemptTimestamp".equals(fieldName)) {
+                    deserializedAcsEmailDeliveryReportReceivedEventData.deliveryAttemptTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VMScaleSetConvertToSinglePlacementGroupInput model.
  */
 @Fluent
-public final class VMScaleSetConvertToSinglePlacementGroupInput {
+public final class VMScaleSetConvertToSinglePlacementGroupInput
+    implements JsonSerializable<VMScaleSetConvertToSinglePlacementGroupInput> {
     /*
      * Id of the placement group in which you want future virtual machine instances to be placed. To query placement
      * group Id, please use Virtual Machine Scale Set VMs - Get API. If not provided, the platform will choose one with
      * maximum number of virtual machine instances.
      */
-    @JsonProperty(value = "activePlacementGroupId")
     private String activePlacementGroupId;
 
     /**
@@ -56,5 +60,43 @@ public final class VMScaleSetConvertToSinglePlacementGroupInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activePlacementGroupId", this.activePlacementGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMScaleSetConvertToSinglePlacementGroupInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMScaleSetConvertToSinglePlacementGroupInput if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMScaleSetConvertToSinglePlacementGroupInput.
+     */
+    public static VMScaleSetConvertToSinglePlacementGroupInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMScaleSetConvertToSinglePlacementGroupInput deserializedVMScaleSetConvertToSinglePlacementGroupInput
+                = new VMScaleSetConvertToSinglePlacementGroupInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activePlacementGroupId".equals(fieldName)) {
+                    deserializedVMScaleSetConvertToSinglePlacementGroupInput.activePlacementGroupId
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMScaleSetConvertToSinglePlacementGroupInput;
+        });
     }
 }

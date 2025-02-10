@@ -6,6 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
 import com.azure.resourcemanager.network.models.ExplicitProxy;
@@ -17,108 +21,92 @@ import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Firewall Policy definition.
  */
 @Fluent
-public final class FirewallPolicyPropertiesFormat {
+public final class FirewallPolicyPropertiesFormat implements JsonSerializable<FirewallPolicyPropertiesFormat> {
     /*
      * A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB. (ex 0.5MB)
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * List of references to FirewallPolicyRuleCollectionGroups.
      */
-    @JsonProperty(value = "ruleCollectionGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> ruleCollectionGroups;
 
     /*
      * The provisioning state of the firewall policy resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The parent firewall policy from which rules are inherited.
      */
-    @JsonProperty(value = "basePolicy")
     private SubResource basePolicy;
 
     /*
      * List of references to Azure Firewalls that this Firewall Policy is associated with.
      */
-    @JsonProperty(value = "firewalls", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewalls;
 
     /*
      * List of references to Child Firewall Policies.
      */
-    @JsonProperty(value = "childPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> childPolicies;
 
     /*
      * The operation mode for Threat Intelligence.
      */
-    @JsonProperty(value = "threatIntelMode")
     private AzureFirewallThreatIntelMode threatIntelMode;
 
     /*
      * ThreatIntel Whitelist for Firewall Policy.
      */
-    @JsonProperty(value = "threatIntelWhitelist")
     private FirewallPolicyThreatIntelWhitelist threatIntelWhitelist;
 
     /*
      * Insights on Firewall Policy.
      */
-    @JsonProperty(value = "insights")
     private FirewallPolicyInsights insights;
 
     /*
      * The private IP addresses/IP ranges to which traffic will not be SNAT.
      */
-    @JsonProperty(value = "snat")
     private FirewallPolicySnat snat;
 
     /*
      * SQL Settings definition.
      */
-    @JsonProperty(value = "sql")
     private FirewallPolicySql sql;
 
     /*
      * DNS Proxy Settings definition.
      */
-    @JsonProperty(value = "dnsSettings")
     private DnsSettings dnsSettings;
 
     /*
      * Explicit Proxy Settings definition.
      */
-    @JsonProperty(value = "explicitProxy")
     private ExplicitProxy explicitProxy;
 
     /*
      * The configuration for Intrusion detection.
      */
-    @JsonProperty(value = "intrusionDetection")
     private FirewallPolicyIntrusionDetection intrusionDetection;
 
     /*
      * TLS Configuration definition.
      */
-    @JsonProperty(value = "transportSecurity")
     private FirewallPolicyTransportSecurity transportSecurity;
 
     /*
      * The Firewall Policy SKU.
      */
-    @JsonProperty(value = "sku")
     private FirewallPolicySku sku;
 
     /**
@@ -427,5 +415,91 @@ public final class FirewallPolicyPropertiesFormat {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("basePolicy", this.basePolicy);
+        jsonWriter.writeStringField("threatIntelMode",
+            this.threatIntelMode == null ? null : this.threatIntelMode.toString());
+        jsonWriter.writeJsonField("threatIntelWhitelist", this.threatIntelWhitelist);
+        jsonWriter.writeJsonField("insights", this.insights);
+        jsonWriter.writeJsonField("snat", this.snat);
+        jsonWriter.writeJsonField("sql", this.sql);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeJsonField("explicitProxy", this.explicitProxy);
+        jsonWriter.writeJsonField("intrusionDetection", this.intrusionDetection);
+        jsonWriter.writeJsonField("transportSecurity", this.transportSecurity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyPropertiesFormat.
+     */
+    public static FirewallPolicyPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyPropertiesFormat deserializedFirewallPolicyPropertiesFormat
+                = new FirewallPolicyPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.size = reader.getString();
+                } else if ("ruleCollectionGroups".equals(fieldName)) {
+                    List<SubResource> ruleCollectionGroups = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFirewallPolicyPropertiesFormat.ruleCollectionGroups = ruleCollectionGroups;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("basePolicy".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.basePolicy = SubResource.fromJson(reader);
+                } else if ("firewalls".equals(fieldName)) {
+                    List<SubResource> firewalls = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFirewallPolicyPropertiesFormat.firewalls = firewalls;
+                } else if ("childPolicies".equals(fieldName)) {
+                    List<SubResource> childPolicies = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFirewallPolicyPropertiesFormat.childPolicies = childPolicies;
+                } else if ("threatIntelMode".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.threatIntelMode
+                        = AzureFirewallThreatIntelMode.fromString(reader.getString());
+                } else if ("threatIntelWhitelist".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.threatIntelWhitelist
+                        = FirewallPolicyThreatIntelWhitelist.fromJson(reader);
+                } else if ("insights".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.insights = FirewallPolicyInsights.fromJson(reader);
+                } else if ("snat".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.snat = FirewallPolicySnat.fromJson(reader);
+                } else if ("sql".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.sql = FirewallPolicySql.fromJson(reader);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.dnsSettings = DnsSettings.fromJson(reader);
+                } else if ("explicitProxy".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.explicitProxy = ExplicitProxy.fromJson(reader);
+                } else if ("intrusionDetection".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.intrusionDetection
+                        = FirewallPolicyIntrusionDetection.fromJson(reader);
+                } else if ("transportSecurity".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.transportSecurity
+                        = FirewallPolicyTransportSecurity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.sku = FirewallPolicySku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyPropertiesFormat;
+        });
     }
 }

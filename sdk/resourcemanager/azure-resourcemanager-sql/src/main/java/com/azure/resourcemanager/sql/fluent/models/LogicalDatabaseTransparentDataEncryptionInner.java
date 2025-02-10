@@ -6,25 +6,46 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A logical database transparent data encryption state. */
+/**
+ * A logical database transparent data encryption state.
+ */
 @Fluent
 public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private TransparentDataEncryptionProperties innerProperties;
 
-    /** Creates an instance of LogicalDatabaseTransparentDataEncryptionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LogicalDatabaseTransparentDataEncryptionInner class.
+     */
     public LogicalDatabaseTransparentDataEncryptionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TransparentDataEncryptionProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the state property: Specifies the state of the transparent data encryption.
-     *
+     * 
      * @return the state value.
      */
     public TransparentDataEncryptionState state() {
@@ -42,7 +93,7 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
 
     /**
      * Set the state property: Specifies the state of the transparent data encryption.
-     *
+     * 
      * @param state the state value to set.
      * @return the LogicalDatabaseTransparentDataEncryptionInner object itself.
      */
@@ -56,12 +107,57 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogicalDatabaseTransparentDataEncryptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogicalDatabaseTransparentDataEncryptionInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogicalDatabaseTransparentDataEncryptionInner.
+     */
+    public static LogicalDatabaseTransparentDataEncryptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogicalDatabaseTransparentDataEncryptionInner deserializedLogicalDatabaseTransparentDataEncryptionInner
+                = new LogicalDatabaseTransparentDataEncryptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLogicalDatabaseTransparentDataEncryptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLogicalDatabaseTransparentDataEncryptionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogicalDatabaseTransparentDataEncryptionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLogicalDatabaseTransparentDataEncryptionInner.innerProperties
+                        = TransparentDataEncryptionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogicalDatabaseTransparentDataEncryptionInner;
+        });
     }
 }
