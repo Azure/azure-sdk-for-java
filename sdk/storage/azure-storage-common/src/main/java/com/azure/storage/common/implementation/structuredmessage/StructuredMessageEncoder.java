@@ -135,16 +135,16 @@ public class StructuredMessageEncoder {
     public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
-        if (!unencodedBuffer.hasRemaining()) {
-            return ByteBuffer.allocate(0);
-        }
-
         if (currentContentOffset == contentLength) {
             throw new IllegalStateException("Content has already been encoded.");
         }
 
         if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
             throw new IllegalArgumentException("Buffer length exceeds content length.");
+        }
+
+        if (!unencodedBuffer.hasRemaining()) {
+            return ByteBuffer.allocate(0);
         }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
