@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameRequest model
-            = BinaryData.fromString("{\"name\":\"tpvjzbexilzznfqq\",\"type\":\"Microsoft.Kusto/clusters/databases\"}")
-                .toObject(CheckNameRequest.class);
-        Assertions.assertEquals("tpvjzbexilzznfqq", model.name());
-        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
+        CheckNameRequest model = BinaryData
+            .fromString(
+                "{\"name\":\"pdggkzzlvm\",\"type\":\"Microsoft.Kusto/clusters/attachedDatabaseConfigurations\"}")
+            .toObject(CheckNameRequest.class);
+        Assertions.assertEquals("pdggkzzlvm", model.name());
+        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameRequest model
-            = new CheckNameRequest().withName("tpvjzbexilzznfqq").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES);
+        CheckNameRequest model = new CheckNameRequest().withName("pdggkzzlvm")
+            .withType(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS);
         model = BinaryData.fromObject(model).toObject(CheckNameRequest.class);
-        Assertions.assertEquals("tpvjzbexilzznfqq", model.name());
-        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
+        Assertions.assertEquals("pdggkzzlvm", model.name());
+        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS, model.type());
     }
 }

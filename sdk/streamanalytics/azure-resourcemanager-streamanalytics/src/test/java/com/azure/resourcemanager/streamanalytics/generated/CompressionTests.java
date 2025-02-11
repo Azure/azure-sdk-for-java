@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CompressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Compression model = BinaryData.fromString("{\"type\":\"None\"}").toObject(Compression.class);
-        Assertions.assertEquals(CompressionType.NONE, model.type());
+        Compression model = BinaryData.fromString("{\"type\":\"GZip\"}").toObject(Compression.class);
+        Assertions.assertEquals(CompressionType.GZIP, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Compression model = new Compression().withType(CompressionType.NONE);
+        Compression model = new Compression().withType(CompressionType.GZIP);
         model = BinaryData.fromObject(model).toObject(Compression.class);
-        Assertions.assertEquals(CompressionType.NONE, model.type());
+        Assertions.assertEquals(CompressionType.GZIP, model.type());
     }
 }

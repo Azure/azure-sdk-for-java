@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -13,7 +13,23 @@ import java.lang.reflect.Method;
  */
 public abstract class ReflectionUtils {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
-    private static final ReflectionUtilsApi INSTANCE = new ReflectionUtilsMethodHandle();
+    private static final ReflectionUtilsApi INSTANCE;
+
+    static {
+        ReflectionUtilsApi instance;
+        try {
+            LOGGER.atVerbose().log("Attempting to use java.lang.invoke package to handle reflection.");
+            instance = new ReflectionUtilsMethodHandle();
+            LOGGER.atVerbose().log("Successfully used java.lang.invoke package to handle reflection.");
+        } catch (LinkageError ignored) {
+            LOGGER.atVerbose()
+                .log("Failed to use java.lang.invoke package to handle reflection. Falling back to "
+                    + "java.lang.reflect package to handle reflection.");
+            instance = new ReflectionUtilsClassic();
+            LOGGER.atVerbose().log("Successfully used java.lang.reflect package to handle reflection.");
+        }
+        INSTANCE = instance;
+    }
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
@@ -115,6 +131,15 @@ public abstract class ReflectionUtils {
     }
 
     /**
+     * Determines whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     *
+     * @return Whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     */
+    public static boolean isModuleBased() {
+        return INSTANCE.isModuleBased();
+    }
+
+    /**
      * Creates a dummy {@link ReflectiveInvoker} that will always return null. Used for scenarios where an {@link ReflectiveInvoker} is
      * needed as an identifier but will never be used.
      *
@@ -132,6 +157,31 @@ public abstract class ReflectionUtils {
 
         @Override
         public Object invokeWithArguments(Object target, Object... args) {
+            return null;
+        }
+
+        @Override
+        public Object invoke() {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) {
             return null;
         }
 

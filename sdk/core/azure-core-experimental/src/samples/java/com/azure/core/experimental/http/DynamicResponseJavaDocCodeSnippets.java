@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.http;
 
+import com.azure.core.http.HttpMethod;
 import com.azure.core.util.BinaryData;
 import com.azure.json.models.JsonArray;
 import com.azure.json.models.JsonNumber;
@@ -24,6 +25,7 @@ public class DynamicResponseJavaDocCodeSnippets {
         DynamicResponse response = dynamicRequest
             .setUrl("https://petstore.example.com/pet/{petId}") // may already be set if request is created from a client
             .setPathParam("petId", "2343245")
+            .setHttpMethod(HttpMethod.POST)
             .send(); // makes the service call
 
         // Check the HTTP status

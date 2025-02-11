@@ -16,7 +16,7 @@ To get started with a specific library, see the **README.md** file located in th
 - [Azure Cosmos Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-examples/README.md) provides various examples / samples on how to use Azure Cosmos DB SDK for SQL API.
 
 <!-- LINKS -->
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos%2FREADME.png)
+

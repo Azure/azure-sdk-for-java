@@ -21,7 +21,7 @@ public final class SecurityMLAnalyticsSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"uqr\",\"id\":\"dxfu\",\"name\":\"e\",\"type\":\"ewxatktwjrppi\"}";
+            = "{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"pfulube\",\"id\":\"ybpmf\",\"name\":\"fununmpzk\",\"type\":\"vfy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class SecurityMLAnalyticsSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityMLAnalyticsSetting response = manager.securityMLAnalyticsSettings()
-            .getWithResponse("xdifbwblijhp", "ukxgoyxontbwdq", "xr", com.azure.core.util.Context.NONE)
+            .getWithResponse("vmywhsbrcarycsjj", "yvoaqajuvehzp", "dmkrrb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uqr", response.etag());
+        Assertions.assertEquals("pfulube", response.etag());
     }
 }

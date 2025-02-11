@@ -25,9 +25,16 @@ public final class SandboxCustomImageProperties implements JsonSerializable<Sand
     private Language language;
 
     /*
-     * The version of the language.
+     * The version of the language. Either this property or baseImageName should be specified.
      */
     private String languageVersion;
+
+    /*
+     * The base image name on which the custom image is built on top of. It can be one of the LanguageExtensionImageName
+     * (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom image. Either this property or
+     * languageVersion should be specified.
+     */
+    private String baseImageName;
 
     /*
      * The requirements file content.
@@ -66,7 +73,8 @@ public final class SandboxCustomImageProperties implements JsonSerializable<Sand
     }
 
     /**
-     * Get the languageVersion property: The version of the language.
+     * Get the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
      * 
      * @return the languageVersion value.
      */
@@ -75,13 +83,38 @@ public final class SandboxCustomImageProperties implements JsonSerializable<Sand
     }
 
     /**
-     * Set the languageVersion property: The version of the language.
+     * Set the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
      * 
      * @param languageVersion the languageVersion value to set.
      * @return the SandboxCustomImageProperties object itself.
      */
     public SandboxCustomImageProperties withLanguageVersion(String languageVersion) {
         this.languageVersion = languageVersion;
+        return this;
+    }
+
+    /**
+     * Get the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @return the baseImageName value.
+     */
+    public String baseImageName() {
+        return this.baseImageName;
+    }
+
+    /**
+     * Set the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @param baseImageName the baseImageName value to set.
+     * @return the SandboxCustomImageProperties object itself.
+     */
+    public SandboxCustomImageProperties withBaseImageName(String baseImageName) {
+        this.baseImageName = baseImageName;
         return this;
     }
 
@@ -125,11 +158,6 @@ public final class SandboxCustomImageProperties implements JsonSerializable<Sand
                 .log(new IllegalArgumentException(
                     "Missing required property language in model SandboxCustomImageProperties"));
         }
-        if (languageVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property languageVersion in model SandboxCustomImageProperties"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SandboxCustomImageProperties.class);
@@ -142,6 +170,7 @@ public final class SandboxCustomImageProperties implements JsonSerializable<Sand
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         jsonWriter.writeStringField("languageVersion", this.languageVersion);
+        jsonWriter.writeStringField("baseImageName", this.baseImageName);
         jsonWriter.writeStringField("requirementsFileContent", this.requirementsFileContent);
         return jsonWriter.writeEndObject();
     }
@@ -166,6 +195,8 @@ public final class SandboxCustomImageProperties implements JsonSerializable<Sand
                     deserializedSandboxCustomImageProperties.language = Language.fromString(reader.getString());
                 } else if ("languageVersion".equals(fieldName)) {
                     deserializedSandboxCustomImageProperties.languageVersion = reader.getString();
+                } else if ("baseImageName".equals(fieldName)) {
+                    deserializedSandboxCustomImageProperties.baseImageName = reader.getString();
                 } else if ("requirementsFileContent".equals(fieldName)) {
                     deserializedSandboxCustomImageProperties.requirementsFileContent = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

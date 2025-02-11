@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import java.io.IOException;
 
 /**
@@ -52,11 +51,6 @@ public final class DocumentDbOutputDataSourceProperties
      * based on.
      */
     private String documentId;
-
-    /*
-     * Authentication Mode.
-     */
-    private AuthenticationMode authenticationMode;
 
     /**
      * Creates an instance of DocumentDbOutputDataSourceProperties class.
@@ -199,26 +193,6 @@ public final class DocumentDbOutputDataSourceProperties
     }
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the DocumentDbOutputDataSourceProperties object itself.
-     */
-    public DocumentDbOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -238,8 +212,6 @@ public final class DocumentDbOutputDataSourceProperties
         jsonWriter.writeStringField("collectionNamePattern", this.collectionNamePattern);
         jsonWriter.writeStringField("partitionKey", this.partitionKey);
         jsonWriter.writeStringField("documentId", this.documentId);
-        jsonWriter.writeStringField("authenticationMode",
-            this.authenticationMode == null ? null : this.authenticationMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -271,9 +243,6 @@ public final class DocumentDbOutputDataSourceProperties
                     deserializedDocumentDbOutputDataSourceProperties.partitionKey = reader.getString();
                 } else if ("documentId".equals(fieldName)) {
                     deserializedDocumentDbOutputDataSourceProperties.documentId = reader.getString();
-                } else if ("authenticationMode".equals(fieldName)) {
-                    deserializedDocumentDbOutputDataSourceProperties.authenticationMode
-                        = AuthenticationMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

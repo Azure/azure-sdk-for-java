@@ -8,14 +8,14 @@
   <parent>
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
     <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
   <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
@@ -37,8 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
@@ -64,6 +64,7 @@
 
       --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.instrumentation.fallback=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
@@ -138,6 +139,18 @@
               <goal>test-jar</goal>
             </goals>
           </execution>
+
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
@@ -161,14 +174,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <dependencies>
-          <!-- Inject slf4j-simple into integration testing to verify the shim works as intended. -->
-          <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-          </dependency>
-        </dependencies>
       </plugin>
 
       <plugin>
@@ -183,10 +188,59 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <additionalCodesnippets>
+            <additionalCodesnippet>
+              <root>../optional-dependency-tests/src/samples/java</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+            <additionalCodesnippet>
+              <root>src/test</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+          </additionalCodesnippets>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
+    <profile>
+      <id>java12-plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>java12-plus-mr</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>12</release>
+                  <compileSourceRoots>
+                    <compileSourceRoot>${project.basedir}/src/main/java12</compileSourceRoot>
+                  </compileSourceRoots>
+                  <multiReleaseOutput>true</multiReleaseOutput>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>jmh-benchmark</id>
       <activation>

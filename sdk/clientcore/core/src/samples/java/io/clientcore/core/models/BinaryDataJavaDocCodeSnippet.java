@@ -3,7 +3,7 @@
 
 package io.clientcore.core.models;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
@@ -342,7 +342,7 @@ public class BinaryDataJavaDocCodeSnippet {
         // no-op
     }
 
-    public static class MyJsonSerializer implements JsonSerializer {
+    public static class MyJsonSerializer extends JsonSerializer {
         private static final ClientLogger LOGGER = new ClientLogger(MyJsonSerializer.class);
 
         @Override

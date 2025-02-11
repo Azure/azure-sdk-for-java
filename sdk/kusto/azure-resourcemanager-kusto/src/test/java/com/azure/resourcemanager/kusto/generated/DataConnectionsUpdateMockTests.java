@@ -22,7 +22,7 @@ public final class DataConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"kind\":\"DataConnection\",\"location\":\"iuh\",\"id\":\"awmo\",\"name\":\"ia\",\"type\":\"cz\"}";
+            = "{\"kind\":\"DataConnection\",\"location\":\"kfaoytehq\",\"id\":\"uvjmv\",\"name\":\"mtdwcky\",\"type\":\"roejnndl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class DataConnectionsUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataConnection response = manager.dataConnections()
-            .update("kyrdnqodx", "hhxhq", "aqnvzoqgyipemchg", "v", new DataConnectionInner().withLocation("zuejd"),
-                com.azure.core.util.Context.NONE);
+            .update("kukjtasb", "wispkxk", "txfkndlqvt", "knvgmmbugtywat",
+                new DataConnectionInner().withLocation("aqkue"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iuh", response.location());
+        Assertions.assertEquals("kfaoytehq", response.location());
     }
 }

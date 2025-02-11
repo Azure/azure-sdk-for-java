@@ -9,8 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
@@ -408,75 +406,6 @@ public final class BookmarkInner extends ResourceWithEtag {
             this.innerProperties = new BookmarkProperties();
         }
         this.innerProperties().withIncidentInfo(incidentInfo);
-        return this;
-    }
-
-    /**
-     * Get the entityMappings property: Describes the entity mappings of the bookmark.
-     * 
-     * @return the entityMappings value.
-     */
-    public List<BookmarkEntityMappings> entityMappings() {
-        return this.innerProperties() == null ? null : this.innerProperties().entityMappings();
-    }
-
-    /**
-     * Set the entityMappings property: Describes the entity mappings of the bookmark.
-     * 
-     * @param entityMappings the entityMappings value to set.
-     * @return the BookmarkInner object itself.
-     */
-    public BookmarkInner withEntityMappings(List<BookmarkEntityMappings> entityMappings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BookmarkProperties();
-        }
-        this.innerProperties().withEntityMappings(entityMappings);
-        return this;
-    }
-
-    /**
-     * Get the tactics property: A list of relevant mitre attacks.
-     * 
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.innerProperties() == null ? null : this.innerProperties().tactics();
-    }
-
-    /**
-     * Set the tactics property: A list of relevant mitre attacks.
-     * 
-     * @param tactics the tactics value to set.
-     * @return the BookmarkInner object itself.
-     */
-    public BookmarkInner withTactics(List<AttackTactic> tactics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BookmarkProperties();
-        }
-        this.innerProperties().withTactics(tactics);
-        return this;
-    }
-
-    /**
-     * Get the techniques property: A list of relevant mitre techniques.
-     * 
-     * @return the techniques value.
-     */
-    public List<String> techniques() {
-        return this.innerProperties() == null ? null : this.innerProperties().techniques();
-    }
-
-    /**
-     * Set the techniques property: A list of relevant mitre techniques.
-     * 
-     * @param techniques the techniques value to set.
-     * @return the BookmarkInner object itself.
-     */
-    public BookmarkInner withTechniques(List<String> techniques) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BookmarkProperties();
-        }
-        this.innerProperties().withTechniques(techniques);
         return this;
     }
 

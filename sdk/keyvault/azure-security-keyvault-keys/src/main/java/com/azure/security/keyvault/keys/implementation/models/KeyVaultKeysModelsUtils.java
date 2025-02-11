@@ -195,8 +195,7 @@ public final class KeyVaultKeysModelsUtils {
 
             KeyPropertiesHelper.setCreatedOn(properties, attributes.getCreated());
             KeyPropertiesHelper.setUpdatedOn(properties, attributes.getUpdated());
-            KeyPropertiesHelper.setRecoveryLevel(properties,
-                Objects.toString(attributes.getRecoveryLevel().toString(), null));
+            KeyPropertiesHelper.setRecoveryLevel(properties, Objects.toString(attributes.getRecoveryLevel(), null));
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
             KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
         }

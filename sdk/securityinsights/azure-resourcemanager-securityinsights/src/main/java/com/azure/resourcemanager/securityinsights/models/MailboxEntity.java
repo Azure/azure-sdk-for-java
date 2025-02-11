@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.MailboxEntityProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -19,11 +18,11 @@ import java.util.UUID;
  * Represents a mailbox entity.
  */
 @Immutable
-public final class MailboxEntity extends EntityInner {
+public final class MailboxEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.MAILBOX;
+    private EntityKindEnum kind = EntityKindEnum.MAILBOX;
 
     /*
      * Mailbox entity properties
@@ -62,7 +61,7 @@ public final class MailboxEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -220,7 +219,7 @@ public final class MailboxEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedMailboxEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedMailboxEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedMailboxEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedMailboxEntity.innerProperties = MailboxEntityProperties.fromJson(reader);
                 } else {

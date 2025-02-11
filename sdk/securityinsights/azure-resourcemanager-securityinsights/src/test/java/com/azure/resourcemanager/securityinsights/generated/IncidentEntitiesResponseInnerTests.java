@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentEntitiesResponseInner;
-import com.azure.resourcemanager.securityinsights.models.EntityKind;
+import com.azure.resourcemanager.securityinsights.models.Entity;
+import com.azure.resourcemanager.securityinsights.models.EntityKindEnum;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResultsMetadata;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -16,24 +16,23 @@ public final class IncidentEntitiesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentEntitiesResponseInner model = BinaryData.fromString(
-            "{\"entities\":[{\"kind\":\"Entity\",\"id\":\"vcwwyyurmochppr\",\"name\":\"rsnm\",\"type\":\"k\"},{\"kind\":\"Entity\",\"id\":\"zejnhl\",\"name\":\"kpbz\",\"type\":\"cpilj\"},{\"kind\":\"Entity\",\"id\":\"hzvechndbnwieho\",\"name\":\"ewjwiuubw\",\"type\":\"fqsfa\"},{\"kind\":\"Entity\",\"id\":\"qtferrqwexjkmf\",\"name\":\"apjwogqqnobpudcd\",\"type\":\"btqwpwyawbzas\"}],\"metaData\":[{\"count\":778203441,\"entityKind\":\"Account\"},{\"count\":302291519,\"entityKind\":\"Process\"},{\"count\":1122336945,\"entityKind\":\"CloudApplication\"},{\"count\":2025422564,\"entityKind\":\"Account\"}]}")
+            "{\"entities\":[{\"kind\":\"Entity\",\"id\":\"elsfeaen\",\"name\":\"abfatkl\",\"type\":\"dxbjhwuaanozj\"},{\"kind\":\"Entity\",\"id\":\"ph\",\"name\":\"oulpjrv\",\"type\":\"ag\"}],\"metaData\":[{\"count\":1902797615,\"entityKind\":\"RegistryValue\"},{\"count\":1837530813,\"entityKind\":\"AzureResource\"}]}")
             .toObject(IncidentEntitiesResponseInner.class);
-        Assertions.assertEquals(778203441, model.metadata().get(0).count());
-        Assertions.assertEquals(EntityKind.ACCOUNT, model.metadata().get(0).entityKind());
+        Assertions.assertEquals(1902797615, model.metadata().get(0).count());
+        Assertions.assertEquals(EntityKindEnum.REGISTRY_VALUE, model.metadata().get(0).entityKind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentEntitiesResponseInner model = new IncidentEntitiesResponseInner()
-            .withEntities(Arrays.asList(new EntityInner(), new EntityInner(), new EntityInner(), new EntityInner()))
-            .withMetadata(Arrays.asList(
-                new IncidentEntitiesResultsMetadata().withCount(778203441).withEntityKind(EntityKind.ACCOUNT),
-                new IncidentEntitiesResultsMetadata().withCount(302291519).withEntityKind(EntityKind.PROCESS),
-                new IncidentEntitiesResultsMetadata().withCount(1122336945)
-                    .withEntityKind(EntityKind.CLOUD_APPLICATION),
-                new IncidentEntitiesResultsMetadata().withCount(2025422564).withEntityKind(EntityKind.ACCOUNT)));
+        IncidentEntitiesResponseInner model
+            = new IncidentEntitiesResponseInner().withEntities(Arrays.asList(new Entity(), new Entity()))
+                .withMetadata(Arrays.asList(
+                    new IncidentEntitiesResultsMetadata().withCount(1902797615)
+                        .withEntityKind(EntityKindEnum.REGISTRY_VALUE),
+                    new IncidentEntitiesResultsMetadata().withCount(1837530813)
+                        .withEntityKind(EntityKindEnum.AZURE_RESOURCE)));
         model = BinaryData.fromObject(model).toObject(IncidentEntitiesResponseInner.class);
-        Assertions.assertEquals(778203441, model.metadata().get(0).count());
-        Assertions.assertEquals(EntityKind.ACCOUNT, model.metadata().get(0).entityKind());
+        Assertions.assertEquals(1902797615, model.metadata().get(0).count());
+        Assertions.assertEquals(EntityKindEnum.REGISTRY_VALUE, model.metadata().get(0).entityKind());
     }
 }
