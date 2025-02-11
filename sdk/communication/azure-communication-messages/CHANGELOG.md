@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (2025-01-15)
+## 1.2.0-beta.1 (2025-02-11)
 
 ### Features Added
 - Added Interactive Message.
